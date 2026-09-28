@@ -1,26 +1,175 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surface: Backgrounds, from page to raised */
+  --ag-bg: #0e1012;
+  --ag-surface: #15181b;
+  --ag-raised: #1f2428;
+  --ag-hover: #13161a;
+  --ag-unread: #13171b;
+  --ag-media: #171a1e;
+
+  /* Border: Hairlines and control outlines */
+  --ag-border-subtle: #22262b;
+  --ag-border: #2a2f35;
+  --ag-border-strong: #3a4047;
+
+  /* Text: Three levels only */
+  --ag-text: #e9ecef;
+  --ag-text-secondary: #9ba3ab;
+  --ag-text-placeholder: #7d858d;
+
+  /* Accent - Agora Amber: Primary actions and brand */
+  --ag-accent: #f0a35e;
+  --ag-accent-hover: #f6b67a;
+  --ag-on-accent: #1a1208;
+  --ag-accent-text: #f0a35e;
+  --ag-accent-soft: #3a2c1d;
+
+  /* Demo - Violet: Everything that signals simulated data */
+  --ag-demo: #9d8cff;
+  --ag-on-demo: #120f24;
+  --ag-demo-surface: #1b1834;
+  --ag-demo-border: #3b3470;
+  --ag-demo-text: #e3deff;
+  --ag-demo-text-muted: #c8c3e6;
+
+  /* Status: Feedback from actions */
+  --ag-success: #5cc28f;
+  --ag-success-surface: #12241b;
+  --ag-success-text: #c9f0da;
+  --ag-danger: #f07171;
+  --ag-danger-surface: #1d1414;
+  --ag-danger-text: #ffd0d0;
+
+  /* Avatar Palette: Assigned per user by hash of the handle */
+  --ag-avatar-1: #7cc4a4;
+  --ag-avatar-2: #e57f8f;
+  --ag-avatar-3: #6fb3e8;
+  --ag-avatar-4: #d9c26a;
+
+  /* Shadows: Dark theme leans on borders and surface steps. Shadows mark things that float above the page. */
+  --ag-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --ag-shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --ag-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --ag-shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.6);
+  --ag-focus-ring: 0 0 0 3px rgba(240, 163, 94, 0.45);
+}
+
+.light {
+  /* Surface: Backgrounds, from page to raised */
+  --ag-bg: #fbfaf7;
+  --ag-surface: #ffffff;
+  --ag-raised: #efece6;
+  --ag-hover: #f3f1ec;
+  --ag-unread: #fff6ec;
+  --ag-media: #efece6;
+
+  /* Border: Hairlines and control outlines */
+  --ag-border-subtle: #e6e2da;
+  --ag-border: #d9d4ca;
+  --ag-border-strong: #bfb9ae;
+
+  /* Text: Three levels only */
+  --ag-text: #1d1b17;
+  --ag-text-secondary: #6b665d;
+  --ag-text-placeholder: #8a847a;
+
+  /* Accent - Agora Amber: Primary actions and brand */
+  --ag-accent: #f0a35e;
+  --ag-accent-hover: #e8954c;
+  --ag-on-accent: #1a1208;
+  --ag-accent-text: #a65a1c;
+  --ag-accent-soft: #f7e3cf;
+
+  /* Demo - Violet: Everything that signals simulated data */
+  --ag-demo: #9d8cff;
+  --ag-on-demo: #120f24;
+  --ag-demo-surface: #ece8ff;
+  --ag-demo-border: #cfc6f5;
+  --ag-demo-text: #2b2166;
+  --ag-demo-text-muted: #4a4280;
+
+  /* Status: Feedback from actions */
+  --ag-success: #2f9a64;
+  --ag-success-surface: #e9f7ef;
+  --ag-success-text: #1e5c3a;
+  --ag-danger: #d64545;
+  --ag-danger-surface: #fdeeee;
+  --ag-danger-text: #8f1f1f;
+
+  /* Avatar Palette: Assigned per user by hash of the handle */
+  --ag-avatar-1: #7cc4a4;
+  --ag-avatar-2: #e57f8f;
+  --ag-avatar-3: #6fb3e8;
+  --ag-avatar-4: #d9c26a;
+
+  /* Shadows */
+  --ag-shadow-sm:
+    0 1px 3px rgba(40, 30, 10, 0.08), 0 2px 8px rgba(40, 30, 10, 0.06);
+  --ag-shadow-md: 0 6px 20px rgba(40, 30, 10, 0.14);
+  --ag-shadow-lg: 0 12px 32px rgba(40, 30, 10, 0.14);
+  --ag-shadow-xl: 0 24px 64px rgba(40, 30, 10, 0.18);
+  --ag-focus-ring: 0 0 0 3px rgba(166, 90, 28, 0.35);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Surface: Backgrounds, from page to raised */
+  --color-ag-bg: var(--ag-bg);
+  --color-ag-surface: var(--ag-surface);
+  --color-ag-raised: var(--ag-raised);
+  --color-ag-hover: var(--ag-hover);
+  --color-ag-unread: var(--ag-unread);
+  --color-ag-media: var(--ag-media);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Border: Hairlines and control outlines */
+  --color-ag-border-subtle: var(--ag-border-subtle);
+  --color-ag-border: var(--ag-border);
+  --color-ag-border-strong: var(--ag-border-strong);
+
+  /* Text: Three levels only */
+  --color-ag-text: var(--ag-text);
+  --color-ag-text-secondary: var(--ag-text-secondary);
+  --color-ag-text-placeholder: var(--ag-text-placeholder);
+
+  /* Accent - Agora Amber: Primary actions and brand */
+  --color-ag-accent: var(--ag-accent);
+  --color-ag-accent-hover: var(--ag-accent-hover);
+  --color-ag-on-accent: var(--ag-on-accent);
+  --color-ag-accent-text: var(--ag-accent-text);
+  --color-ag-accent-soft: var(--ag-accent-soft);
+
+  /* Demo - Violet: Everything that signals simulated data */
+  --color-ag-demo: var(--ag-demo);
+  --color-ag-on-demo: var(--ag-on-demo);
+  --color-ag-demo-surface: var(--ag-demo-surface);
+  --color-ag-demo-border: var(--ag-demo-border);
+  --color-ag-demo-text: var(--ag-demo-text);
+  --color-ag-demo-text-muted: var(--ag-demo-text-muted);
+
+  /* Status: Feedback from actions */
+  --color-ag-success: var(--ag-success);
+  --color-ag-success-surface: var(--ag-success-surface);
+  --color-ag-success-text: var(--ag-success-text);
+  --color-ag-danger: var(--ag-danger);
+  --color-ag-danger-surface: var(--ag-danger-surface);
+  --color-ag-danger-text: var(--ag-danger-text);
+
+  /* Avatar Palette: Assigned per user by hash of the handle */
+  --color-ag-avatar-1: var(--ag-avatar-1);
+  --color-ag-avatar-2: var(--ag-avatar-2);
+  --color-ag-avatar-3: var(--ag-avatar-3);
+  --color-ag-avatar-4: var(--ag-avatar-4);
+
+  /* Shadows */
+  --shadow-ag-sm: var(--ag-shadow-sm);
+  --shadow-ag-md: var(--ag-shadow-md);
+  --shadow-ag-lg: var(--ag-shadow-lg);
+  --shadow-ag-xl: var(--ag-shadow-xl);
+  --shadow-ag-focus-ring: var(--ag-focus-ring);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ag-bg);
+  color: var(--color-ag-text);
 }
