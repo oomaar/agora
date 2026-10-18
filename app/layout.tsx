@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { cn } from "@/lib/cn";
+import { themeScript } from "@/lib/theme/themeScript";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -21,9 +23,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={cn(geistSans.variable, geistMono.variable, "h-full antialiased")}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="min-h-full flex flex-col bg-ag-bg text-ag-text">
+        {children}
+      </body>
     </html>
   );
 }
