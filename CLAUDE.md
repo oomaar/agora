@@ -68,8 +68,8 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 - [x] 0.1 Initialise Next.js project
 - [x] 0.2 Add `cn` class-merging utility (`lib/cn.ts`)
-- [~] 0.3 Colour tokens for dark and light themes (`--ag-*` in `app/globals.css`, mapped to Tailwind)
-- [~] 0.4 Theme system: types, constants, no-flash script, `useTheme` hook (light / dark / system)
+- [x] 0.3 Colour tokens for dark and light themes (`--ag-*` in `app/globals.css`, mapped to Tailwind)
+- [x] 0.4 Theme system: types, constants, no-flash script, `useTheme` hook (light / dark / system)
 - [ ] 0.5 Typography scale (Geist + Geist Mono) as Tailwind utilities
 - [ ] 0.6 Spacing scale (4px base, 2px half-steps under 16), radius, elevation and shadow tokens
 - [ ] 0.7 Breakpoints: mobile `<640`, nav-icons `<900`, rail-hidden `<1100`
@@ -178,3 +178,4 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | Date | Phase / Task | Notes |
 |---|---|---|
 | 2026-10-18 | Planning | CLAUDE.md rewritten with rules, phases and delivery estimate |
+| 2026-10-18 | 0.1 – 0.4 | Tokens verified against design system; theme script injected in `<head>`; theme store split from hook; body styles moved to Tailwind |
