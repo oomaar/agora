@@ -1,9 +1,12 @@
 import { SectionHeader } from "@/components/design-system/SectionHeader";
 import { ThemePanel } from "@/components/design-system/ThemePanel";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Badge } from "@/components/ui/Badge";
+import { Counter } from "@/components/ui/Counter";
+import { Toast } from "@/components/ui/Toast";
+import { PostCard } from "@/components/post/PostCard";
 import { THEMES } from "@/lib/design-system/constants";
-
-const BUTTON_BASE =
-  "inline-flex h-10 items-center rounded-md px-[18px] text-[14px]";
 
 export function ComponentsSection() {
   return (
@@ -15,35 +18,21 @@ export function ComponentsSection() {
       />
       <div className="grid grid-cols-1 gap-4 nav:grid-cols-2">
         {THEMES.map((theme) => (
-          <ThemePanel key={theme} theme={theme} className="gap-5.5">
+          <ThemePanel
+            key={theme}
+            theme={theme}
+            spacing="gap-[22px] rounded-2xl p-7"
+          >
             <div className="flex flex-wrap items-center gap-2.5">
-              <span
-                className={`${BUTTON_BASE} bg-ag-accent font-semibold text-ag-on-accent`}
-              >
-                Primary
-              </span>
-              <span
-                className={`${BUTTON_BASE} border border-ag-border-strong text-ag-text`}
-              >
-                Secondary
-              </span>
-              <span
-                className={`${BUTTON_BASE} border border-ag-demo font-semibold text-ag-demo-text`}
-              >
-                Demo
-              </span>
-              <span
-                className={`${BUTTON_BASE} bg-ag-danger font-semibold text-ag-on-danger`}
-              >
-                Danger
-              </span>
-              <span className="inline-flex h-8.5 items-center rounded-full bg-ag-text px-4 text-[13px] font-semibold text-ag-bg">
+              <Button>Primary</Button>
+              <Button variant="secondary">Secondary</Button>
+              <Button variant="demo">Demo</Button>
+              <Button variant="danger">Danger</Button>
+              <Button variant="follow" size="sm">
                 Follow
-              </span>
+              </Button>
             </div>
-            <div className="flex h-10.5 items-center rounded-md border border-ag-border bg-ag-surface px-3.5 text-[14px] text-ag-text-placeholder">
-              Write a comment…
-            </div>
+            <Input label="Comment" placeholder="Write a comment…" />
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-ag-text px-3 py-1.5 text-[13px] font-semibold text-ag-bg">
                 Top
@@ -51,36 +40,20 @@ export function ComponentsSection() {
               <span className="rounded-full border border-ag-border px-3 py-1.5 text-[13px] text-ag-text-secondary">
                 People
               </span>
-              <span className="grid h-5 min-w-5 place-items-center rounded-md bg-ag-accent text-[11.5px] font-bold text-ag-on-accent">
-                3
-              </span>
-              <span className="rounded-full bg-ag-demo px-2 py-0.5 text-[11.5px] font-bold text-ag-on-demo">
-                DEMO
-              </span>
-              <span className="rounded-sm border border-ag-success-border bg-ag-success-surface px-2.5 py-1.5 text-caption text-ag-success-text">
-                Post published
-              </span>
-              <span className="rounded-sm border border-ag-danger-border bg-ag-danger-surface px-2.5 py-1.5 text-caption text-ag-danger-text">
-                Couldn&apos;t send
-              </span>
+              <Counter value={3} />
+              <Badge variant="demo">Demo</Badge>
+              <Toast kind="success" message="Post published" />
+              <Toast kind="error" message="Couldn't send" />
             </div>
-            <div className="flex gap-3 rounded-lg border border-ag-border-subtle bg-ag-bg p-4">
-              <div className="grid size-10 flex-none place-items-center rounded-full bg-ag-avatar-1 text-[14px] font-semibold text-ag-on-avatar">
-                AT
-              </div>
-              <div className="flex flex-col gap-1.5 text-[14px]">
-                <span>
-                  <b className="font-semibold">Aiko Tanaka</b>{" "}
-                  <span className="text-ag-text-secondary">@aiko.t · 4m</span>
-                </span>
-                <span className="text-body">
-                  Our library just started lending sewing machines.
-                </span>
-                <span className="flex gap-6 text-[13px] text-ag-text-secondary">
-                  <span>4 replies</span>
-                  <span className="text-ag-danger">♥ 24</span>
-                </span>
-              </div>
+            <div className="overflow-hidden rounded-lg border border-ag-border-subtle">
+              <PostCard
+                author={{ name: "Aiko Tanaka", handle: "aiko.t" }}
+                time="4m"
+                text="Our library just started lending sewing machines."
+                stats={{ comments: 4, reposts: 1, likes: 24 }}
+                liked
+                divider={false}
+              />
             </div>
           </ThemePanel>
         ))}

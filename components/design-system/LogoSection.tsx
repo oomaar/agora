@@ -1,14 +1,11 @@
-import { LogoMark } from "@/components/design-system/LogoMark";
+import { LogoMark } from "@/components/ui/LogoMark";
+import { AppIcon } from "@/components/ui/AppIcon";
 import { SectionHeader } from "@/components/design-system/SectionHeader";
 import { DsCard } from "@/components/design-system/DsCard";
 import { LOGO_USAGE, THEMES } from "@/lib/design-system/constants";
 import { cn } from "@/utils/cn";
 
-const MARK_SIZES = [
-  { size: 16, strokeWidth: 2.8 },
-  { size: 24, strokeWidth: 2.4 },
-  { size: 40, strokeWidth: 2.2 },
-];
+const MARK_SIZES = [16, 24, 40];
 
 export function LogoSection() {
   return (
@@ -41,25 +38,23 @@ export function LogoSection() {
         </DsCard>
         <DsCard title="Mark sizes">
           <div className="flex items-end gap-4.5">
-            {MARK_SIZES.map(({ size, strokeWidth }) => (
+            {MARK_SIZES.map((size) => (
               <div key={size} className="flex flex-col items-center gap-2">
-                <LogoMark size={size} strokeWidth={strokeWidth} />
+                <LogoMark size={size} />
                 <span className="font-mono text-[11px] text-ag-text-secondary">
                   {size}
                 </span>
               </div>
             ))}
             <div className="flex flex-col items-center gap-2">
-              <div className="grid size-16 place-items-center rounded-[15px] border border-ag-border bg-ag-bg">
-                <LogoMark size={40} strokeWidth={2.2} />
-              </div>
+              <AppIcon />
               <span className="font-mono text-[11px] text-ag-text-secondary">
                 app icon
               </span>
             </div>
           </div>
         </DsCard>
-        <DsCard title="Usage" className="gap-2.5">
+        <DsCard title="Usage" spacing="gap-2.5 p-6">
           {LOGO_USAGE.map((line) => (
             <p
               key={line}

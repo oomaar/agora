@@ -8,7 +8,7 @@ export function TypographySection() {
     <section className="flex flex-col gap-6">
       <SectionHeader index="03" title="Typography" />
       <div className="grid grid-cols-1 gap-4 nav:grid-cols-2">
-        <DsCard className="gap-2">
+        <DsCard spacing="gap-2 p-6">
           <span className="font-mono text-[11px] font-medium text-ag-text-secondary">
             UI · GEIST
           </span>
@@ -17,7 +17,7 @@ export function TypographySection() {
             Regular 400 · Medium 500 · Semibold 600 · Bold 700 (wordmark only)
           </span>
         </DsCard>
-        <DsCard className="gap-2">
+        <DsCard spacing="gap-2 p-6">
           <span className="font-mono text-[11px] font-medium text-ag-text-secondary">
             DATA · GEIST MONO
           </span>

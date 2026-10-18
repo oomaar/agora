@@ -8,6 +8,8 @@ import {
   type TypeStyle,
 } from "@/types/designSystem";
 import { type ResolvedTheme } from "@/types/theme";
+import { type PostCardProps } from "@/types/post";
+import { type MenuItem } from "@/types/menu";
 
 export const DS_VERSION = "v0.1";
 
@@ -22,6 +24,10 @@ export const COLOR_GROUPS: ColorGroup[] = [
       { name: "--ag-hover", dark: "#13161a", light: "#f3f1ec", use: "Row hover", swatchClassName: "bg-ag-hover" },
       { name: "--ag-unread", dark: "#13171b", light: "#fff6ec", use: "Unread notification row", swatchClassName: "bg-ag-unread" },
       { name: "--ag-media", dark: "#171a1e", light: "#efece6", use: "Media placeholder, skeleton", swatchClassName: "bg-ag-media" },
+      { name: "--ag-media-stripe", dark: "#14171a", light: "#f6f4ef", use: "Second stripe of the media placeholder", swatchClassName: "bg-ag-media-stripe" },
+      { name: "--ag-skeleton", dark: "#1e2227", light: "#e6e3dd", use: "Skeleton lines and avatars", swatchClassName: "bg-ag-skeleton" },
+      { name: "--ag-skeleton-media", dark: "#181b1f", light: "#efede8", use: "Skeleton media blocks", swatchClassName: "bg-ag-skeleton-media" },
+      { name: "--ag-scrim", dark: "rgba(5,6,8,.72)", light: "rgba(30,25,15,.35)", use: "Backdrop behind modals and sheets", swatchClassName: "bg-ag-scrim" },
     ],
   },
   {
@@ -51,6 +57,7 @@ export const COLOR_GROUPS: ColorGroup[] = [
       { name: "--ag-on-accent", dark: "#1a1208", light: "#1a1208", use: "Text on accent", swatchClassName: "bg-ag-on-accent" },
       { name: "--ag-accent-text", dark: "#f0a35e", light: "#a65a1c", use: "Links, accent text", swatchClassName: "bg-ag-accent-text" },
       { name: "--ag-accent-soft", dark: "#3a2c1d", light: "#f7e3cf", use: "Tinted chip, muted post button", swatchClassName: "bg-ag-accent-soft" },
+      { name: "--ag-accent-border", dark: "#4a3620", light: "#edc9a4", use: "Accent outline (audience chip)", swatchClassName: "bg-ag-accent-border" },
     ],
   },
   {
@@ -60,6 +67,7 @@ export const COLOR_GROUPS: ColorGroup[] = [
       { name: "--ag-demo", dark: "#9d8cff", light: "#9d8cff", use: "DEMO pill, selected network", swatchClassName: "bg-ag-demo" },
       { name: "--ag-on-demo", dark: "#120f24", light: "#120f24", use: "Text on demo", swatchClassName: "bg-ag-on-demo" },
       { name: "--ag-demo-surface", dark: "#1b1834", light: "#ece8ff", use: "Demo bar, simulation card", swatchClassName: "bg-ag-demo-surface" },
+      { name: "--ag-demo-soft", dark: "#221e3f", light: "#e3ddfc", use: "Demo button hover, soft demo pill", swatchClassName: "bg-ag-demo-soft" },
       { name: "--ag-demo-border", dark: "#3b3470", light: "#cfc6f5", use: "Demo outlines", swatchClassName: "bg-ag-demo-border" },
       { name: "--ag-demo-text", dark: "#e3deff", light: "#2b2166", use: "Text on demo surfaces", swatchClassName: "bg-ag-demo-text" },
       { name: "--ag-demo-text-muted", dark: "#c8c3e6", light: "#4a4280", use: "Secondary text on demo surfaces", swatchClassName: "bg-ag-demo-text-muted" },
@@ -77,6 +85,7 @@ export const COLOR_GROUPS: ColorGroup[] = [
       { name: "--ag-on-danger", dark: "#2a0d0d", light: "#ffffff", use: "Text on danger button", swatchClassName: "bg-ag-on-danger" },
       { name: "--ag-danger-surface", dark: "#1d1414", light: "#fdeeee", use: "Error panel, toast", swatchClassName: "bg-ag-danger-surface" },
       { name: "--ag-danger-text", dark: "#ffd0d0", light: "#8f1f1f", use: "Error panel text", swatchClassName: "bg-ag-danger-text" },
+      { name: "--ag-danger-text-muted", dark: "#d2aaaa", light: "#8a4b4b", use: "Error panel description", swatchClassName: "bg-ag-danger-text-muted" },
       { name: "--ag-danger-border", dark: "#5a3030", light: "#e7b0b0", use: "Error toast outline", swatchClassName: "bg-ag-danger-border" },
     ],
   },
@@ -89,6 +98,13 @@ export const COLOR_GROUPS: ColorGroup[] = [
       { name: "--ag-avatar-3", dark: "#6fb3e8", light: "#6fb3e8", use: "Sky", swatchClassName: "bg-ag-avatar-3" },
       { name: "--ag-avatar-4", dark: "#d9c26a", light: "#d9c26a", use: "Ochre", swatchClassName: "bg-ag-avatar-4" },
       { name: "--ag-on-avatar", dark: "#0e1012", light: "#1d1b17", use: "Initials on avatar", swatchClassName: "bg-ag-on-avatar" },
+    ],
+  },
+  {
+    name: "Controls",
+    description: "Parts of interactive controls",
+    tokens: [
+      { name: "--ag-knob", dark: "#e9ecef", light: "#ffffff", use: "Toggle switch knob", swatchClassName: "bg-ag-knob" },
     ],
   },
 ];
@@ -191,3 +207,41 @@ export const LAYOUT_NOTES = [
 ];
 
 export const THEMES: ResolvedTheme[] = ["dark", "light"];
+
+export const SAMPLE_POSTS: Pick<PostCardProps, "author" | "time" | "text" | "media" | "stats">[] = [
+  {
+    author: { name: "Aiko Tanaka", handle: "aiko.t" },
+    time: "4m",
+    text: "Our neighborhood library just started lending sewing machines. Booked one for Thursday.",
+    media: { kind: "image", label: "photo · library shelf" },
+    stats: { comments: 4, reposts: 1, likes: 23 },
+  },
+  {
+    author: { name: "Marcus Bell", handle: "marcusb" },
+    time: "26m",
+    text: "Anyone else's sourdough starter sulking this week? Mine hasn't risen since the heatwave.",
+    stats: { comments: 17, reposts: 2, likes: 41 },
+  },
+  {
+    author: { name: "Dev Patel", handle: "devp" },
+    time: "2h",
+    text: "Ran my first 10k without stopping. Slow, but done.",
+    media: { kind: "video", label: "run recap · 0:48" },
+    stats: { comments: 32, reposts: 6, likes: 158 },
+  },
+];
+
+export const SAMPLE_PEOPLE = [
+  { name: "Aiko Tanaka", handle: "aiko.t" },
+  { name: "Marcus Bell", handle: "marcusb" },
+  { name: "Sofia Lindqvist", handle: "sofial" },
+  { name: "Dev Patel", handle: "devp" },
+  { name: "Nora Haddad", handle: "norah" },
+];
+
+export const SAMPLE_MENU_LABELS: Pick<MenuItem, "id" | "label" | "icon" | "danger">[] = [
+  { id: "share", label: "Copy link", icon: "share" },
+  { id: "profile", label: "View profile", icon: "user" },
+  { id: "mute", label: "Mute @marcusb", icon: "bell" },
+  { id: "report", label: "Report post", icon: "alert", danger: true },
+];

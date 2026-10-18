@@ -56,11 +56,6 @@ export type ContrastSample = {
   className: string;
 };
 
-export type LogoMarkProps = {
-  size: number;
-  strokeWidth?: number;
-};
-
 export type SectionHeaderProps = {
   index: string;
   title: string;
@@ -69,12 +64,18 @@ export type SectionHeaderProps = {
 
 export type DsCardProps = {
   title?: string;
+  // Replaces the default gap and padding.
+  spacing?: string;
+  // Content runs edge to edge; only the title keeps padding.
+  flush?: boolean;
   className?: string;
   children: ReactNode;
 };
 
 export type ThemePanelProps = {
   theme: ResolvedTheme;
+  // Replaces the default gap, padding and radius.
+  spacing?: string;
   className?: string;
   children: ReactNode;
 };

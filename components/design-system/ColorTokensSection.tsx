@@ -76,7 +76,7 @@ export function ColorTokensSection() {
           <ThemePanel
             key={theme}
             theme={theme}
-            className="gap-2.5 rounded-xl p-5"
+            spacing="gap-2.5 rounded-xl p-5"
           >
             <div className="flex flex-wrap gap-2 text-[13px]">
               {CONTRAST_SAMPLES[theme].map((sample) => (
