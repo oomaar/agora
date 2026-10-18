@@ -30,7 +30,7 @@ export function TypographySection() {
         </DsCard>
       </div>
       <div className="overflow-x-auto rounded-xl border border-ag-border-subtle">
-        <div className="min-w-[640px]">
+        <div className="min-w-160">
           {TYPE_SCALE.map((style, i) => (
             <div
               key={style.name}
@@ -40,8 +40,12 @@ export function TypographySection() {
               )}
             >
               <span className="font-mono text-[13px]">{style.name}</span>
-              <span className={cn(style.className, "truncate")}>{style.sample}</span>
-              <span className="font-mono text-[12px] text-ag-text-secondary">{style.spec}</span>
+              <span className={cn(style.className, "truncate")}>
+                {style.sample}
+              </span>
+              <span className="font-mono text-[12px] text-ag-text-secondary">
+                {style.spec}
+              </span>
             </div>
           ))}
         </div>
