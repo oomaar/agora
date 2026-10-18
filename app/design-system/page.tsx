@@ -1,10 +1,11 @@
-import { LogoMark } from "@/components/design-system/LogoMark";
+import { LogoMark } from "@/components/ui/LogoMark";
 import { LogoSection } from "@/components/design-system/LogoSection";
 import { ColorTokensSection } from "@/components/design-system/ColorTokensSection";
 import { TypographySection } from "@/components/design-system/TypographySection";
 import { SpacingSection } from "@/components/design-system/SpacingSection";
 import { ShadowsSection } from "@/components/design-system/ShadowsSection";
 import { ComponentsSection } from "@/components/design-system/ComponentsSection";
+import { ComponentLibrarySection } from "@/components/design-system/ComponentLibrarySection";
 import { DS_VERSION } from "@/lib/design-system/constants";
 
 export default function DesignSystemPage() {
@@ -32,6 +33,7 @@ export default function DesignSystemPage() {
       <SpacingSection />
       <ShadowsSection />
       <ComponentsSection />
+      <ComponentLibrarySection />
     </main>
   );
 }
