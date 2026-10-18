@@ -1,6 +1,10 @@
 import { SectionHeader } from "@/components/design-system/SectionHeader";
 import { ThemePanel } from "@/components/design-system/ThemePanel";
-import { SHADOW_NOTES, SHADOW_TOKENS, THEMES } from "@/lib/design-system/constants";
+import {
+  SHADOW_NOTES,
+  SHADOW_TOKENS,
+  THEMES,
+} from "@/lib/design-system/constants";
 import { cn } from "@/utils/cn";
 
 const ROW_GRID =
@@ -22,14 +26,16 @@ export function ShadowsSection() {
                 <div key={shadow.name} className="flex flex-col gap-2.5">
                   <div
                     className={cn(
-                      "h-[72px] rounded-lg border",
+                      "h-18 rounded-lg border",
                       shadow.className,
                       theme === "dark"
                         ? cn("border-ag-border", shadow.darkSurfaceClassName)
                         : "border-ag-border-subtle bg-ag-surface",
                     )}
                   />
-                  <span className="break-all font-mono text-[12px]">{shadow.name}</span>
+                  <span className="break-all font-mono text-[12px]">
+                    {shadow.name}
+                  </span>
                 </div>
               ))}
             </div>
@@ -37,7 +43,7 @@ export function ShadowsSection() {
         ))}
       </div>
       <div className="overflow-x-auto rounded-xl border border-ag-border-subtle">
-        <div className="min-w-[720px]">
+        <div className="min-w-180">
           <div
             className={cn(
               ROW_GRID,
@@ -50,15 +56,20 @@ export function ShadowsSection() {
             <span>Use</span>
           </div>
           {SHADOW_TOKENS.map((shadow) => (
-            <div key={shadow.name} className={cn(ROW_GRID, "border-t border-ag-border-subtle py-3")}>
+            <div
+              key={shadow.name}
+              className={cn(ROW_GRID, "border-t border-ag-border-subtle py-3")}
+            >
               <span className="font-mono text-[13px]">{shadow.name}</span>
-              <span className="font-mono text-[12px] leading-[1.5] text-ag-text-secondary">
+              <span className="font-mono text-[12px] leading-normal text-ag-text-secondary">
                 {shadow.dark}
               </span>
-              <span className="font-mono text-[12px] leading-[1.5] text-ag-text-secondary">
+              <span className="font-mono text-[12px] leading-normal text-ag-text-secondary">
                 {shadow.light}
               </span>
-              <span className="text-[13px] leading-[1.45] text-ag-text-secondary">{shadow.use}</span>
+              <span className="text-[13px] leading-[1.45] text-ag-text-secondary">
+                {shadow.use}
+              </span>
             </div>
           ))}
         </div>
@@ -66,7 +77,8 @@ export function ShadowsSection() {
       <div className="grid grid-cols-1 gap-4 text-[13.5px] leading-[1.55] text-ag-text-secondary nav:grid-cols-3">
         {SHADOW_NOTES.map((note) => (
           <p key={note.title}>
-            <span className="font-semibold text-ag-text">{note.title}</span> {note.body}
+            <span className="font-semibold text-ag-text">{note.title}</span>{" "}
+            {note.body}
           </p>
         ))}
       </div>

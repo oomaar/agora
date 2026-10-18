@@ -1,6 +1,10 @@
 import { SectionHeader } from "@/components/design-system/SectionHeader";
 import { ThemePanel } from "@/components/design-system/ThemePanel";
-import { COLOR_GROUPS, CONTRAST_SAMPLES, THEMES } from "@/lib/design-system/constants";
+import {
+  COLOR_GROUPS,
+  CONTRAST_SAMPLES,
+  THEMES,
+} from "@/lib/design-system/constants";
 import { cn } from "@/utils/cn";
 
 const ROW_GRID =
@@ -18,10 +22,12 @@ export function ColorTokensSection() {
         <div key={group.name} className="flex flex-col gap-2.5">
           <div className="flex flex-wrap items-baseline gap-x-2.5">
             <span className="text-title">{group.name}</span>
-            <span className="text-[13px] text-ag-text-secondary">{group.description}</span>
+            <span className="text-[13px] text-ag-text-secondary">
+              {group.description}
+            </span>
           </div>
           <div className="overflow-x-auto rounded-xl border border-ag-border-subtle">
-            <div className="min-w-[640px]">
+            <div className="min-w-160">
               <div
                 className={cn(
                   ROW_GRID,
@@ -34,7 +40,13 @@ export function ColorTokensSection() {
                 <span>Use</span>
               </div>
               {group.tokens.map((token) => (
-                <div key={token.name} className={cn(ROW_GRID, "border-t border-ag-border-subtle py-3")}>
+                <div
+                  key={token.name}
+                  className={cn(
+                    ROW_GRID,
+                    "border-t border-ag-border-subtle py-3",
+                  )}
+                >
                   <span className="font-mono text-[13px]">{token.name}</span>
                   {THEMES.map((theme) => (
                     <span key={theme} className="flex items-center gap-2.5">
@@ -61,10 +73,17 @@ export function ColorTokensSection() {
       ))}
       <div className="grid grid-cols-1 gap-4 nav:grid-cols-2">
         {THEMES.map((theme) => (
-          <ThemePanel key={theme} theme={theme} className="gap-2.5 rounded-xl p-5">
+          <ThemePanel
+            key={theme}
+            theme={theme}
+            className="gap-2.5 rounded-xl p-5"
+          >
             <div className="flex flex-wrap gap-2 text-[13px]">
               {CONTRAST_SAMPLES[theme].map((sample) => (
-                <span key={sample.label} className={cn("rounded-sm px-2.5 py-1.5", sample.className)}>
+                <span
+                  key={sample.label}
+                  className={cn("rounded-sm px-2.5 py-1.5", sample.className)}
+                >
                   {sample.label}
                 </span>
               ))}

@@ -20,7 +20,7 @@ export function LogoSection() {
             key={theme}
             className={cn(
               theme,
-              "flex h-[260px] items-center justify-center gap-4 rounded-2xl border border-ag-border-subtle bg-ag-bg",
+              "flex h-65 items-center justify-center gap-4 rounded-2xl border border-ag-border-subtle bg-ag-bg",
             )}
           >
             <LogoMark size={64} />
@@ -33,31 +33,38 @@ export function LogoSection() {
       <div className="grid grid-cols-1 gap-4 nav:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)]">
         <DsCard title="Concept">
           <p className="text-body-sm leading-[1.6] text-pretty text-ag-text-secondary">
-            A geometric lowercase <span className="text-ag-text">a</span>. The bowl is an
-            open circle, the gathering place. The stem finishes in a curl that reads as the
-            tail of a speech bubble. The amber tile refers to sunlit stone in a public
-            square.
+            A geometric lowercase <span className="text-ag-text">a</span>. The
+            bowl is an open circle, the gathering place. The stem finishes in a
+            curl that reads as the tail of a speech bubble. The amber tile
+            refers to sunlit stone in a public square.
           </p>
         </DsCard>
         <DsCard title="Mark sizes">
-          <div className="flex items-end gap-[18px]">
+          <div className="flex items-end gap-4.5">
             {MARK_SIZES.map(({ size, strokeWidth }) => (
               <div key={size} className="flex flex-col items-center gap-2">
                 <LogoMark size={size} strokeWidth={strokeWidth} />
-                <span className="font-mono text-[11px] text-ag-text-secondary">{size}</span>
+                <span className="font-mono text-[11px] text-ag-text-secondary">
+                  {size}
+                </span>
               </div>
             ))}
             <div className="flex flex-col items-center gap-2">
               <div className="grid size-16 place-items-center rounded-[15px] border border-ag-border bg-ag-bg">
                 <LogoMark size={40} strokeWidth={2.2} />
               </div>
-              <span className="font-mono text-[11px] text-ag-text-secondary">app icon</span>
+              <span className="font-mono text-[11px] text-ag-text-secondary">
+                app icon
+              </span>
             </div>
           </div>
         </DsCard>
         <DsCard title="Usage" className="gap-2.5">
           {LOGO_USAGE.map((line) => (
-            <p key={line} className="text-[13.5px] leading-[1.55] text-ag-text-secondary">
+            <p
+              key={line}
+              className="text-[13.5px] leading-[1.55] text-ag-text-secondary"
+            >
               {line}
             </p>
           ))}
