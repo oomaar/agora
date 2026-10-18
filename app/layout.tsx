@@ -29,7 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="min-h-full flex flex-col bg-ag-bg text-ag-text">
+      <body className="min-h-full flex flex-col bg-ag-bg text-ag-text text-body font-sans">
         {children}
       </body>
     </html>
