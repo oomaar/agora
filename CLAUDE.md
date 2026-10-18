@@ -52,6 +52,8 @@ This file is the single source of truth for rules, phases, tasks and progress. U
 | `types/` | Shared type definitions |
 | `utils/` | Pure helper functions |
 
+Phase 1 component layout: primitives in `components/ui/`, post card in `components/post/`, their class maps in `lib/ui/`. `cn` does not resolve conflicting classes, so components expose props (e.g. `divider`, `pill`, `fieldSize`) instead of relying on `className` overrides.
+
 Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind defaults are disabled.
 
 ---
@@ -94,20 +96,20 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ### Phase 1 — Core UI Components (`components/`)
 
-- [ ] 1.1 Logo (mark + wordmark, sizes 16 / 24 / 40, app icon)
-- [ ] 1.2 Icon set (custom SVG icons, built in-house)
-- [ ] 1.3 Button (Primary, Secondary, Demo, Danger, Follow; sizes; loading state)
-- [ ] 1.4 Input, Textarea, Search input
-- [ ] 1.5 Avatar (initials + image)
-- [ ] 1.6 Tabs (with counter badge)
-- [ ] 1.7 Badge / counter
-- [ ] 1.8 Toast (success, error) + toast provider
-- [ ] 1.9 Modal / sheet with scrim (elev-2)
-- [ ] 1.10 Menu / dropdown (elev-1)
-- [ ] 1.11 Toggle switch, segmented control (theme, network)
-- [ ] 1.12 Skeleton loaders
-- [ ] 1.13 State blocks: Empty, Error (with recovery actions)
-- [ ] 1.14 Post card
+- [x] 1.1 Logo (mark + wordmark, sizes 16 / 24 / 40, app icon)
+- [x] 1.2 Icon set (custom SVG icons, built in-house)
+- [x] 1.3 Button (Primary, Secondary, Demo, Danger, Follow; sizes; loading state)
+- [x] 1.4 Input, Textarea, Search input
+- [x] 1.5 Avatar (initials + image)
+- [x] 1.6 Tabs (with counter badge)
+- [x] 1.7 Badge / counter
+- [x] 1.8 Toast (success, error) + toast provider
+- [x] 1.9 Modal / sheet with scrim (elev-2)
+- [x] 1.10 Menu / dropdown (elev-1)
+- [x] 1.11 Toggle switch, segmented control (theme, network)
+- [x] 1.12 Skeleton loaders
+- [x] 1.13 State blocks: Empty, Error (with recovery actions)
+- [x] 1.14 Post card
 
 ### Phase 2 — App Shell & Navigation
 
@@ -199,3 +201,4 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | 2026-10-18 | 0.5 – 0.6 | Type scale, spacing, radius and shadows verified against design system; `elev-0/1/2` utilities added; body defaults to `text-body font-sans` |
 | 2026-10-18 | 0.7 – 0.8 | Breakpoints `sm` / `nav` / `rail` replace Tailwind defaults; folders created and files moved (`utils/cn.ts`, `hooks/useTheme.ts`, `types/theme.ts`). **Phase 0 complete** |
 | 2026-10-18 | Design system page | Dev-only `/design-system` route (404 in production) mirroring the wireframe design system; `.dark` scope added so dark and light render side by side; tokens added: `on-danger`, `success-border`, `danger-border`, `on-avatar` |
+| 2026-10-18 | 1.1 – 1.14 | Logo, custom icon set (lucide-react removed), Button / FollowButton / IconButton, Input / Textarea / SearchInput, Avatar, Tabs, Badge / Counter, Toast + `ToastProvider`, Modal / sheet (native `<dialog>`), Menu, Toggle, SegmentedControl, Skeletons, Empty / Error states, PostCard. New tokens: scrim, skeleton, media stripe, knob, accent border, demo soft, danger muted text. Showcased in `/design-system` section 07. **Phase 1 complete** |
