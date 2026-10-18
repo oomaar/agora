@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { cn } from "@/lib/cn";
+import { cn } from "@/utils/cn";
 import { themeScript } from "@/lib/theme/themeScript";
 import "./globals.css";
 
