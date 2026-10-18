@@ -9,6 +9,10 @@
   --ag-hover: #13161a;
   --ag-unread: #13171b;
   --ag-media: #171a1e;
+  --ag-media-stripe: #14171a;
+  --ag-skeleton: #1e2227;
+  --ag-skeleton-media: #181b1f;
+  --ag-scrim: rgba(5, 6, 8, 0.72);
 
   /* Border: Hairlines and control outlines */
   --ag-border-subtle: #22262b;
@@ -26,11 +30,13 @@
   --ag-on-accent: #1a1208;
   --ag-accent-text: #f0a35e;
   --ag-accent-soft: #3a2c1d;
+  --ag-accent-border: #4a3620;
 
   /* Demo - Violet: Everything that signals simulated data */
   --ag-demo: #9d8cff;
   --ag-on-demo: #120f24;
   --ag-demo-surface: #1b1834;
+  --ag-demo-soft: #221e3f;
   --ag-demo-border: #3b3470;
   --ag-demo-text: #e3deff;
   --ag-demo-text-muted: #c8c3e6;
@@ -44,6 +50,7 @@
   --ag-on-danger: #2a0d0d;
   --ag-danger-surface: #1d1414;
   --ag-danger-text: #ffd0d0;
+  --ag-danger-text-muted: #d2aaaa;
   --ag-danger-border: #5a3030;
 
   /* Avatar Palette: Assigned per user by hash of the handle */
@@ -52,6 +59,9 @@
   --ag-avatar-3: #6fb3e8;
   --ag-avatar-4: #d9c26a;
   --ag-on-avatar: #0e1012;
+
+  /* Controls */
+  --ag-knob: #e9ecef;
 
   /* Shadows: Dark theme leans on borders and surface steps. Shadows mark things that float above the page. */
   --ag-shadow-none: none;
@@ -70,6 +80,10 @@
   --ag-hover: #f3f1ec;
   --ag-unread: #fff6ec;
   --ag-media: #efece6;
+  --ag-media-stripe: #f6f4ef;
+  --ag-skeleton: #e6e3dd;
+  --ag-skeleton-media: #efede8;
+  --ag-scrim: rgba(30, 25, 15, 0.35);
 
   /* Border: Hairlines and control outlines */
   --ag-border-subtle: #e6e2da;
@@ -87,11 +101,13 @@
   --ag-on-accent: #1a1208;
   --ag-accent-text: #a65a1c;
   --ag-accent-soft: #f7e3cf;
+  --ag-accent-border: #edc9a4;
 
   /* Demo - Violet: Everything that signals simulated data */
   --ag-demo: #9d8cff;
   --ag-on-demo: #120f24;
   --ag-demo-surface: #ece8ff;
+  --ag-demo-soft: #e3ddfc;
   --ag-demo-border: #cfc6f5;
   --ag-demo-text: #2b2166;
   --ag-demo-text-muted: #4a4280;
@@ -105,6 +121,7 @@
   --ag-on-danger: #ffffff;
   --ag-danger-surface: #fdeeee;
   --ag-danger-text: #8f1f1f;
+  --ag-danger-text-muted: #8a4b4b;
   --ag-danger-border: #e7b0b0;
 
   /* Avatar Palette: Assigned per user by hash of the handle */
@@ -113,6 +130,9 @@
   --ag-avatar-3: #6fb3e8;
   --ag-avatar-4: #d9c26a;
   --ag-on-avatar: #1d1b17;
+
+  /* Controls */
+  --ag-knob: #ffffff;
 
   /* Shadows */
   --ag-shadow-none: none;
@@ -132,6 +152,10 @@
   --color-ag-hover: var(--ag-hover);
   --color-ag-unread: var(--ag-unread);
   --color-ag-media: var(--ag-media);
+  --color-ag-media-stripe: var(--ag-media-stripe);
+  --color-ag-skeleton: var(--ag-skeleton);
+  --color-ag-skeleton-media: var(--ag-skeleton-media);
+  --color-ag-scrim: var(--ag-scrim);
 
   /* Border: Hairlines and control outlines */
   --color-ag-border-subtle: var(--ag-border-subtle);
@@ -149,11 +173,13 @@
   --color-ag-on-accent: var(--ag-on-accent);
   --color-ag-accent-text: var(--ag-accent-text);
   --color-ag-accent-soft: var(--ag-accent-soft);
+  --color-ag-accent-border: var(--ag-accent-border);
 
   /* Demo - Violet: Everything that signals simulated data */
   --color-ag-demo: var(--ag-demo);
   --color-ag-on-demo: var(--ag-on-demo);
   --color-ag-demo-surface: var(--ag-demo-surface);
+  --color-ag-demo-soft: var(--ag-demo-soft);
   --color-ag-demo-border: var(--ag-demo-border);
   --color-ag-demo-text: var(--ag-demo-text);
   --color-ag-demo-text-muted: var(--ag-demo-text-muted);
@@ -167,6 +193,7 @@
   --color-ag-on-danger: var(--ag-on-danger);
   --color-ag-danger-surface: var(--ag-danger-surface);
   --color-ag-danger-text: var(--ag-danger-text);
+  --color-ag-danger-text-muted: var(--ag-danger-text-muted);
   --color-ag-danger-border: var(--ag-danger-border);
 
   /* Avatar Palette: Assigned per user by hash of the handle */
@@ -175,6 +202,9 @@
   --color-ag-avatar-3: var(--ag-avatar-3);
   --color-ag-avatar-4: var(--ag-avatar-4);
   --color-ag-on-avatar: var(--ag-on-avatar);
+
+  /* Controls */
+  --color-ag-knob: var(--ag-knob);
 
   /* Shadows */
   --shadow-ag-none: var(--ag-shadow-none);
@@ -286,4 +316,13 @@
 /* Modals + scrim */
 @utility elev-2 {
   @apply border border-ag-border bg-ag-surface shadow-ag-xl;
+}
+
+/* Media placeholder: diagonal stripes until a real image loads */
+@utility media-stripes {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--ag-media) 0 12px,
+    var(--ag-media-stripe) 12px 24px
+  );
 }
