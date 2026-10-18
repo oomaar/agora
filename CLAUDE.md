@@ -39,6 +39,23 @@ This file is the single source of truth for rules, phases, tasks and progress. U
 
 ---
 
+## Project Structure
+
+| Folder | Holds |
+|---|---|
+| `app/` | Routes, layouts, `globals.css` (design tokens) |
+| `components/` | All reusable components |
+| `context/` | React context providers |
+| `hooks/` | Custom hooks |
+| `lib/` | Feature modules: constants, stores, scripts (e.g. `lib/theme/`) |
+| `services/` | Data sources and the simulated backend |
+| `types/` | Shared type definitions |
+| `utils/` | Pure helper functions |
+
+Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind defaults are disabled.
+
+---
+
 ## Delivery Estimate
 
 - **Start:** 2026-10-18
@@ -67,13 +84,13 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 ### Phase 0 — Foundation & Design System Tokens
 
 - [x] 0.1 Initialise Next.js project
-- [x] 0.2 Add `cn` class-merging utility (`lib/cn.ts`)
+- [x] 0.2 Add `cn` class-merging utility (`utils/cn.ts`)
 - [x] 0.3 Colour tokens for dark and light themes (`--ag-*` in `app/globals.css`, mapped to Tailwind)
 - [x] 0.4 Theme system: types, constants, no-flash script, `useTheme` hook (light / dark / system)
 - [x] 0.5 Typography scale (Geist + Geist Mono) as Tailwind utilities
 - [x] 0.6 Spacing scale (4px base, 2px half-steps under 16), radius, elevation and shadow tokens
-- [ ] 0.7 Breakpoints: mobile `<640`, nav-icons `<900`, rail-hidden `<1100`
-- [ ] 0.8 Folder structure: `components/`, `lib/`, `types/`, `context/`, `hooks/`, `utils/`, `services/`
+- [x] 0.7 Breakpoints: mobile `<640`, nav-icons `<900`, rail-hidden `<1100`
+- [x] 0.8 Folder structure: `components/`, `lib/`, `types/`, `context/`, `hooks/`, `utils/`, `services/`
 
 ### Phase 1 — Core UI Components (`components/`)
 
@@ -180,3 +197,4 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | 2026-10-18 | Planning | CLAUDE.md rewritten with rules, phases and delivery estimate |
 | 2026-10-18 | 0.1 – 0.4 | Tokens verified against design system; theme script injected in `<head>`; theme store split from hook; body styles moved to Tailwind |
 | 2026-10-18 | 0.5 – 0.6 | Type scale, spacing, radius and shadows verified against design system; `elev-0/1/2` utilities added; body defaults to `text-body font-sans` |
+| 2026-10-18 | 0.7 – 0.8 | Breakpoints `sm` / `nav` / `rail` replace Tailwind defaults; folders created and files moved (`utils/cn.ts`, `hooks/useTheme.ts`, `types/theme.ts`). **Phase 0 complete** |
