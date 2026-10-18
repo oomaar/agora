@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-:root {
+:root,
+.dark {
   /* Surface: Backgrounds, from page to raised */
   --ag-bg: #0e1012;
   --ag-surface: #15181b;
@@ -38,15 +39,19 @@
   --ag-success: #5cc28f;
   --ag-success-surface: #12241b;
   --ag-success-text: #c9f0da;
+  --ag-success-border: #24503a;
   --ag-danger: #f07171;
+  --ag-on-danger: #2a0d0d;
   --ag-danger-surface: #1d1414;
   --ag-danger-text: #ffd0d0;
+  --ag-danger-border: #5a3030;
 
   /* Avatar Palette: Assigned per user by hash of the handle */
   --ag-avatar-1: #7cc4a4;
   --ag-avatar-2: #e57f8f;
   --ag-avatar-3: #6fb3e8;
   --ag-avatar-4: #d9c26a;
+  --ag-on-avatar: #0e1012;
 
   /* Shadows: Dark theme leans on borders and surface steps. Shadows mark things that float above the page. */
   --ag-shadow-none: none;
@@ -95,15 +100,19 @@
   --ag-success: #2f9a64;
   --ag-success-surface: #e9f7ef;
   --ag-success-text: #1e5c3a;
+  --ag-success-border: #a9dcbf;
   --ag-danger: #d64545;
+  --ag-on-danger: #ffffff;
   --ag-danger-surface: #fdeeee;
   --ag-danger-text: #8f1f1f;
+  --ag-danger-border: #e7b0b0;
 
   /* Avatar Palette: Assigned per user by hash of the handle */
   --ag-avatar-1: #7cc4a4;
   --ag-avatar-2: #e57f8f;
   --ag-avatar-3: #6fb3e8;
   --ag-avatar-4: #d9c26a;
+  --ag-on-avatar: #1d1b17;
 
   /* Shadows */
   --ag-shadow-none: none;
@@ -153,15 +162,19 @@
   --color-ag-success: var(--ag-success);
   --color-ag-success-surface: var(--ag-success-surface);
   --color-ag-success-text: var(--ag-success-text);
+  --color-ag-success-border: var(--ag-success-border);
   --color-ag-danger: var(--ag-danger);
+  --color-ag-on-danger: var(--ag-on-danger);
   --color-ag-danger-surface: var(--ag-danger-surface);
   --color-ag-danger-text: var(--ag-danger-text);
+  --color-ag-danger-border: var(--ag-danger-border);
 
   /* Avatar Palette: Assigned per user by hash of the handle */
   --color-ag-avatar-1: var(--ag-avatar-1);
   --color-ag-avatar-2: var(--ag-avatar-2);
   --color-ag-avatar-3: var(--ag-avatar-3);
   --color-ag-avatar-4: var(--ag-avatar-4);
+  --color-ag-on-avatar: var(--ag-on-avatar);
 
   /* Shadows */
   --shadow-ag-none: var(--ag-shadow-none);
