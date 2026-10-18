@@ -249,3 +249,22 @@
   --radius-2xl: 16px;
   --radius-full: 999px;
 }
+
+/* Elevation: Border only for flat items, shadows only for things that float */
+@utility elev-0 {
+  @apply border border-ag-border bg-ag-surface shadow-ag-none;
+}
+
+/* Toasts, menus: in dark mode a floating element also moves up one surface */
+@utility elev-1 {
+  @apply border border-ag-border bg-ag-raised shadow-ag-lg;
+
+  .light & {
+    @apply bg-ag-surface;
+  }
+}
+
+/* Modals + scrim */
+@utility elev-2 {
+  @apply border border-ag-border bg-ag-surface shadow-ag-xl;
+}
