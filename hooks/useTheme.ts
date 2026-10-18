@@ -8,7 +8,7 @@ import {
   setTheme,
   subscribe,
 } from "@/lib/theme/themeStore";
-import { type UseThemeResult } from "@/lib/theme/types";
+import { type UseThemeResult } from "@/types/theme";
 
 export function useTheme(): UseThemeResult {
   const theme = useSyncExternalStore(subscribe, getTheme, () => DEFAULT_THEME);
