@@ -249,8 +249,3 @@
   --radius-2xl: 16px;
   --radius-full: 999px;
 }
-
-body {
-  background: var(--color-ag-bg);
-  color: var(--color-ag-text);
-}
