@@ -198,3 +198,4 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | 2026-10-18 | 0.1 – 0.4 | Tokens verified against design system; theme script injected in `<head>`; theme store split from hook; body styles moved to Tailwind |
 | 2026-10-18 | 0.5 – 0.6 | Type scale, spacing, radius and shadows verified against design system; `elev-0/1/2` utilities added; body defaults to `text-body font-sans` |
 | 2026-10-18 | 0.7 – 0.8 | Breakpoints `sm` / `nav` / `rail` replace Tailwind defaults; folders created and files moved (`utils/cn.ts`, `hooks/useTheme.ts`, `types/theme.ts`). **Phase 0 complete** |
+| 2026-10-18 | Design system page | Dev-only `/design-system` route (404 in production) mirroring the wireframe design system; `.dark` scope added so dark and light render side by side; tokens added: `on-danger`, `success-border`, `danger-border`, `on-avatar` |
