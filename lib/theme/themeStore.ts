@@ -4,7 +4,7 @@ import {
   THEME_MEDIA_QUERY,
   THEME_STORAGE_KEY,
 } from "@/lib/theme/constants";
-import { type ResolvedTheme, type Theme } from "@/lib/theme/types";
+import { type ResolvedTheme, type Theme } from "@/types/theme";
 
 export function subscribe(callback: () => void): () => void {
   const media = window.matchMedia(THEME_MEDIA_QUERY);
