@@ -248,6 +248,12 @@
   --radius-xl: 14px;
   --radius-2xl: 16px;
   --radius-full: 999px;
+
+  /* Breakpoints: bottom tabs below sm, icon nav below nav, rail hidden below rail */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 640px;
+  --breakpoint-nav: 900px;
+  --breakpoint-rail: 1100px;
 }
 
 /* Elevation: Border only for flat items, shadows only for things that float */
