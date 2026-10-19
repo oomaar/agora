@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Counter } from "@/components/ui/Counter";
+import { NavCounterBadge } from "@/components/shell/NavCounterBadge";
 import { Icon } from "@/components/ui/Icon";
 import { NAV_LINK_VARIANTS } from "@/lib/shell/nav";
 import { isNavItemActive } from "@/utils/isNavItemActive";
@@ -26,14 +26,7 @@ export function NavLink({ item, variant }: NavLinkProps) {
       ) : (
         <span>{item.tabLabel ?? item.label}</span>
       )}
-      {isSidebar && item.counter && (
-        <Counter
-          value={item.counter.value}
-          tone={item.counter.tone}
-          label={item.counter.label}
-          className="absolute right-0.5 top-0.5 nav:static"
-        />
-      )}
+      {isSidebar && item.counter && <NavCounterBadge counter={item.counter} />}
     </Link>
   );
 }

@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 import { Avatar } from "@/components/ui/Avatar";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { useCompose } from "@/hooks/useCompose";
-import { CURRENT_USER } from "@/lib/shell/constants";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export function ComposeModal() {
   const { isOpen, close } = useCompose();
+  const { data: user } = useCurrentUser();
   const [draft, setDraft] = useState("");
   return (
     <Modal
@@ -24,7 +26,11 @@ export function ComposeModal() {
       }
     >
       <div className="flex gap-3 p-4.5">
-        <Avatar name={CURRENT_USER.name} handle={CURRENT_USER.handle} />
+        {user ? (
+          <Avatar name={user.name} handle={user.handle} />
+        ) : (
+          <Skeleton shape="circle" className="size-10 flex-none" />
+        )}
         <div className="flex flex-1 flex-col gap-3">
           <Badge variant="accent" className="self-start">
             Everyone

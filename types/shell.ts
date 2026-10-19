@@ -1,16 +1,16 @@
 import { type ReactNode } from "react";
 import { type CounterTone } from "@/types/badge";
+import { type UnreadCountKey } from "@/types/dataSource";
+import { type UserView } from "@/types/domain";
 import { type IconName } from "@/types/icon";
-
-export type ShellUser = {
-  name: string;
-  handle: string;
-};
+import { type QueryResult } from "@/types/query";
 
 export type NavCounter = {
-  value: number;
+  // Which unread count the badge shows.
+  source: UnreadCountKey;
   tone: CounterTone;
-  label: string;
+  // Singular noun for the accessible label, e.g. "3 unread notifications".
+  noun: string;
 };
 
 export type NavItem = {
@@ -33,12 +33,6 @@ export type NavLinkProps = {
   variant: NavLinkVariant;
 };
 
-export type Trend = {
-  id: string;
-  category: string;
-  title: string;
-};
-
 export type SettingsSection = {
   id: string;
   label: string;
@@ -57,8 +51,27 @@ export type RailCardProps = {
   children: ReactNode;
 };
 
+export type NavCounterBadgeProps = {
+  counter: NavCounter;
+};
+
 export type SuggestedPersonProps = {
-  person: ShellUser;
+  person: UserView;
+};
+
+export type RailSkeletonVariant = "text" | "person";
+
+export type RailSkeletonProps = {
+  variant: RailSkeletonVariant;
+  rows: number;
+};
+
+export type RailQueryProps<T> = {
+  query: QueryResult<T>;
+  skeleton: RailSkeletonProps;
+  errorText: string;
+  emptyText: string;
+  children: (data: T) => ReactNode;
 };
 
 export type PublicPlaceholderProps = {
