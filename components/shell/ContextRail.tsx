@@ -11,7 +11,10 @@ export function ContextRail() {
   return (
     <aside
       aria-label="Trends and suggestions"
-      className={cn(SHELL_COLUMN, "hidden w-85 flex-col gap-4 px-5 py-4 rail:flex")}
+      className={cn(
+        SHELL_COLUMN,
+        "hidden w-85 flex-col gap-4 px-5 py-4 rail:flex",
+      )}
     >
       <Form action="/explore">
         <SearchInput name="q" label="Search Agora" placeholder="Search Agora" />
