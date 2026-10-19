@@ -54,6 +54,8 @@ This file is the single source of truth for rules, phases, tasks and progress. U
 
 Phase 1 component layout: primitives in `components/ui/`, post card in `components/post/`, their class maps in `lib/ui/`. `cn` does not resolve conflicting classes, so components expose props (e.g. `divider`, `pill`, `fieldSize`) instead of relying on `className` overrides.
 
+Phase 2 shell: route groups `(public)` and `(app)`; inside `(app)`, `(with-rail)` adds the context rail and `(no-rail)` (messages, settings) gives that space to the page. Shell components live in `components/shell/`, nav data and class maps in `lib/shell/`. Compose is URL state (`?compose`).
+
 Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind defaults are disabled.
 
 ---
@@ -113,12 +115,12 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ### Phase 2 — App Shell & Navigation
 
-- [ ] 2.1 Three-column shell: nav 248 · content (~640 reading width) · context rail 340
-- [ ] 2.2 Sidebar nav (Home, Explore, Notifications, Messages, Profile, Settings, New post, user card, "Try the demo" card)
-- [ ] 2.3 Context rail (search, Trending, Who to follow, footer links)
-- [ ] 2.4 Responsive behaviour: rail hides `<1100`, nav collapses to icons `<900`, bottom tab bar `<640`
-- [ ] 2.5 Route groups: public `/`, `/signup`, `/demo`; app `/home`, `/post/[id]`, `/u/[handle]`, `/explore`, `/notifications`, `/messages/[id]`, `/settings/[section]`
-- [ ] 2.6 Compose modal reachable on any route via `?compose`
+- [x] 2.1 Three-column shell: nav 248 · content (~640 reading width) · context rail 340
+- [x] 2.2 Sidebar nav (Home, Explore, Notifications, Messages, Profile, Settings, New post, user card, "Try the demo" card)
+- [x] 2.3 Context rail (search, Trending, Who to follow, footer links)
+- [x] 2.4 Responsive behaviour: rail hides `<1100`, nav collapses to icons `<900`, bottom tab bar `<640`
+- [x] 2.5 Route groups: public `/`, `/signup`, `/demo`; app `/home`, `/post/[id]`, `/u/[handle]`, `/explore`, `/notifications`, `/messages/[id]`, `/settings/[section]`
+- [x] 2.6 Compose modal reachable on any route via `?compose`
 
 ### Phase 3 — Data Layer & Simulated Backend
 
@@ -202,3 +204,4 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | 2026-10-18 | 0.7 – 0.8 | Breakpoints `sm` / `nav` / `rail` replace Tailwind defaults; folders created and files moved (`utils/cn.ts`, `hooks/useTheme.ts`, `types/theme.ts`). **Phase 0 complete** |
 | 2026-10-18 | Design system page | Dev-only `/design-system` route (404 in production) mirroring the wireframe design system; `.dark` scope added so dark and light render side by side; tokens added: `on-danger`, `success-border`, `danger-border`, `on-avatar` |
 | 2026-10-18 | 1.1 – 1.14 | Logo, custom icon set (lucide-react removed), Button / FollowButton / IconButton, Input / Textarea / SearchInput, Avatar, Tabs, Badge / Counter, Toast + `ToastProvider`, Modal / sheet (native `<dialog>`), Menu, Toggle, SegmentedControl, Skeletons, Empty / Error states, PostCard. New tokens: scrim, skeleton, media stripe, knob, accent border, demo soft, danger muted text. Showcased in `/design-system` section 07. **Phase 1 complete** |
+| 2026-10-19 | 2.1 – 2.6 | Three-column shell (248 · 640 · 340) with sticky sidebar and rail; sidebar nav with active state, counters, New post, Try the demo card, user card + account menu; context rail (search → `/explore?q=`, Trending, Who to follow, footer); rail hides `<1100`, nav icons `<900`, bottom tab bar `<640`; route groups with placeholder pages (unknown settings sections 404); compose modal on any route via `?compose`, other params kept. New token: `nav-hover`. `Menu` gained a `side` prop. Shell data is placeholder until Phase 3. **Phase 2 complete** |
