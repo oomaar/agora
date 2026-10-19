@@ -7,6 +7,7 @@ import {
   type SimulationControls,
   type SimulationState,
   type NetworkCondition,
+  type SelfSeed,
 } from "@/types/simulation";
 
 export type QueryEntry =
@@ -83,6 +84,8 @@ export type DataContextValue = {
 export type DataProviderProps = {
   preset: DataPresetId;
   scenario?: ScenarioId;
+  // Replaces the preset's signed-in user, e.g. with a newly created account.
+  self?: SelfSeed;
   children: ReactNode;
 };
 
