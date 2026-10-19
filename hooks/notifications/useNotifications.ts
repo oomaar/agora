@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@/hooks/useQuery";
+import { useQuery } from "@/hooks/data/useQuery";
 import { queryKeys } from "@/lib/data/queryKeys";
 import { type NotificationFilter } from "@/types/dataSource";
 import { type NotificationView } from "@/types/domain";

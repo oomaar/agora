@@ -3,7 +3,7 @@
 import { RailCard } from "@/components/shell/RailCard";
 import { RailQuery } from "@/components/shell/RailQuery";
 import { SuggestedPerson } from "@/components/shell/SuggestedPerson";
-import { useSuggestedPeople } from "@/hooks/useSuggestedPeople";
+import { useSuggestedPeople } from "@/hooks/users/useSuggestedPeople";
 import { RAIL_SUGGESTION_LIMIT } from "@/lib/shell/constants";
 
 export function WhoToFollowCard() {

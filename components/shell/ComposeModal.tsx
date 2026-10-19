@@ -6,8 +6,8 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import { useCompose } from "@/hooks/useCompose";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useCompose } from "@/hooks/shell/useCompose";
+import { useCurrentUser } from "@/hooks/users/useCurrentUser";
 
 export function ComposeModal() {
   const { isOpen, close } = useCompose();

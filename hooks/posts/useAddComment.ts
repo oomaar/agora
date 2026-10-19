@@ -1,7 +1,7 @@
 "use client";
 
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { useMutation } from "@/hooks/useMutation";
+import { useCurrentUser } from "@/hooks/users/useCurrentUser";
+import { useMutation } from "@/hooks/data/useMutation";
 import { queryKeys } from "@/lib/data/queryKeys";
 import { createTempId } from "@/utils/createTempId";
 import { type AddCommentVariables } from "@/types/query";

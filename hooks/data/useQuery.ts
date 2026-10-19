@@ -6,7 +6,7 @@ import {
   useEffectEvent,
   useSyncExternalStore,
 } from "react";
-import { useData } from "@/hooks/useData";
+import { useData } from "@/hooks/data/useData";
 import { type DataSource } from "@/types/dataSource";
 import {
   type QueryOptions,

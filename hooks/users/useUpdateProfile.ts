@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@/hooks/useMutation";
+import { useMutation } from "@/hooks/data/useMutation";
 import { type ProfileUpdate } from "@/types/dataSource";
 import { type UserView } from "@/types/domain";
 

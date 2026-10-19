@@ -2,7 +2,7 @@
 
 import { useId } from "react";
 import { IconButton } from "@/components/ui/IconButton";
-import { useDialog } from "@/hooks/useDialog";
+import { useDialog } from "@/hooks/ui/useDialog";
 import { cn } from "@/utils/cn";
 import { type ModalProps } from "@/types/modal";
 

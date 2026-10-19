@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useData } from "@/hooks/useData";
+import { useData } from "@/hooks/data/useData";
 import { toDataError, type DataError } from "@/services/dataError";
 import {
   type MutationOptions,

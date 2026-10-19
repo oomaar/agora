@@ -1,6 +1,6 @@
 "use client";
 
-import { useRovingSelection } from "@/hooks/useRovingSelection";
+import { useRovingSelection } from "@/hooks/ui/useRovingSelection";
 import {
   SEGMENTED_IDLE,
   SEGMENTED_SELECTED,

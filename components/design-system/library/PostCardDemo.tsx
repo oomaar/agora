@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DsCard } from "@/components/design-system/DsCard";
 import { PostCard } from "@/components/post/PostCard";
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/ui/useToast";
 import { SAMPLE_POSTS } from "@/lib/design-system/constants";
 
 export function PostCardDemo() {

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Avatar } from "@/components/ui/Avatar";
 import { FollowButton } from "@/components/ui/FollowButton";
-import { useToggleFollow } from "@/hooks/useToggleFollow";
+import { useToggleFollow } from "@/hooks/users/useToggleFollow";
 import { type SuggestedPersonProps } from "@/types/shell";
 
 export function SuggestedPerson({ person }: SuggestedPersonProps) {

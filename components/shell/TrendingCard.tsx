@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { RailCard } from "@/components/shell/RailCard";
 import { RailQuery } from "@/components/shell/RailQuery";
-import { useTrends } from "@/hooks/useTrends";
+import { useTrends } from "@/hooks/explore/useTrends";
 import { RAIL_TREND_LIMIT } from "@/lib/shell/constants";
 
 export function TrendingCard() {

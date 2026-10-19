@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@/hooks/useQuery";
+import { useQuery } from "@/hooks/data/useQuery";
 import { queryKeys } from "@/lib/data/queryKeys";
 import { type FeedTab } from "@/types/dataSource";
 import { type PostView } from "@/types/domain";

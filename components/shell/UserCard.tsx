@@ -7,7 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { IconButton } from "@/components/ui/IconButton";
 import { Menu } from "@/components/ui/Menu";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useCurrentUser } from "@/hooks/users/useCurrentUser";
 import { NAV_ITEMS } from "@/lib/shell/constants";
 import { type MenuItem } from "@/types/menu";
 

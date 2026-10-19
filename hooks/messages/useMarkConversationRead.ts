@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@/hooks/useMutation";
+import { useMutation } from "@/hooks/data/useMutation";
 import { queryKeys } from "@/lib/data/queryKeys";
 import { type UnreadCounts } from "@/types/dataSource";
 import { type ConversationView } from "@/types/domain";

@@ -1,7 +1,7 @@
 "use client";
 
-import { useMutation } from "@/hooks/useMutation";
-import { useToast } from "@/hooks/useToast";
+import { useMutation } from "@/hooks/data/useMutation";
+import { useToast } from "@/hooks/ui/useToast";
 import { queryKeys } from "@/lib/data/queryKeys";
 import { firstName } from "@/utils/firstName";
 import { type UserView } from "@/types/domain";

@@ -1,7 +1,7 @@
 "use client";
 
-import { useMutation } from "@/hooks/useMutation";
-import { useToast } from "@/hooks/useToast";
+import { useMutation } from "@/hooks/data/useMutation";
+import { useToast } from "@/hooks/ui/useToast";
 import { type PostView } from "@/types/domain";
 
 // Optimistic: the repost state and count flip at once and revert if the server fails.

@@ -58,6 +58,8 @@ Phase 2 shell: route groups `(public)` and `(app)`; inside `(app)`, `(with-rail)
 
 Phase 3 data layer: components talk only to the `DataSource` contract (`types/dataSource.ts`) through `DataProvider` (`context/DataContext.tsx`, preset `app` or `demo`). The in-browser backend lives in `services/simulated/` (database, network, activity log) and `services/seed/` (deterministic generator); hand-written seed content in `lib/seed/`, scenarios and network profiles in `lib/simulation/`, the query cache and keys in `lib/data/`. Read hooks wrap `useQuery` (loading / empty / error / success); write hooks wrap `useMutation` (optimistic update, rollback, retry).
 
+Hooks are grouped by feature: `hooks/data/` (provider access, `useQuery`, `useMutation`, simulation), `hooks/posts/`, `hooks/users/`, `hooks/explore/`, `hooks/notifications/`, `hooks/messages/`, `hooks/shell/` (compose, unread counts) and `hooks/ui/` (component behaviour, toast, theme).
+
 Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind defaults are disabled.
 
 ---

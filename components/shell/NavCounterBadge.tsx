@@ -1,7 +1,7 @@
 "use client";
 
 import { Counter } from "@/components/ui/Counter";
-import { useUnreadCounts } from "@/hooks/useUnreadCounts";
+import { useUnreadCounts } from "@/hooks/shell/useUnreadCounts";
 import { pluralize } from "@/utils/pluralize";
 import { type NavCounterBadgeProps } from "@/types/shell";
 
