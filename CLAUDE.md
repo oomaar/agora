@@ -1,6 +1,6 @@
 # Agora — Project Source of Truth
 
-Agora is a portfolio project: a social "public square" app (feed, posts, comments, profiles, explore, notifications, messages, settings) plus a **Demo mode** that mirrors every app route under `/demo/*` with a simulated in-browser backend.
+Agora is a portfolio project: a full-stack social "public square" app (feed, posts, comments, profiles, explore, notifications, messages, settings) backed by a real API, database and authentication, plus a **Demo mode** that mirrors every app route under `/demo/*` with a simulated in-browser backend. The simulated backend serves the demo only.
 
 This file is the single source of truth for rules, phases, tasks and progress. Update the checkboxes and the progress log as work is completed.
 
@@ -26,7 +26,7 @@ This file is the single source of truth for rules, phases, tasks and progress. U
 4. Never commit or push unless explicitly asked.
 5. Never open PRs or create new branches unless explicitly asked.
 6. All reusable components live in the `components` folder.
-7. Avoid libraries as much as possible — build everything from scratch with our own fingerprint.
+7. Avoid libraries as much as possible — build everything from scratch with our own fingerprint. Approved exceptions: `pg` (database driver, raw SQL only — no ORM) and Better Auth (authentication).
 8. Simply do what is asked, no more no less.
 
 ---
@@ -36,6 +36,20 @@ This file is the single source of truth for rules, phases, tasks and progress. U
 - Next.js 16 (App Router), React 19, TypeScript
 - Tailwind CSS v4
 - Fonts: Geist (UI) and Geist Mono (data, routes, counters)
+- Database: Postgres (Neon), accessed with `pg` and hand-written SQL; schema and migrations as `.sql` files
+- Auth: Better Auth — email + password and Google sign-in, sessions stored in Postgres
+- Media storage: Vercel Blob (uploads phase)
+- Hosting: Vercel
+
+---
+
+## Setup Before Phase 5
+
+Done by the project owner; secrets go in `.env.local` (never committed), and `.env.example` lists the variable names.
+
+- [ ] Create a free Neon project at neon.tech and add its connection string as `DATABASE_URL`
+- [ ] Create a Google OAuth client in Google Cloud Console (Credentials → OAuth client ID → Web application) with the redirect URI `http://localhost:3000/api/auth/callback/google`; add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
+- [ ] `BETTER_AUTH_SECRET` is generated during Phase 5
 
 ---
 
@@ -48,7 +62,7 @@ This file is the single source of truth for rules, phases, tasks and progress. U
 | `context/` | React context providers |
 | `hooks/` | Custom hooks |
 | `lib/` | Feature modules: constants, stores, scripts (e.g. `lib/theme/`) |
-| `services/` | Data sources and the simulated backend |
+| `services/` | Data sources (API client for the app, simulated backend for the demo) |
 | `types/` | Shared type definitions |
 | `utils/` | Pure helper functions |
 
@@ -58,7 +72,9 @@ Phase 2 shell: route groups `(public)` and `(app)`; inside `(app)`, `(with-rail)
 
 Phase 3 data layer: components talk only to the `DataSource` contract (`types/dataSource.ts`) through `DataProvider` (`context/DataContext.tsx`, preset `app` or `demo`). The in-browser backend lives in `services/simulated/` (database, network, activity log) and `services/seed/` (deterministic generator); hand-written seed content in `lib/seed/`, scenarios and network profiles in `lib/simulation/`, the query cache and keys in `lib/data/`. Read hooks wrap `useQuery` (loading / empty / error / success); write hooks wrap `useMutation` (optimistic update, rollback, retry).
 
-Hooks are grouped by feature: `hooks/data/` (provider access, `useQuery`, `useMutation`, simulation), `hooks/posts/`, `hooks/users/`, `hooks/explore/`, `hooks/notifications/`, `hooks/messages/`, `hooks/shell/` (compose, unread counts) and `hooks/ui/` (component behaviour, toast, theme).
+Phase 4 auth (temporary, replaced by real auth in Phase 5): the session is a cookie (`agora_session`) written in the browser after the simulated auth service (`services/auth/`) accepts the form; accounts created at sign-up live in `localStorage`. `proxy.ts` redirects signed-out visitors away from app routes and signed-in visitors away from `/` and `/signup`; `(app)/layout.tsx` reads the session again, provides it through `AuthProvider` (`context/AuthContext.tsx`) and seeds the simulation with it (sample account → busy community, new account → fresh). Public page components live in `components/public/`, `components/auth/` and `components/demo/`, their copy and constants in `lib/public/` and `lib/auth/`.
+
+Hooks are grouped by feature: `hooks/data/` (provider access, `useQuery`, `useMutation`, simulation), `hooks/posts/`, `hooks/users/`, `hooks/explore/`, `hooks/notifications/`, `hooks/messages/`, `hooks/shell/` (compose, unread counts), `hooks/auth/` (session, sign-in and sign-up forms) and `hooks/ui/` (component behaviour, toast, theme).
 
 Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind defaults are disabled.
 
@@ -67,7 +83,7 @@ Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind de
 ## Delivery Estimate
 
 - **Start:** 2026-10-18
-- **Target delivery:** 2026-12-20 (~9 weeks)
+- **Target delivery:** 2027-01-09 (~12 weeks; moved from 2026-12-20 when the app became full-stack)
 
 | Phase | Name | Target end |
 |---|---|---|
@@ -76,12 +92,14 @@ Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind de
 | 2 | App shell & navigation | 2026-11-08 |
 | 3 | Data layer & simulated backend | 2026-11-15 |
 | 4 | Public pages (welcome, sign up, demo landing) | 2026-11-19 |
-| 5 | Feed, post & compose | 2026-11-29 |
-| 6 | Profile, explore, notifications | 2026-12-04 |
-| 7 | Messages & settings | 2026-12-09 |
-| 8 | Demo mode experience | 2026-12-13 |
-| 9 | Mobile, accessibility & polish | 2026-12-17 |
-| 10 | QA, performance & deployment | 2026-12-20 |
+| 5 | Backend, database & authentication | 2026-11-30 |
+| 6 | Feed, post & compose | 2026-12-10 |
+| 7 | Profile, explore, notifications | 2026-12-15 |
+| 8 | Messages & settings | 2026-12-21 |
+| 9 | Media uploads | 2026-12-26 |
+| 10 | Demo mode experience | 2026-12-31 |
+| 11 | Mobile, accessibility & polish | 2027-01-05 |
+| 12 | QA, performance & deployment | 2027-01-09 |
 
 ---
 
@@ -129,7 +147,7 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 ### Phase 3 — Data Layer & Simulated Backend
 
 - [x] 3.1 Domain types: User, Post, Comment, Reaction, Notification, Conversation, Message, Trend
-- [x] 3.2 Data-source abstraction (one contract, swappable implementations) so app and demo share components
+- [x] 3.2 Data-source abstraction (one contract, swappable implementations) so app and demo share components — the app switches to the API data source in Phase 5
 - [x] 3.3 In-browser simulated server with realistic latency
 - [x] 3.4 Network conditions: Normal, Slow, Offline, Flaky
 - [x] 3.5 Seed data generator (~40 people with profiles, posts, photos, conversations)
@@ -140,61 +158,81 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ### Phase 4 — Public Pages
 
-- [ ] 4.1 Welcome & sign in (`/`)
-- [ ] 4.2 Create account (`/signup`)
-- [ ] 4.3 Demo landing (`/demo`): signed-in-as card, scenario picker, feature highlights, Enter demo
-- [ ] 4.4 Auth state (context + hooks) and route protection
+- [x] 4.1 Welcome & sign in (`/`)
+- [x] 4.2 Create account (`/signup`)
+- [x] 4.3 Demo landing (`/demo`): signed-in-as card, scenario picker, feature highlights, Enter demo
+- [x] 4.4 Auth state (context + hooks) and route protection — simulated for now; replaced by real auth in 5.5 – 5.6
 
-### Phase 5 — Feed, Post & Compose
+### Phase 5 — Backend, Database & Authentication
 
-- [ ] 5.1 Home feed (`/home`) with For you / Following tabs
-- [ ] 5.2 Inline composer (text, photo, video)
-- [ ] 5.3 Feed states: loading skeletons, empty, error, "You're all caught up"
-- [ ] 5.4 Post actions: like, comment, repost, share
-- [ ] 5.5 Post detail (`/post/[id]`): stats, follow, reply box, comments, failed comment + retry, unavailable post
-- [ ] 5.6 Compose modal: audience, photo / video / poll, character counter, validation errors, posting → published
+- [ ] 5.1 Postgres on Neon: `pg` connection pool, environment variables (`.env.example`), server-only database module
+- [ ] 5.2 Schema and migrations in raw SQL: users, follows, posts, comments, reactions, notifications, conversations, members, messages, trends; migration runner script
+- [ ] 5.3 Database seed script: fills the database with the starter community from the seed generator
+- [ ] 5.4 Repositories: hand-written SQL queries for every `DataSource` read and write, returning the same view types
+- [ ] 5.5 Better Auth: email + password sign-up and sign-in (handle and display name on the user), Google sign-in, sessions in Postgres, rate limiting
+- [ ] 5.6 Real sessions in the app: `proxy.ts` and `(app)/layout.tsx` read the Better Auth session; sign-in / sign-up forms and Log out call it; remove the simulated auth and `localStorage` accounts
+- [ ] 5.7 API: route handlers for every endpoint, with session checks, input validation and consistent error responses; notifications created by likes, follows, replies and mentions
+- [ ] 5.8 API data source (`services/api/`) implementing `DataSource`; the app preset uses it, the demo keeps the simulation
 
-### Phase 6 — Profile, Explore, Notifications
+### Phase 6 — Feed, Post & Compose
 
-- [ ] 6.1 Profile (`/u/[handle]`): cover, avatar, bio, meta, following / followers, Edit profile
-- [ ] 6.2 Profile tabs: Posts, Replies, Media, Likes
-- [ ] 6.3 Explore (`/explore`): search, tabs (Top, People, Posts, Media, Topics), Trending today, People to follow, Photos & video
-- [ ] 6.4 Notifications (`/notifications`): All / Mentions & replies, unread styling, Mark all as read
+- [ ] 6.1 Home feed (`/home`) with For you / Following tabs
+- [ ] 6.2 Inline composer (text; photo and video in Phase 9)
+- [ ] 6.3 Feed states: loading skeletons, empty, error, "You're all caught up"
+- [ ] 6.4 Post actions: like, comment, repost, share
+- [ ] 6.5 Post detail (`/post/[id]`): stats, follow, reply box, comments, failed comment + retry, unavailable post
+- [ ] 6.6 Compose modal: audience, poll, character counter, validation errors, posting → published
 
-### Phase 7 — Messages & Settings
+### Phase 7 — Profile, Explore, Notifications
 
-- [ ] 7.1 Messages (`/messages/[id]`): two-pane route, conversation list + search, new message
-- [ ] 7.2 Chat thread: header (Active now, View profile), day separators, message meta, send
-- [ ] 7.3 Settings (`/settings/[section]`): Account, Privacy & safety, Notifications, Appearance, Demo, Log out
-- [ ] 7.4 Account form (display name, handle, bio, save changes)
-- [ ] 7.5 Appearance (theme picker) and Notification toggles
+- [ ] 7.1 Profile (`/u/[handle]`): cover, avatar, bio, meta, following / followers, Edit profile
+- [ ] 7.2 Profile tabs: Posts, Replies, Media, Likes
+- [ ] 7.3 Explore (`/explore`): search, tabs (Top, People, Posts, Media, Topics), Trending today, People to follow, Photos & video
+- [ ] 7.4 Notifications (`/notifications`): All / Mentions & replies, unread styling, Mark all as read
 
-### Phase 8 — Demo Mode Experience
+### Phase 8 — Messages & Settings
 
-- [ ] 8.1 Mirror every app route under `/demo/*` with the same components, demo data source only
-- [ ] 8.2 Persistent demo bar: signed in as, scenario, Reset, Exit demo
-- [ ] 8.3 Simulation card in the right rail: network selector + recent activity
-- [ ] 8.4 Entry points: Welcome page, sidebar card, Settings › Demo, direct link
-- [ ] 8.5 Exit returns to where the user came from; Reset restores the scenario
+- [ ] 8.1 Messages (`/messages/[id]`): two-pane route, conversation list + search, new message
+- [ ] 8.2 Chat thread: header (Active now, View profile), day separators, message meta, send
+- [ ] 8.3 Settings (`/settings/[section]`): Account, Privacy & safety, Notifications, Appearance, Demo, Log out
+- [ ] 8.4 Account form (display name, handle, bio, save changes)
+- [ ] 8.5 Appearance (theme picker) and Notification toggles
 
-### Phase 9 — Mobile, Accessibility & Polish
+### Phase 9 — Media Uploads
 
-- [ ] 9.1 Mobile single column, bottom tab bar (Home, Explore, Alerts, Messages, Profile)
-- [ ] 9.2 Floating compose button → full-screen sheet
-- [ ] 9.3 Messages: list → thread navigation on mobile
-- [ ] 9.4 Simulation card as a bottom sheet from the demo bar; demo bar pinned
-- [ ] 9.5 Minimum 44px tap targets
-- [ ] 9.6 Accessibility: keyboard navigation, focus states, ARIA, contrast checks per design system
-- [ ] 9.7 Transitions and micro-interactions
+- [ ] 9.1 Vercel Blob storage: signed upload endpoint with session check, file type and size limits
+- [ ] 9.2 Photo and video in the composer and compose modal: pick, preview, upload progress, remove, failed upload + retry
+- [ ] 9.3 Avatar and cover uploads in Edit profile
+- [ ] 9.4 Media rendering in posts, profile Media tab and Explore (Next.js `Image`, video player)
 
-### Phase 10 — QA, Performance & Deployment
+### Phase 10 — Demo Mode Experience
 
-- [ ] 10.1 Lint and type-check clean
-- [ ] 10.2 Manual QA against wireframes (dark + light)
-- [ ] 10.3 Performance pass (bundle size, images, Lighthouse)
-- [ ] 10.4 SEO metadata, favicon / app icon
-- [ ] 10.5 README for the portfolio
-- [ ] 10.6 Deployment
+- [ ] 10.1 Mirror every app route under `/demo/*` with the same components, demo data source only
+- [ ] 10.2 Persistent demo bar: signed in as, scenario, Reset, Exit demo
+- [ ] 10.3 Simulation card in the right rail: network selector + recent activity
+- [ ] 10.4 Entry points: Welcome page, sidebar card, Settings › Demo, direct link
+- [ ] 10.5 Exit returns to where the user came from; Reset restores the scenario
+
+### Phase 11 — Mobile, Accessibility & Polish
+
+- [ ] 11.1 Mobile single column, bottom tab bar (Home, Explore, Alerts, Messages, Profile)
+- [ ] 11.2 Floating compose button → full-screen sheet
+- [ ] 11.3 Messages: list → thread navigation on mobile
+- [ ] 11.4 Simulation card as a bottom sheet from the demo bar; demo bar pinned
+- [ ] 11.5 Minimum 44px tap targets
+- [ ] 11.6 Accessibility: keyboard navigation, focus states, ARIA, contrast checks per design system
+- [ ] 11.7 Transitions and micro-interactions
+- [ ] 11.8 Product screenshot on the welcome page (dark + light)
+
+### Phase 12 — QA, Performance & Deployment
+
+- [ ] 12.1 Lint and type-check clean
+- [ ] 12.2 Manual QA against wireframes (dark + light)
+- [ ] 12.3 Performance pass (bundle size, images, Lighthouse)
+- [ ] 12.4 SEO metadata, favicon / app icon
+- [ ] 12.5 README for the portfolio
+- [ ] 12.6 Security review: auth flows, session cookies, API authorization, rate limits
+- [ ] 12.7 Deployment: Vercel + Neon + Blob, production environment variables, Google OAuth production redirect URL
 
 ---
 
@@ -210,3 +248,5 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | 2026-10-18 | 1.1 – 1.14 | Logo, custom icon set (lucide-react removed), Button / FollowButton / IconButton, Input / Textarea / SearchInput, Avatar, Tabs, Badge / Counter, Toast + `ToastProvider`, Modal / sheet (native `<dialog>`), Menu, Toggle, SegmentedControl, Skeletons, Empty / Error states, PostCard. New tokens: scrim, skeleton, media stripe, knob, accent border, demo soft, danger muted text. Showcased in `/design-system` section 07. **Phase 1 complete** |
 | 2026-10-19 | 2.1 – 2.6 | Three-column shell (248 · 640 · 340) with sticky sidebar and rail; sidebar nav with active state, counters, New post, Try the demo card, user card + account menu; context rail (search → `/explore?q=`, Trending, Who to follow, footer); rail hides `<1100`, nav icons `<900`, bottom tab bar `<640`; route groups with placeholder pages (unknown settings sections 404); compose modal on any route via `?compose`, other params kept. New token: `nav-hover`. `Menu` gained a `side` prop. Shell data is placeholder until Phase 3. **Phase 2 complete** |
 | 2026-10-19 | 3.1 – 3.9 | Domain + view types; `DataSource` contract and `DataProvider` (presets `app` / `demo`); simulated server with 300–800ms latency (2–2.6s slow), Offline and Flaky (every other request fails) conditions; seeded community of 40 people per persona with posts, media, comments, likes, notifications and conversations (same seed → same data); scenarios Busy / Fresh / Flaky with reset; plain-language activity log; query cache with entity patching, read hooks for every endpoint and mutation hooks (likes, reposts, follows revert with a toast; comments and messages go sending → sent / failed + retry). Shell placeholders replaced: user card, unread counters, Trending and Who to follow now load through hooks with skeleton and error states. **Phase 3 complete** |
+| 2026-10-19 | 4.1 – 4.4 | Welcome page: split layout with pitch, sign-in form (filled in with the sample account `sam@example.com` / `agora-2026`) and the live-demo card; Create account form with field validation (taken handles and emails rejected); demo landing with persona card, scenario picker (native radios) and highlights, Enter demo → `/demo/home?scenario=…` (route built in the demo phase). Simulated auth service with the same latency as the data layer; session cookie, `proxy.ts` redirects, `AuthProvider` + `useSession`; Log out clears the session; the Profile nav link uses the signed-in handle; a new account is seeded as a fresh community under its own name. `PublicPlaceholder` removed. **Phase 4 complete** |
+| 2026-10-19 | Scope change | The app becomes full-stack: Postgres (Neon) with `pg` and raw SQL, Better Auth (email + password, Google), Vercel Blob for media; the simulated backend serves the demo only. New Phase 5 (backend, database & auth) and Phase 9 (media uploads); later phases renumbered; product screenshot added as 11.8; target delivery moved to 2027-01-09 |
