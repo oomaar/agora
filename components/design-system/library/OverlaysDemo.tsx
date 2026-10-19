@@ -8,7 +8,7 @@ import { Menu } from "@/components/ui/Menu";
 import { Icon } from "@/components/ui/Icon";
 import { Badge } from "@/components/ui/Badge";
 import { Textarea } from "@/components/ui/Textarea";
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/ui/useToast";
 import { SAMPLE_MENU_LABELS } from "@/lib/design-system/constants";
 import { type ModalVariant } from "@/types/modal";
 

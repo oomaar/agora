@@ -1,7 +1,7 @@
 "use client";
 
 import { Icon } from "@/components/ui/Icon";
-import { useOpenCompose } from "@/hooks/useOpenCompose";
+import { useOpenCompose } from "@/hooks/shell/useOpenCompose";
 
 export function NewPostButton() {
   const openCompose = useOpenCompose();

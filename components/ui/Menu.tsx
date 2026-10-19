@@ -2,7 +2,7 @@
 
 import { useId } from "react";
 import { Icon } from "@/components/ui/Icon";
-import { useMenu } from "@/hooks/useMenu";
+import { useMenu } from "@/hooks/ui/useMenu";
 import { cn } from "@/utils/cn";
 import { type MenuProps } from "@/types/menu";
 

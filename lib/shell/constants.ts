@@ -1,12 +1,8 @@
-import {
-  type NavItem,
-  type SettingsSection,
-  type ShellUser,
-  type Trend,
-} from "@/types/shell";
+import { APP_CONTENT } from "@/lib/seed/appContent";
+import { type NavItem, type SettingsSection } from "@/types/shell";
 
-// Placeholder data until the data layer lands in Phase 3.
-export const CURRENT_USER: ShellUser = { name: "Sam Rivera", handle: "sam" };
+// The signed-in account's handle; it becomes dynamic with auth in Phase 4.
+const PROFILE_HANDLE = APP_CONTENT.self.handle;
 
 export const COMPOSE_PARAM = "compose";
 
@@ -42,7 +38,7 @@ export const NAV_ITEMS: NavItem[] = [
     href: "/notifications",
     icon: "bell",
     match: ["/notifications"],
-    counter: { value: 3, tone: "accent", label: "3 unread notifications" },
+    counter: { source: "notifications", tone: "accent", noun: "notification" },
     inTabBar: true,
   },
   {
@@ -51,15 +47,15 @@ export const NAV_ITEMS: NavItem[] = [
     href: "/messages",
     icon: "mail",
     match: ["/messages"],
-    counter: { value: 2, tone: "neutral", label: "2 unread conversations" },
+    counter: { source: "conversations", tone: "neutral", noun: "conversation" },
     inTabBar: true,
   },
   {
     id: "profile",
     label: "Profile",
-    href: `/u/${CURRENT_USER.handle}`,
+    href: `/u/${PROFILE_HANDLE}`,
     icon: "user",
-    match: [`/u/${CURRENT_USER.handle}`],
+    match: [`/u/${PROFILE_HANDLE}`],
     inTabBar: true,
   },
   {
@@ -74,20 +70,10 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const TAB_BAR_ITEMS = NAV_ITEMS.filter((item) => item.inTabBar);
 
-export const TRENDS: Trend[] = [
-  {
-    id: "server-components",
-    category: "Technology · Trending",
-    title: "Server components",
-  },
-  { id: "farmers-markets", category: "Food", title: "Farmers markets" },
-  { id: "october-reading", category: "Books", title: "October reading lists" },
-];
+// Rows shown in the rail cards.
+export const RAIL_TREND_LIMIT = 3;
 
-export const SUGGESTED_PEOPLE: ShellUser[] = [
-  { name: "Nadia Idris", handle: "nadia.dev" },
-  { name: "Oliver Grant", handle: "ogrant" },
-];
+export const RAIL_SUGGESTION_LIMIT = 2;
 
 export const FOOTER_LINKS = ["About", "Privacy", "Terms"];
 

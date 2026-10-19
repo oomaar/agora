@@ -5,7 +5,7 @@ import { DsCard } from "@/components/design-system/DsCard";
 import { Tabs } from "@/components/ui/Tabs";
 import { Toggle } from "@/components/ui/Toggle";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "@/hooks/ui/useTheme";
 import { type Theme } from "@/types/theme";
 
 type FeedTab = "forYou" | "following";

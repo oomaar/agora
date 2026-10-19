@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { useClickOutside } from "@/hooks/useClickOutside";
+import { useClickOutside } from "@/hooks/ui/useClickOutside";
 import { getNextIndex } from "@/utils/getNextIndex";
 
 export function useMenu(itemCount: number) {

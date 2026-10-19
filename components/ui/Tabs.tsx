@@ -1,7 +1,7 @@
 "use client";
 
 import { Counter } from "@/components/ui/Counter";
-import { useRovingSelection } from "@/hooks/useRovingSelection";
+import { useRovingSelection } from "@/hooks/ui/useRovingSelection";
 import { TAB_BASE, TAB_IDLE, TAB_SELECTED, TABS_LIST } from "@/lib/ui/tabs";
 import { cn } from "@/utils/cn";
 import { type TabsProps } from "@/types/tabs";

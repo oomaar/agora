@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { Avatar } from "@/components/ui/Avatar";
 import { FollowButton } from "@/components/ui/FollowButton";
+import { useToggleFollow } from "@/hooks/users/useToggleFollow";
 import { type SuggestedPersonProps } from "@/types/shell";
 
 export function SuggestedPerson({ person }: SuggestedPersonProps) {
-  const [following, setFollowing] = useState(false);
+  const follow = useToggleFollow();
   return (
     <li className="flex items-center gap-2.5 px-4 py-2.5">
       <Link
@@ -25,9 +25,9 @@ export function SuggestedPerson({ person }: SuggestedPersonProps) {
         </span>
       </Link>
       <FollowButton
-        following={following}
-        onToggle={setFollowing}
-        aria-label={`${following ? "Unfollow" : "Follow"} ${person.name}`}
+        following={person.isFollowing}
+        onToggle={() => follow.run(person)}
+        aria-label={`${person.isFollowing ? "Unfollow" : "Follow"} ${person.name}`}
       />
     </li>
   );
