@@ -165,6 +165,12 @@ export type DataPreset = {
   scenario: ScenarioId;
 };
 
+// Who the app signs in as, and which scenario their community starts from.
+export type SessionSeed = {
+  self: SelfSeed;
+  scenario: ScenarioId;
+};
+
 export type GenerateSeedOptions = {
   content: SeedContent;
   scenario: Scenario;

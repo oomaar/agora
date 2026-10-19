@@ -1,8 +1,7 @@
-import { APP_CONTENT } from "@/lib/seed/appContent";
 import { type NavItem, type SettingsSection } from "@/types/shell";
 
-// The signed-in account's handle; it becomes dynamic with auth in Phase 4.
-const PROFILE_HANDLE = APP_CONTENT.self.handle;
+// Replaced with the signed-in account's handle when the nav renders.
+export const HANDLE_TOKEN = ":handle";
 
 export const COMPOSE_PARAM = "compose";
 
@@ -53,9 +52,9 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: "profile",
     label: "Profile",
-    href: `/u/${PROFILE_HANDLE}`,
+    href: `/u/${HANDLE_TOKEN}`,
     icon: "user",
-    match: [`/u/${PROFILE_HANDLE}`],
+    match: [`/u/${HANDLE_TOKEN}`],
     inTabBar: true,
   },
   {

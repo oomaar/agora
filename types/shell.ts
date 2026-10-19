@@ -73,8 +73,3 @@ export type RailQueryProps<T> = {
   emptyText: string;
   children: (data: T) => ReactNode;
 };
-
-export type PublicPlaceholderProps = {
-  title: string;
-  link: { href: string; label: string };
-};

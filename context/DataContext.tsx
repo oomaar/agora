@@ -12,13 +12,15 @@ export const DataContext = createContext<DataContextValue | null>(null);
 export function DataProvider({
   preset,
   scenario,
+  self,
   children,
 }: DataProviderProps) {
   const [value] = useState<DataContextValue>(() => {
-    const { source, controls } = createSimulation(
-      DATA_PRESETS[preset],
-      scenario,
-    );
+    const base = DATA_PRESETS[preset];
+    const config = self
+      ? { ...base, content: { ...base.content, self } }
+      : base;
+    const { source, controls } = createSimulation(config, scenario);
     return { source, cache: createQueryCache(), simulation: controls };
   });
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

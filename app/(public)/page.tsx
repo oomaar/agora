@@ -1,10 +1,14 @@
-import { PublicPlaceholder } from "@/components/public/PublicPlaceholder";
+import { SignInForm } from "@/components/auth/SignInForm";
+import { DemoInvite } from "@/components/public/DemoInvite";
+import { OrDivider } from "@/components/public/OrDivider";
+import { PublicSplitLayout } from "@/components/public/PublicSplitLayout";
 
 export default function WelcomePage() {
   return (
-    <PublicPlaceholder
-      title="Welcome & sign in"
-      link={{ href: "/home", label: "Continue to the app" }}
-    />
+    <PublicSplitLayout>
+      <SignInForm />
+      <OrDivider />
+      <DemoInvite />
+    </PublicSplitLayout>
   );
 }
