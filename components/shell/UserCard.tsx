@@ -7,6 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { IconButton } from "@/components/ui/IconButton";
 import { Menu } from "@/components/ui/Menu";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { useSession } from "@/hooks/auth/useSession";
 import { useCurrentUser } from "@/hooks/users/useCurrentUser";
 import { NAV_ITEMS } from "@/lib/shell/constants";
 import { type MenuItem } from "@/types/menu";
@@ -17,6 +18,7 @@ const SETTINGS_HREF =
 export function UserCard() {
   const router = useRouter();
   const user = useCurrentUser();
+  const { signOut } = useSession();
   const items: MenuItem[] = [
     {
       id: "settings",
@@ -24,12 +26,11 @@ export function UserCard() {
       icon: "settings",
       onSelect: () => router.push(SETTINGS_HREF),
     },
-    // Auth arrives in Phase 4; until then logging out returns to the welcome page.
     {
       id: "logout",
       label: "Log out",
       danger: true,
-      onSelect: () => router.push("/"),
+      onSelect: signOut,
     },
   ];
 
