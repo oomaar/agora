@@ -7,6 +7,7 @@
   --ag-surface: #15181b;
   --ag-raised: #1f2428;
   --ag-hover: #13161a;
+  --ag-nav-hover: #1a1e22;
   --ag-unread: #13171b;
   --ag-media: #171a1e;
   --ag-media-stripe: #14171a;
@@ -78,6 +79,7 @@
   --ag-surface: #ffffff;
   --ag-raised: #efece6;
   --ag-hover: #f3f1ec;
+  --ag-nav-hover: #f0eee9;
   --ag-unread: #fff6ec;
   --ag-media: #efece6;
   --ag-media-stripe: #f6f4ef;
@@ -150,6 +152,7 @@
   --color-ag-surface: var(--ag-surface);
   --color-ag-raised: var(--ag-raised);
   --color-ag-hover: var(--ag-hover);
+  --color-ag-nav-hover: var(--ag-nav-hover);
   --color-ag-unread: var(--ag-unread);
   --color-ag-media: var(--ag-media);
   --color-ag-media-stripe: var(--ag-media-stripe);

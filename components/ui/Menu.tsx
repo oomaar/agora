@@ -11,6 +11,7 @@ export function Menu({
   trigger,
   items,
   align = "end",
+  side = "bottom",
   triggerClassName,
   className,
 }: MenuProps) {
@@ -50,7 +51,8 @@ export function Menu({
           aria-label={label}
           onKeyDown={onMenuKeyDown}
           className={cn(
-            "absolute top-full z-40 mt-1.5 flex min-w-50 flex-col rounded-lg p-1.5 elev-1",
+            "absolute z-40 flex min-w-50 flex-col rounded-lg p-1.5 elev-1",
+            side === "bottom" ? "top-full mt-1.5" : "bottom-full mb-1.5",
             align === "end" ? "right-0" : "left-0",
           )}
         >
