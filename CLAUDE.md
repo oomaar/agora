@@ -56,6 +56,8 @@ Phase 1 component layout: primitives in `components/ui/`, post card in `componen
 
 Phase 2 shell: route groups `(public)` and `(app)`; inside `(app)`, `(with-rail)` adds the context rail and `(no-rail)` (messages, settings) gives that space to the page. Shell components live in `components/shell/`, nav data and class maps in `lib/shell/`. Compose is URL state (`?compose`).
 
+Phase 3 data layer: components talk only to the `DataSource` contract (`types/dataSource.ts`) through `DataProvider` (`context/DataContext.tsx`, preset `app` or `demo`). The in-browser backend lives in `services/simulated/` (database, network, activity log) and `services/seed/` (deterministic generator); hand-written seed content in `lib/seed/`, scenarios and network profiles in `lib/simulation/`, the query cache and keys in `lib/data/`. Read hooks wrap `useQuery` (loading / empty / error / success); write hooks wrap `useMutation` (optimistic update, rollback, retry).
+
 Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind defaults are disabled.
 
 ---
@@ -124,15 +126,15 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ### Phase 3 — Data Layer & Simulated Backend
 
-- [ ] 3.1 Domain types: User, Post, Comment, Reaction, Notification, Conversation, Message, Trend
-- [ ] 3.2 Data-source abstraction (one contract, swappable implementations) so app and demo share components
-- [ ] 3.3 In-browser simulated server with realistic latency
-- [ ] 3.4 Network conditions: Normal, Slow, Offline, Flaky
-- [ ] 3.5 Seed data generator (~40 people with profiles, posts, photos, conversations)
-- [ ] 3.6 Scenarios: Busy community, Fresh account, Flaky network
-- [ ] 3.7 Activity log in plain language ("Your like was saved")
-- [ ] 3.8 Data hooks with loading / empty / error / success states
-- [ ] 3.9 Optimistic updates with retry on failure
+- [x] 3.1 Domain types: User, Post, Comment, Reaction, Notification, Conversation, Message, Trend
+- [x] 3.2 Data-source abstraction (one contract, swappable implementations) so app and demo share components
+- [x] 3.3 In-browser simulated server with realistic latency
+- [x] 3.4 Network conditions: Normal, Slow, Offline, Flaky
+- [x] 3.5 Seed data generator (~40 people with profiles, posts, photos, conversations)
+- [x] 3.6 Scenarios: Busy community, Fresh account, Flaky network
+- [x] 3.7 Activity log in plain language ("Your like was saved")
+- [x] 3.8 Data hooks with loading / empty / error / success states
+- [x] 3.9 Optimistic updates with retry on failure
 
 ### Phase 4 — Public Pages
 
@@ -205,3 +207,4 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | 2026-10-18 | Design system page | Dev-only `/design-system` route (404 in production) mirroring the wireframe design system; `.dark` scope added so dark and light render side by side; tokens added: `on-danger`, `success-border`, `danger-border`, `on-avatar` |
 | 2026-10-18 | 1.1 – 1.14 | Logo, custom icon set (lucide-react removed), Button / FollowButton / IconButton, Input / Textarea / SearchInput, Avatar, Tabs, Badge / Counter, Toast + `ToastProvider`, Modal / sheet (native `<dialog>`), Menu, Toggle, SegmentedControl, Skeletons, Empty / Error states, PostCard. New tokens: scrim, skeleton, media stripe, knob, accent border, demo soft, danger muted text. Showcased in `/design-system` section 07. **Phase 1 complete** |
 | 2026-10-19 | 2.1 – 2.6 | Three-column shell (248 · 640 · 340) with sticky sidebar and rail; sidebar nav with active state, counters, New post, Try the demo card, user card + account menu; context rail (search → `/explore?q=`, Trending, Who to follow, footer); rail hides `<1100`, nav icons `<900`, bottom tab bar `<640`; route groups with placeholder pages (unknown settings sections 404); compose modal on any route via `?compose`, other params kept. New token: `nav-hover`. `Menu` gained a `side` prop. Shell data is placeholder until Phase 3. **Phase 2 complete** |
+| 2026-10-19 | 3.1 – 3.9 | Domain + view types; `DataSource` contract and `DataProvider` (presets `app` / `demo`); simulated server with 300–800ms latency (2–2.6s slow), Offline and Flaky (every other request fails) conditions; seeded community of 40 people per persona with posts, media, comments, likes, notifications and conversations (same seed → same data); scenarios Busy / Fresh / Flaky with reset; plain-language activity log; query cache with entity patching, read hooks for every endpoint and mutation hooks (likes, reposts, follows revert with a toast; comments and messages go sending → sent / failed + retry). Shell placeholders replaced: user card, unread counters, Trending and Who to follow now load through hooks with skeleton and error states. **Phase 3 complete** |
