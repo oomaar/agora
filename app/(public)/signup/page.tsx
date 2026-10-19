@@ -1,10 +1,10 @@
-import { PublicPlaceholder } from "@/components/public/PublicPlaceholder";
+import { SignUpForm } from "@/components/auth/SignUpForm";
+import { PublicSplitLayout } from "@/components/public/PublicSplitLayout";
 
 export default function SignupPage() {
   return (
-    <PublicPlaceholder
-      title="Create account"
-      link={{ href: "/", label: "Back to sign in" }}
-    />
+    <PublicSplitLayout>
+      <SignUpForm />
+    </PublicSplitLayout>
   );
 }
