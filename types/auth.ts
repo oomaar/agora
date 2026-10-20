@@ -1,15 +1,24 @@
 import { type ReactNode } from "react";
 
-// What the session cookie carries; the app seeds the signed-in user from it.
+// The signed-in user, read from the Better Auth session on the server.
 export type Session = {
+  userId: string;
   email: string;
   name: string;
   handle: string;
 };
 
-// A simulated account, stored only in this browser.
-export type Account = Session & {
-  password: string;
+// What Better Auth hands the sign-up hook: the core user fields plus whatever the form sent.
+export type NewAuthUser = {
+  name: string;
+  email: string;
+} & Record<string, unknown>;
+
+// The error a Better Auth client call resolves with.
+export type AuthClientError = {
+  status: number;
+  code?: string;
+  message?: string;
 };
 
 export type SignInDetails = {
@@ -34,7 +43,7 @@ export type FieldErrors<TField extends string> = Partial<
 
 export type AuthFormOptions<TField extends string, TDetails> = {
   validate: (details: TDetails) => FieldErrors<TField>;
-  request: (details: TDetails) => Promise<Session>;
+  request: (details: TDetails) => Promise<void>;
 };
 
 export type AuthFormResult<TField extends string, TDetails> = {
@@ -44,9 +53,15 @@ export type AuthFormResult<TField extends string, TDetails> = {
   submit: (details: TDetails) => void;
 };
 
+export type GoogleSignInResult = {
+  pending: boolean;
+  error: string | null;
+  start: () => void;
+};
+
 export type AuthContextValue = {
   session: Session;
-  signOut: () => void;
+  signOut: () => Promise<void>;
 };
 
 export type AuthProviderProps = {
@@ -56,4 +71,13 @@ export type AuthProviderProps = {
 
 export type FormErrorProps = {
   message: string | null;
+};
+
+export type SignInFormProps = {
+  // Shown when Google sign-in sent the visitor back with an error.
+  oauthError: string | null;
+};
+
+export type GoogleButtonProps = {
+  initialError?: string | null;
 };

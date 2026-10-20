@@ -1,6 +1,6 @@
 import { DataError } from "@/services/dataError";
 
-// Trims and checks length the way a real API would before saving.
+// Trims and checks length before saving; used by the API and the simulated server.
 export function requireText(
   value: string,
   maxLength: number,
