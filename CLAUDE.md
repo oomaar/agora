@@ -80,6 +80,8 @@ Phase 5 backend: Postgres through one `pg` pool (`lib/db/pool.ts`, server-only; 
 
 Phase 5 auth: Better Auth (`lib/auth/auth.ts`) with email + password and Google, sessions and rate limits in Postgres; its tables and column mapping are in `0001_auth.sql` and `lib/auth/schema.ts`. The sign-up hook (`lib/auth/prepareNewUser.ts`) checks the name and handle and gives Google sign-ups a handle; `/update-user` is disabled so profile changes go through `PATCH /api/me`. `proxy.ts` only checks that the `agora.session_token` cookie exists; `(app)/layout.tsx`, the welcome / sign-up pages (`redirectIfSignedIn`) and every API route check the session against the database (`lib/auth/getSession.ts`). Browser calls go through `services/auth/authApi.ts`, which maps Better Auth errors to form fields.
 
+Phase 6 feed & post: the feed lives in `components/feed/` (`HomeFeed` with tabs in `PageHeader`, `FeedList` states, `InlineComposer` opens `?compose`); `components/post/PostItem.tsx` wires a `PostView` to the presentational `PostCard` (open, like, repost, vote, share, comment → `/post/[id]#reply`). Post detail is `PostDetail` → `PostThread` (body, `ReplyBox`, `CommentList`); `PageHeader` takes `back` and tabs as children. The compose modal keeps its draft in `useComposer` (validated with the server's own `requireText` / `requirePollOptions` before sending); its parts are in `components/compose/`. Polls: `0004_polls.sql` (`poll_options`, `poll_votes`, `post_view` gains `poll` and `votedOptionId`), 2–4 options of up to 25 characters, one vote per person that can't be changed, `PUT /api/posts/[id]/vote`. Copy and constants in `lib/posts/constants.ts`.
+
 Hooks are grouped by feature: `hooks/data/` (provider access, `useQuery`, `useMutation`, simulation), `hooks/posts/`, `hooks/users/`, `hooks/explore/`, `hooks/notifications/`, `hooks/messages/`, `hooks/shell/` (compose, unread counts), `hooks/auth/` (session, sign-in, sign-up and Google) and `hooks/ui/` (component behaviour, toast, theme).
 
 Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind defaults are disabled.
@@ -182,12 +184,12 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ### Phase 6 — Feed, Post & Compose
 
-- [ ] 6.1 Home feed (`/home`) with For you / Following tabs
-- [ ] 6.2 Inline composer (text; photo and video in Phase 9)
-- [ ] 6.3 Feed states: loading skeletons, empty, error, "You're all caught up"
-- [ ] 6.4 Post actions: like, comment, repost, share
-- [ ] 6.5 Post detail (`/post/[id]`): stats, follow, reply box, comments, failed comment + retry, unavailable post
-- [ ] 6.6 Compose modal: audience, poll, character counter, validation errors, posting → published
+- [x] 6.1 Home feed (`/home`) with For you / Following tabs
+- [x] 6.2 Inline composer (text; photo and video in Phase 9)
+- [x] 6.3 Feed states: loading skeletons, empty, error, "You're all caught up"
+- [x] 6.4 Post actions: like, comment, repost, share
+- [x] 6.5 Post detail (`/post/[id]`): stats, follow, reply box, comments, failed comment + retry, unavailable post
+- [x] 6.6 Compose modal: audience, poll, character counter, validation errors, posting → published
 
 ### Phase 7 — Profile, Explore, Notifications
 
@@ -257,3 +259,4 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | 2026-10-19 | 4.1 – 4.4 | Welcome page: split layout with pitch, sign-in form (filled in with the sample account `sam@example.com` / `agora-2026`) and the live-demo card; Create account form with field validation (taken handles and emails rejected); demo landing with persona card, scenario picker (native radios) and highlights, Enter demo → `/demo/home?scenario=…` (route built in the demo phase). Simulated auth service with the same latency as the data layer; session cookie, `proxy.ts` redirects, `AuthProvider` + `useSession`; Log out clears the session; the Profile nav link uses the signed-in handle; a new account is seeded as a fresh community under its own name. `PublicPlaceholder` removed. **Phase 4 complete** |
 | 2026-10-19 | Scope change | The app becomes full-stack: Postgres (Neon) with `pg` and raw SQL, Better Auth (email + password, Google), Vercel Blob for media; the simulated backend serves the demo only. New Phase 5 (backend, database & auth) and Phase 9 (media uploads); later phases renumbered; product screenshot added as 11.8; target delivery moved to 2027-01-09 |
 | 2026-10-20 | 5.1 – 5.8 | Neon Postgres through `pg` (SSL `verify-full`); `.env.example`; migrations 0001 auth tables · 0002 social tables (prefixed ids, checks, indexes) · 0003 SQL view functions; migration runner with an advisory lock; seed script loads the app preset's community (41 people, 50 posts) with Sam as the only sign-in. Repositories for every `DataSource` read and write; 20 API routes with session checks, cross-site write check, input validation and `{ error: { code, message } }` responses; likes, follows, replies and mentions create notifications (unlike / unfollow take them back). Better Auth: email + password, Google (handle generated), sessions and rate limits in Postgres (3 sign-in attempts per 10 seconds), `agora.` cookie prefix. Forms call Better Auth; Continue with Google on welcome and sign-up; signed-in redirects moved from the proxy to the pages so a stale cookie can't loop. App preset uses the API data source; demo keeps the simulation. Simulated auth, `localStorage` accounts and the session-seeded simulation removed. `requireText` moved to `utils/`. **Phase 5 complete** |
+| 2026-10-20 | 6.1 – 6.6 | Home feed with For you / Following tabs in the sticky header; inline composer opens the compose modal; feed loading skeletons, empty (Write a post, Find people), error with Try again, "You're all caught up". Post actions: optimistic like and repost (repost highlighted), share copies the link, comment opens the post with the reply box focused. Post detail: back button, author + Follow, date and audience, stats line, action row, reply box, comments with Sending… / Not sent + Retry, empty and unavailable states. Compose modal: audience menu (Everyone / Followers), poll editor (2–4 options), character counter, validation errors, Posting… → published toast, failed publish keeps the draft. Polls end to end: migration `0004_polls.sql`, vote endpoint, simulated source, optimistic voting with results bars. `Menu` gained a chip trigger and single-choice items; `Input` accepts a ref. **Phase 6 complete** |
