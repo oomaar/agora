@@ -10,7 +10,7 @@ import {
   isFollowing,
   nextId,
 } from "@/services/simulated/database";
-import { requireText } from "@/services/simulated/validation";
+import { requireText } from "@/utils/requireText";
 import {
   toCommentView,
   toConversationView,
