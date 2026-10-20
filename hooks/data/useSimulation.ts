@@ -7,6 +7,7 @@ import { type UseSimulationResult } from "@/types/query";
 // Network condition, scenario and activity log of the simulated backend.
 export function useSimulation(): UseSimulationResult {
   const { simulation, cache } = useData();
+  if (!simulation) throw new Error("useSimulation only works in demo mode");
   const state = useSyncExternalStore(
     simulation.subscribe,
     simulation.getState,

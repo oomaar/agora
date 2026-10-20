@@ -7,7 +7,6 @@ import {
   type SimulationControls,
   type SimulationState,
   type NetworkCondition,
-  type SelfSeed,
 } from "@/types/simulation";
 
 export type QueryEntry =
@@ -78,14 +77,14 @@ export type MutationResult<TVariables, TResult> = {
 export type DataContextValue = {
   source: DataSource;
   cache: QueryCache;
-  simulation: SimulationControls;
+  // Only the demo has a simulated backend to control.
+  simulation: SimulationControls | null;
 };
 
 export type DataProviderProps = {
   preset: DataPresetId;
+  // Demo only: the scenario the simulation starts from.
   scenario?: ScenarioId;
-  // Replaces the preset's signed-in user, e.g. with a newly created account.
-  self?: SelfSeed;
   children: ReactNode;
 };
 
