@@ -33,6 +33,8 @@ export type NewPost = {
   text: string;
   audience: PostAudience;
   media: PostMedia | null;
+  // Option texts, or null for a post without a poll.
+  poll: string[] | null;
 };
 
 export type ProfileUpdate = {
@@ -66,6 +68,7 @@ export type DataSource = {
   setLike: (postId: string, liked: boolean) => Promise<PostView>;
   setRepost: (postId: string, reposted: boolean) => Promise<PostView>;
   setFollow: (userId: string, following: boolean) => Promise<UserView>;
+  votePoll: (postId: string, optionId: string) => Promise<PostView>;
   createPost: (post: NewPost) => Promise<PostView>;
   addComment: (postId: string, text: string) => Promise<CommentView>;
   sendMessage: (conversationId: string, text: string) => Promise<MessageView>;

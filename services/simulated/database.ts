@@ -1,5 +1,5 @@
 import { DataError } from "@/services/dataError";
-import { type ReactionKind, type User } from "@/types/domain";
+import { type PollVote, type ReactionKind, type User } from "@/types/domain";
 import { type Database } from "@/types/simulation";
 
 export function createEmptyDatabase(): Database {
@@ -10,6 +10,7 @@ export function createEmptyDatabase(): Database {
     posts: [],
     comments: [],
     reactions: [],
+    pollVotes: [],
     notifications: [],
     conversations: [],
     messages: [],
@@ -87,5 +88,15 @@ export function hasReaction(
       reaction.userId === userId &&
       reaction.postId === postId &&
       reaction.kind === kind,
+  );
+}
+
+export function getPollVote(
+  db: Database,
+  userId: string,
+  postId: string,
+): PollVote | undefined {
+  return db.pollVotes.find(
+    (vote) => vote.userId === userId && vote.postId === postId,
   );
 }

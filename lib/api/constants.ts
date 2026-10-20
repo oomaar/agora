@@ -64,6 +64,12 @@ export const NOT_FOUND = {
   conversation: "This conversation doesn't exist.",
 };
 
+export const POLL_ERRORS = {
+  noPoll: "This post doesn't have a poll.",
+  unknownOption: "That option isn't part of this poll.",
+  alreadyVoted: "You've already voted in this poll.",
+};
+
 export const API_ERROR_MESSAGES = {
   unauthorized: "Your session has ended. Sign in again.",
   forbidden: "This request isn't allowed.",

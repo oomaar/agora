@@ -15,6 +15,7 @@ export const API_PATHS = {
   comments: (postId: string) => `/api/posts/${encode(postId)}/comments`,
   like: (postId: string) => `/api/posts/${encode(postId)}/like`,
   repost: (postId: string) => `/api/posts/${encode(postId)}/repost`,
+  vote: (postId: string) => `/api/posts/${encode(postId)}/vote`,
   user: (handle: string) => `/api/users/${encode(handle)}`,
   userPosts: (handle: string, tab: ProfileTab) =>
     `/api/users/${encode(handle)}/posts?tab=${tab}`,

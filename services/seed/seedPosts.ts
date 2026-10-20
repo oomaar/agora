@@ -102,6 +102,7 @@ export function seedPosts(context: SeedContext): void {
       authorId: seed.authorId,
       text: seed.text,
       media: seed.media,
+      poll: null,
       audience: "everyone",
       createdAt: minutesAgo(now, seed.ageMinutes),
       likeCount: seed.likes,

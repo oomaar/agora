@@ -29,6 +29,8 @@ export function createApiSource(): DataSource {
       request(API_PATHS.follow(userId), {
         method: following ? "PUT" : "DELETE",
       }),
+    votePoll: (postId, optionId) =>
+      request(API_PATHS.vote(postId), { method: "PUT", body: { optionId } }),
     createPost: (post) =>
       request(API_PATHS.posts, { method: "POST", body: post }),
     addComment: (postId, text) =>
