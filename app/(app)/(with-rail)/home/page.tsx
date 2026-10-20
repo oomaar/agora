@@ -1,5 +1,5 @@
-import { PageHeader } from "@/components/shell/PageHeader";
+import { HomeFeed } from "@/components/feed/HomeFeed";
 
 export default function HomePage() {
-  return <PageHeader title="Home" />;
+  return <HomeFeed />;
 }

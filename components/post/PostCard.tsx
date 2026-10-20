@@ -48,7 +48,7 @@ export function PostCard({
             @{author.handle} · {pending ? "Posting…" : time}
           </span>
         </div>
-        <p className="whitespace-pre-line break-words text-body text-pretty">
+        <p className="whitespace-pre-line wrap-break-word text-body text-pretty">
           {text}
         </p>
         {media && <PostMedia media={media} />}
