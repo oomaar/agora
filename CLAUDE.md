@@ -47,9 +47,9 @@ This file is the single source of truth for rules, phases, tasks and progress. U
 
 Done by the project owner; secrets go in `.env.local` (never committed), and `.env.example` lists the variable names.
 
-- [ ] Create a free Neon project at neon.tech and add its connection string as `DATABASE_URL`
-- [ ] Create a Google OAuth client in Google Cloud Console (Credentials → OAuth client ID → Web application) with the redirect URI `http://localhost:3000/api/auth/callback/google`; add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
-- [ ] `BETTER_AUTH_SECRET` is generated during Phase 5
+- [x] Create a free Neon project at neon.tech and add its connection string as `DATABASE_URL`
+- [x] Create a Google OAuth client in Google Cloud Console (Credentials → OAuth client ID → Web application) with the redirect URI `http://localhost:3000/api/auth/callback/google`; add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
+- [x] `BETTER_AUTH_SECRET` and `BETTER_AUTH_URL` (generated during Phase 5)
 
 ---
 
@@ -62,9 +62,11 @@ Done by the project owner; secrets go in `.env.local` (never committed), and `.e
 | `context/` | React context providers |
 | `hooks/` | Custom hooks |
 | `lib/` | Feature modules: constants, stores, scripts (e.g. `lib/theme/`) |
-| `services/` | Data sources (API client for the app, simulated backend for the demo) |
+| `services/` | Data sources (API client for the app, simulated backend for the demo), database repositories, auth calls |
 | `types/` | Shared type definitions |
 | `utils/` | Pure helper functions |
+| `db/` | SQL migrations (`db/migrations/*.sql`, applied in file-name order) |
+| `scripts/` | Node scripts run with `npm run db:*` (`db:migrate`, `db:seed`) |
 
 Phase 1 component layout: primitives in `components/ui/`, post card in `components/post/`, their class maps in `lib/ui/`. `cn` does not resolve conflicting classes, so components expose props (e.g. `divider`, `pill`, `fieldSize`) instead of relying on `className` overrides.
 
@@ -72,9 +74,13 @@ Phase 2 shell: route groups `(public)` and `(app)`; inside `(app)`, `(with-rail)
 
 Phase 3 data layer: components talk only to the `DataSource` contract (`types/dataSource.ts`) through `DataProvider` (`context/DataContext.tsx`, preset `app` or `demo`). The in-browser backend lives in `services/simulated/` (database, network, activity log) and `services/seed/` (deterministic generator); hand-written seed content in `lib/seed/`, scenarios and network profiles in `lib/simulation/`, the query cache and keys in `lib/data/`. Read hooks wrap `useQuery` (loading / empty / error / success); write hooks wrap `useMutation` (optimistic update, rollback, retry).
 
-Phase 4 auth (temporary, replaced by real auth in Phase 5): the session is a cookie (`agora_session`) written in the browser after the simulated auth service (`services/auth/`) accepts the form; accounts created at sign-up live in `localStorage`. `proxy.ts` redirects signed-out visitors away from app routes and signed-in visitors away from `/` and `/signup`; `(app)/layout.tsx` reads the session again, provides it through `AuthProvider` (`context/AuthContext.tsx`) and seeds the simulation with it (sample account → busy community, new account → fresh). Public page components live in `components/public/`, `components/auth/` and `components/demo/`, their copy and constants in `lib/public/` and `lib/auth/`.
+Phase 4 public pages: components live in `components/public/`, `components/auth/` and `components/demo/`, their copy and constants in `lib/public/` and `lib/auth/`.
 
-Hooks are grouped by feature: `hooks/data/` (provider access, `useQuery`, `useMutation`, simulation), `hooks/posts/`, `hooks/users/`, `hooks/explore/`, `hooks/notifications/`, `hooks/messages/`, `hooks/shell/` (compose, unread counts), `hooks/auth/` (session, sign-in and sign-up forms) and `hooks/ui/` (component behaviour, toast, theme).
+Phase 5 backend: Postgres through one `pg` pool (`lib/db/pool.ts`, server-only; `lib/db/createPool.ts` for scripts). Schema, indexes and checks are hand-written SQL in `db/migrations/`; `0003_views.sql` defines SQL functions (`user_view`, `post_view` …) that return the exact `types/domain.ts` view JSON, and `can_see_post` hides "following" posts from non-followers. Repositories in `services/database/` select one `view` column per row (`$1` is always the viewer); writes that touch counters or notifications run in a transaction. Route handlers in `app/api/*` wrap `withViewer` (`lib/api/withViewer.ts`): session check, cross-site write check, JSON result, errors as `{ error: { code, message } }`; input parsing lives in `lib/api/input.ts` and paths in `lib/api/endpoints.ts`. The app's `DataProvider` uses `services/api/createApiSource.ts`; the demo keeps the simulation. Scripts import app code through a small `@/` resolver (`scripts/loader/`) and run on Node's built-in TypeScript support. `npm run db:seed` fills an empty database from the app preset (`--reset` replaces everything).
+
+Phase 5 auth: Better Auth (`lib/auth/auth.ts`) with email + password and Google, sessions and rate limits in Postgres; its tables and column mapping are in `0001_auth.sql` and `lib/auth/schema.ts`. The sign-up hook (`lib/auth/prepareNewUser.ts`) checks the name and handle and gives Google sign-ups a handle; `/update-user` is disabled so profile changes go through `PATCH /api/me`. `proxy.ts` only checks that the `agora.session_token` cookie exists; `(app)/layout.tsx`, the welcome / sign-up pages (`redirectIfSignedIn`) and every API route check the session against the database (`lib/auth/getSession.ts`). Browser calls go through `services/auth/authApi.ts`, which maps Better Auth errors to form fields.
+
+Hooks are grouped by feature: `hooks/data/` (provider access, `useQuery`, `useMutation`, simulation), `hooks/posts/`, `hooks/users/`, `hooks/explore/`, `hooks/notifications/`, `hooks/messages/`, `hooks/shell/` (compose, unread counts), `hooks/auth/` (session, sign-in, sign-up and Google) and `hooks/ui/` (component behaviour, toast, theme).
 
 Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind defaults are disabled.
 
@@ -165,14 +171,14 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ### Phase 5 — Backend, Database & Authentication
 
-- [ ] 5.1 Postgres on Neon: `pg` connection pool, environment variables (`.env.example`), server-only database module
-- [ ] 5.2 Schema and migrations in raw SQL: users, follows, posts, comments, reactions, notifications, conversations, members, messages, trends; migration runner script
-- [ ] 5.3 Database seed script: fills the database with the starter community from the seed generator
-- [ ] 5.4 Repositories: hand-written SQL queries for every `DataSource` read and write, returning the same view types
-- [ ] 5.5 Better Auth: email + password sign-up and sign-in (handle and display name on the user), Google sign-in, sessions in Postgres, rate limiting
-- [ ] 5.6 Real sessions in the app: `proxy.ts` and `(app)/layout.tsx` read the Better Auth session; sign-in / sign-up forms and Log out call it; remove the simulated auth and `localStorage` accounts
-- [ ] 5.7 API: route handlers for every endpoint, with session checks, input validation and consistent error responses; notifications created by likes, follows, replies and mentions
-- [ ] 5.8 API data source (`services/api/`) implementing `DataSource`; the app preset uses it, the demo keeps the simulation
+- [x] 5.1 Postgres on Neon: `pg` connection pool, environment variables (`.env.example`), server-only database module
+- [x] 5.2 Schema and migrations in raw SQL: users, follows, posts, comments, reactions, notifications, conversations, members, messages, trends; migration runner script
+- [x] 5.3 Database seed script: fills the database with the starter community from the seed generator
+- [x] 5.4 Repositories: hand-written SQL queries for every `DataSource` read and write, returning the same view types
+- [x] 5.5 Better Auth: email + password sign-up and sign-in (handle and display name on the user), Google sign-in, sessions in Postgres, rate limiting
+- [x] 5.6 Real sessions in the app: `proxy.ts` and `(app)/layout.tsx` read the Better Auth session; sign-in / sign-up forms and Log out call it; remove the simulated auth and `localStorage` accounts
+- [x] 5.7 API: route handlers for every endpoint, with session checks, input validation and consistent error responses; notifications created by likes, follows, replies and mentions
+- [x] 5.8 API data source (`services/api/`) implementing `DataSource`; the app preset uses it, the demo keeps the simulation
 
 ### Phase 6 — Feed, Post & Compose
 
@@ -250,3 +256,4 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | 2026-10-19 | 3.1 – 3.9 | Domain + view types; `DataSource` contract and `DataProvider` (presets `app` / `demo`); simulated server with 300–800ms latency (2–2.6s slow), Offline and Flaky (every other request fails) conditions; seeded community of 40 people per persona with posts, media, comments, likes, notifications and conversations (same seed → same data); scenarios Busy / Fresh / Flaky with reset; plain-language activity log; query cache with entity patching, read hooks for every endpoint and mutation hooks (likes, reposts, follows revert with a toast; comments and messages go sending → sent / failed + retry). Shell placeholders replaced: user card, unread counters, Trending and Who to follow now load through hooks with skeleton and error states. **Phase 3 complete** |
 | 2026-10-19 | 4.1 – 4.4 | Welcome page: split layout with pitch, sign-in form (filled in with the sample account `sam@example.com` / `agora-2026`) and the live-demo card; Create account form with field validation (taken handles and emails rejected); demo landing with persona card, scenario picker (native radios) and highlights, Enter demo → `/demo/home?scenario=…` (route built in the demo phase). Simulated auth service with the same latency as the data layer; session cookie, `proxy.ts` redirects, `AuthProvider` + `useSession`; Log out clears the session; the Profile nav link uses the signed-in handle; a new account is seeded as a fresh community under its own name. `PublicPlaceholder` removed. **Phase 4 complete** |
 | 2026-10-19 | Scope change | The app becomes full-stack: Postgres (Neon) with `pg` and raw SQL, Better Auth (email + password, Google), Vercel Blob for media; the simulated backend serves the demo only. New Phase 5 (backend, database & auth) and Phase 9 (media uploads); later phases renumbered; product screenshot added as 11.8; target delivery moved to 2027-01-09 |
+| 2026-10-20 | 5.1 – 5.8 | Neon Postgres through `pg` (SSL `verify-full`); `.env.example`; migrations 0001 auth tables · 0002 social tables (prefixed ids, checks, indexes) · 0003 SQL view functions; migration runner with an advisory lock; seed script loads the app preset's community (41 people, 50 posts) with Sam as the only sign-in. Repositories for every `DataSource` read and write; 20 API routes with session checks, cross-site write check, input validation and `{ error: { code, message } }` responses; likes, follows, replies and mentions create notifications (unlike / unfollow take them back). Better Auth: email + password, Google (handle generated), sessions and rate limits in Postgres (3 sign-in attempts per 10 seconds), `agora.` cookie prefix. Forms call Better Auth; Continue with Google on welcome and sign-up; signed-in redirects moved from the proxy to the pages so a stale cookie can't loop. App preset uses the API data source; demo keeps the simulation. Simulated auth, `localStorage` accounts and the session-seeded simulation removed. `requireText` moved to `utils/`. **Phase 5 complete** |

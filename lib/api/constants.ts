@@ -21,7 +21,10 @@ export const NOTIFICATION_FILTERS: readonly NotificationFilter[] = [
   "mentions",
 ];
 
-export const POST_AUDIENCES: readonly PostAudience[] = ["everyone", "following"];
+export const POST_AUDIENCES: readonly PostAudience[] = [
+  "everyone",
+  "following",
+];
 
 export const STATUS_BY_CODE: Record<DataErrorCode, number> = {
   validation: 400,
