@@ -41,7 +41,12 @@ export type ProfileUpdate = {
   bio: string;
 };
 
-export type DataErrorCode = "network" | "not-found" | "validation";
+export type DataErrorCode =
+  | "network"
+  | "not-found"
+  | "validation"
+  | "unauthorized"
+  | "forbidden";
 
 // The one contract every data source implements, so the app and the demo share components.
 export type DataSource = {

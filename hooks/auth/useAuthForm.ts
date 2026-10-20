@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthError } from "@/services/auth/authError";
-import { writeSessionCookie } from "@/lib/auth/sessionCookie";
 import { HOME_PATH } from "@/lib/auth/constants";
 import { hasFieldErrors } from "@/utils/hasFieldErrors";
 import {
@@ -12,7 +11,7 @@ import {
   type FieldErrors,
 } from "@/types/auth";
 
-// Validates in the browser first, then asks the simulated server; on success stores the session and opens the feed.
+// Validates in the browser first, then asks the server; on success the session cookie is set and the feed opens.
 export function useAuthForm<TField extends string, TDetails>({
   validate,
   request,
@@ -30,7 +29,7 @@ export function useAuthForm<TField extends string, TDetails>({
     if (hasFieldErrors(errors)) return;
     setPending(true);
     try {
-      writeSessionCookie(await request(details));
+      await request(details);
       // Stays pending while the feed loads.
       router.replace(HOME_PATH);
     } catch (error) {

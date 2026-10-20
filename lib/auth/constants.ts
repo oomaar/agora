@@ -1,21 +1,18 @@
-import { APP_CONTENT } from "@/lib/seed/appContent";
-import { type Account } from "@/types/auth";
+import { type SignInDetails } from "@/types/auth";
 
-export const SESSION_COOKIE = "agora_session";
+// Session cookies are named agora.session_token (with __Secure- on https).
+export const AUTH_COOKIE_PREFIX = "agora";
 
-// 30 days.
+// 30 days, extended once a day while the session is in use.
 export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
 
-export const ACCOUNTS_STORAGE_KEY = "agora.accounts";
+export const SESSION_UPDATE_AGE_SECONDS = 60 * 60 * 24;
 
 export const HOME_PATH = "/home";
 
 export const WELCOME_PATH = "/";
 
 export const SIGNUP_PATH = "/signup";
-
-// Signed-in visitors skip these and land on the feed.
-export const SIGNED_OUT_PATHS = [WELCOME_PATH, SIGNUP_PATH];
 
 // Signed-out visitors are sent to the welcome page from these.
 export const PROTECTED_PATHS = [
@@ -28,14 +25,20 @@ export const PROTECTED_PATHS = [
   "/settings",
 ];
 
-// The seeded app account; the sign-in form starts filled in with it.
-export const SAMPLE_ACCOUNT: Account = {
+// The seeded account; the sign-in form starts filled in with it.
+export const SAMPLE_ACCOUNT: SignInDetails = {
   email: "sam@example.com",
   password: "agora-2026",
-  name: APP_CONTENT.self.name,
-  handle: APP_CONTENT.self.handle,
 };
+
+// The rest of the seeded community are profiles without a sign-in, on a reserved domain.
+export const SEED_EMAIL_DOMAIN = "example.com";
 
 export const PASSWORD_MIN_LENGTH = 8;
 
+export const PASSWORD_MAX_LENGTH = 128;
+
 export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Better Auth sends visitors back here with ?error=… when Google sign-in fails or is cancelled.
+export const OAUTH_ERROR_PARAM = "error";

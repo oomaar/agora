@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthForm } from "@/hooks/auth/useAuthForm";
-import { signUp } from "@/services/auth/simulatedAuth";
+import { signUp } from "@/services/auth/authApi";
 import { validateSignUp } from "@/services/auth/validation";
 import { type SignUpDetails, type SignUpField } from "@/types/auth";
 

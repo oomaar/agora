@@ -1,4 +1,8 @@
-import { EMAIL_PATTERN, PASSWORD_MIN_LENGTH } from "@/lib/auth/constants";
+import {
+  EMAIL_PATTERN,
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+} from "@/lib/auth/constants";
 import { HANDLE_PATTERN, NAME_MAX_LENGTH } from "@/lib/data/constants";
 import {
   type FieldErrors,
@@ -13,7 +17,29 @@ function emailError(email: string): string | undefined {
   if (!EMAIL_PATTERN.test(email.trim())) return "Enter a valid email address.";
 }
 
-// Run in the form before sending, and again by the simulated server.
+function passwordError(password: string): string | undefined {
+  if (password.length < PASSWORD_MIN_LENGTH)
+    return `Use at least ${PASSWORD_MIN_LENGTH} characters.`;
+  if (password.length > PASSWORD_MAX_LENGTH)
+    return `Use at most ${PASSWORD_MAX_LENGTH} characters.`;
+}
+
+// Shared by the sign-up form and the server's sign-up hook.
+export function nameError(name: string): string | undefined {
+  const trimmed = name.trim();
+  if (!trimmed) return "Enter your name.";
+  if (trimmed.length > NAME_MAX_LENGTH)
+    return `Your name can be up to ${NAME_MAX_LENGTH} characters.`;
+}
+
+export function handleError(handle: string): string | undefined {
+  const normalized = normalizeHandle(handle);
+  if (!normalized) return "Choose a handle.";
+  if (!HANDLE_PATTERN.test(normalized))
+    return "Use 2–30 lowercase letters, numbers, dots or underscores.";
+}
+
+// Run in the form before sending; the server checks again.
 export function validateSignIn(
   details: SignInDetails,
 ): FieldErrors<SignInField> {
@@ -26,24 +52,11 @@ export function validateSignIn(
 export function validateSignUp(
   details: SignUpDetails,
 ): FieldErrors<SignUpField> {
-  const name = details.name.trim();
-  const handle = normalizeHandle(details.handle);
   return {
-    name: !name
-      ? "Enter your name."
-      : name.length > NAME_MAX_LENGTH
-        ? `Your name can be up to ${NAME_MAX_LENGTH} characters.`
-        : undefined,
-    handle: !handle
-      ? "Choose a handle."
-      : HANDLE_PATTERN.test(handle)
-        ? undefined
-        : "Use 2–30 lowercase letters, numbers, dots or underscores.",
+    name: nameError(details.name),
+    handle: handleError(details.handle),
     email: emailError(details.email),
-    password:
-      details.password.length < PASSWORD_MIN_LENGTH
-        ? `Use at least ${PASSWORD_MIN_LENGTH} characters.`
-        : undefined,
+    password: passwordError(details.password),
   };
 }
 

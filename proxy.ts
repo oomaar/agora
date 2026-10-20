@@ -1,25 +1,20 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { getSessionCookie } from "better-auth/cookies";
 import {
-  HOME_PATH,
+  AUTH_COOKIE_PREFIX,
   PROTECTED_PATHS,
-  SESSION_COOKIE,
-  SIGNED_OUT_PATHS,
   WELCOME_PATH,
 } from "@/lib/auth/constants";
 import { matchesPath } from "@/utils/matchesPath";
-import { parseSession } from "@/utils/parseSession";
 
-// Optimistic redirects from the session cookie; the app layout checks the session again.
+// Optimistic: only checks that a session cookie exists. The app layout and every
+// API route check the session itself against the database.
 export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
   const signedIn = Boolean(
-    parseSession(request.cookies.get(SESSION_COOKIE)?.value),
+    getSessionCookie(request, { cookiePrefix: AUTH_COOKIE_PREFIX }),
   );
-  if (!signedIn && matchesPath(pathname, PROTECTED_PATHS)) {
+  if (!signedIn && matchesPath(request.nextUrl.pathname, PROTECTED_PATHS)) {
     return NextResponse.redirect(new URL(WELCOME_PATH, request.url));
-  }
-  if (signedIn && matchesPath(pathname, SIGNED_OUT_PATHS)) {
-    return NextResponse.redirect(new URL(HOME_PATH, request.url));
   }
   return NextResponse.next();
 }
