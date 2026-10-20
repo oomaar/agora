@@ -1,6 +1,7 @@
 import {
   type InputHTMLAttributes,
   type ReactNode,
+  type Ref,
   type TextareaHTMLAttributes,
 } from "react";
 
@@ -16,6 +17,7 @@ export type FieldProps = {
 };
 
 export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
+  ref?: Ref<HTMLInputElement>;
   label?: string;
   hint?: string;
   error?: string;
@@ -31,7 +33,10 @@ export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   wrapperClassName?: string;
 };
 
-export type SearchInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> & {
+export type SearchInputProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "size" | "type"
+> & {
   label: string;
   wrapperClassName?: string;
 };

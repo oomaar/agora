@@ -44,6 +44,15 @@ export type AppShellProps = {
 
 export type PageHeaderProps = {
   title: string;
+  // Shows a back button before the title.
+  back?: boolean;
+  // Rendered under the title, e.g. tabs; they bring their own bottom border.
+  children?: ReactNode;
+};
+
+export type BackButtonProps = {
+  // Where to go when there's no previous page in this tab.
+  fallbackHref: string;
 };
 
 export type RailCardProps = {
