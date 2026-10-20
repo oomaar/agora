@@ -3,15 +3,17 @@
 import Link from "next/link";
 import { type FormEvent } from "react";
 import { FormError } from "@/components/auth/FormError";
+import { GoogleButton } from "@/components/auth/GoogleButton";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useSignIn } from "@/hooks/auth/useSignIn";
 import { SAMPLE_ACCOUNT, SIGNUP_PATH } from "@/lib/auth/constants";
 import { TEXT_LINK } from "@/lib/public/constants";
 import { readFormText } from "@/utils/readFormText";
+import { type SignInFormProps } from "@/types/auth";
 
 // Starts filled in with the sample account, so a visitor can sign in straight away.
-export function SignInForm() {
+export function SignInForm({ oauthError }: SignInFormProps) {
   const { pending, fieldErrors, formError, submit } = useSignIn();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -48,6 +50,7 @@ export function SignInForm() {
       <Button type="submit" size="lg" fullWidth loading={pending}>
         {pending ? "Signing in…" : "Sign in"}
       </Button>
+      <GoogleButton initialError={oauthError} />
       <p className="text-center text-[13px] text-ag-text-secondary">
         New here?{" "}
         <Link href={SIGNUP_PATH} className={TEXT_LINK}>
