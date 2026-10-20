@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import { type DataError } from "@/services/dataError";
 import { type DataSource } from "@/types/dataSource";
+import { type PostView } from "@/types/domain";
 import {
   type DataPresetId,
   type ScenarioId,
@@ -101,4 +102,9 @@ export type AddCommentVariables = {
 export type SendMessageVariables = {
   tempId: string;
   text: string;
+};
+
+export type VotePollVariables = {
+  post: PostView;
+  optionId: string;
 };

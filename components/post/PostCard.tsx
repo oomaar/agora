@@ -1,6 +1,7 @@
 import { Avatar } from "@/components/ui/Avatar";
 import { PostActions } from "@/components/post/PostActions";
 import { PostMedia } from "@/components/post/PostMedia";
+import { PostPoll } from "@/components/post/PostPoll";
 import { cn } from "@/utils/cn";
 import { type PostCardProps } from "@/types/post";
 
@@ -9,11 +10,14 @@ export function PostCard({
   time,
   text,
   media,
+  poll,
   stats,
   liked,
+  reposted,
   pending = false,
   divider = true,
   onOpen,
+  onVote,
   onLike,
   onComment,
   onRepost,
@@ -32,7 +36,11 @@ export function PostCard({
         className,
       )}
     >
-      <Avatar name={author.name} handle={author.handle} src={author.avatarUrl} />
+      <Avatar
+        name={author.name}
+        handle={author.handle}
+        src={author.avatarUrl}
+      />
       <div className="flex min-w-0 flex-1 flex-col gap-2">
         <div className="flex min-w-0 items-baseline gap-1.5 text-[14px]">
           <span className="truncate font-semibold">{author.name}</span>
@@ -40,12 +48,16 @@ export function PostCard({
             @{author.handle} · {pending ? "Posting…" : time}
           </span>
         </div>
-        <p className="whitespace-pre-line break-words text-body text-pretty">{text}</p>
+        <p className="whitespace-pre-line break-words text-body text-pretty">
+          {text}
+        </p>
         {media && <PostMedia media={media} />}
+        {poll && <PostPoll poll={poll} onVote={pending ? undefined : onVote} />}
         {!pending && (
           <PostActions
             stats={stats}
             liked={liked}
+            reposted={reposted}
             onLike={onLike}
             onComment={onComment}
             onRepost={onRepost}
