@@ -6,13 +6,12 @@ import {
   removeNotification,
 } from "@/services/database/notifications";
 import { getUserByHandle } from "@/services/database/users";
+import { query, selectView, selectViews, transaction } from "@/lib/db/query";
 import {
-  query,
-  selectView,
-  selectViews,
-  transaction,
-} from "@/lib/db/query";
-import { NOT_FOUND, PROFILE_POSTS_LIMIT } from "@/lib/api/constants";
+  NOT_FOUND,
+  POLL_ERRORS,
+  PROFILE_POSTS_LIMIT,
+} from "@/lib/api/constants";
 import { FEED_LIMIT, SEARCH_LIMIT } from "@/lib/data/constants";
 import { escapeLike } from "@/utils/escapeLike";
 import { type PostTarget } from "@/types/api";
@@ -157,7 +156,10 @@ export function setReaction(
           postId,
         } as const;
         if (on) {
-          await createNotification(client, { ...notification, quote: post.text });
+          await createNotification(client, {
+            ...notification,
+            quote: post.text,
+          });
         } else {
           await removeNotification(client, notification);
         }
@@ -169,7 +171,7 @@ export function setReaction(
 
 export function createPost(
   viewerId: string,
-  { text, audience }: NewPost,
+  { text, audience, poll }: NewPost,
 ): Promise<PostView> {
   return transaction(async (client) => {
     const [{ id }] = await query<{ id: string }>(
@@ -177,6 +179,14 @@ export function createPost(
       [viewerId, text, audience],
       client,
     );
+    if (poll) {
+      await client.query(
+        `insert into poll_options (post_id, position, text)
+         select $1, option.position - 1, option.text
+         from unnest($2::text[]) with ordinality as option (text, position)`,
+        [id, poll],
+      );
+    }
     await notifyMentions(client, {
       actorId: viewerId,
       postId: id,
@@ -184,5 +194,46 @@ export function createPost(
       exclude: [],
     });
     return getPost(viewerId, id, client);
+  });
+}
+
+// Records the viewer's vote and bumps the option's count. Voting again for the
+// same option changes nothing; a different option is rejected.
+export function votePoll(
+  viewerId: string,
+  postId: string,
+  optionId: string,
+): Promise<PostView> {
+  return transaction(async (client) => {
+    await lockPost(client, viewerId, postId);
+    const options = await query<{ id: string }>(
+      "select id from poll_options where post_id = $1",
+      [postId],
+      client,
+    );
+    if (!options.length) throw new DataError("validation", POLL_ERRORS.noPoll);
+    if (!options.some((option) => option.id === optionId)) {
+      throw new DataError("validation", POLL_ERRORS.unknownOption);
+    }
+    const inserted = await client.query(
+      "insert into poll_votes (post_id, user_id, option_id) values ($1, $2, $3) on conflict do nothing",
+      [postId, viewerId, optionId],
+    );
+    if (inserted.rowCount) {
+      await client.query(
+        "update poll_options set vote_count = vote_count + 1 where id = $1",
+        [optionId],
+      );
+    } else {
+      const [vote] = await query<{ option_id: string }>(
+        "select option_id from poll_votes where post_id = $1 and user_id = $2",
+        [postId, viewerId],
+        client,
+      );
+      if (vote.option_id !== optionId) {
+        throw new DataError("validation", POLL_ERRORS.alreadyVoted);
+      }
+    }
+    return getPost(viewerId, postId, client);
   });
 }

@@ -1,7 +1,10 @@
+import { type Metadata } from "next";
 import { DemoHighlights } from "@/components/demo/DemoHighlights";
 import { DemoLandingHeader } from "@/components/demo/DemoLandingHeader";
 import { DemoPersonaCard } from "@/components/demo/DemoPersonaCard";
 import { ScenarioPicker } from "@/components/demo/ScenarioPicker";
+
+export const metadata: Metadata = { title: "Demo" };
 
 export default function DemoLandingPage() {
   return (

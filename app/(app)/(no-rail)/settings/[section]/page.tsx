@@ -1,3 +1,4 @@
+import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/shell/PageHeader";
 import { SETTINGS_SECTIONS } from "@/lib/shell/constants";
@@ -7,6 +8,14 @@ export const dynamicParams = false;
 
 export function generateStaticParams() {
   return SETTINGS_SECTIONS.map((section) => ({ section: section.id }));
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/settings/[section]">): Promise<Metadata> {
+  const { section } = await params;
+  const current = SETTINGS_SECTIONS.find((item) => item.id === section);
+  return { title: current ? `${current.label} · Settings` : "Settings" };
 }
 
 export default async function SettingsSectionPage({

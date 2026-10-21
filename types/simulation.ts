@@ -5,6 +5,7 @@ import {
   type Message,
   type Notification,
   type NotificationKind,
+  type PollVote,
   type Post,
   type Reaction,
   type Trend,
@@ -86,6 +87,7 @@ export type Database = {
   posts: Post[];
   comments: Comment[];
   reactions: Reaction[];
+  pollVotes: PollVote[];
   notifications: Notification[];
   conversations: Conversation[];
   messages: Message[];

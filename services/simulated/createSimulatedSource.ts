@@ -2,6 +2,7 @@ import { DataError } from "@/services/dataError";
 import {
   byNewest,
   getConversation,
+  getPollVote,
   getPost,
   getSelf,
   getUser,
@@ -10,6 +11,7 @@ import {
   isFollowing,
   nextId,
 } from "@/services/simulated/database";
+import { requirePollOptions } from "@/utils/requirePollOptions";
 import { requireText } from "@/utils/requireText";
 import {
   toCommentView,
@@ -30,6 +32,7 @@ import {
   POST_MAX_LENGTH,
   SEARCH_LIMIT,
 } from "@/lib/data/constants";
+import { POLL_ERRORS } from "@/lib/api/constants";
 import { firstName } from "@/utils/firstName";
 import { type Post, type PostView, type ReactionKind } from "@/types/domain";
 import { type DataSource, type ProfileTab } from "@/types/dataSource";
@@ -318,15 +321,52 @@ export function createSimulatedSource(
         },
       ),
 
-    createPost: ({ text, audience, media }) =>
+    votePoll: (postId, optionId) =>
       request(
         () => {
           const db = getDb();
+          const post = getPost(db, postId);
+          if (!post.poll) throw new DataError("validation", POLL_ERRORS.noPoll);
+          const option = post.poll.options.find((item) => item.id === optionId);
+          if (!option) {
+            throw new DataError("validation", POLL_ERRORS.unknownOption);
+          }
+          const vote = getPollVote(db, db.selfId, postId);
+          if (vote && vote.optionId !== optionId) {
+            throw new DataError("validation", POLL_ERRORS.alreadyVoted);
+          }
+          if (!vote) {
+            db.pollVotes.push({ postId, userId: db.selfId, optionId });
+            option.voteCount += 1;
+          }
+          return toPostView(db, post);
+        },
+        {
+          success: (post) => `Vote saved on ${postOwner(post)}`,
+          failure: "Vote failed · reverted",
+        },
+      ),
+
+    createPost: ({ text, audience, media, poll }) =>
+      request(
+        () => {
+          const db = getDb();
+          const postText = requireText(text, POST_MAX_LENGTH, "Your post");
+          const options = poll ? requirePollOptions(poll) : null;
           const post: Post = {
             id: nextId(db, "post"),
             authorId: db.selfId,
-            text: requireText(text, POST_MAX_LENGTH, "Your post"),
+            text: postText,
             media: media ? { ...media } : null,
+            poll: options
+              ? {
+                  options: options.map((option) => ({
+                    id: nextId(db, "option"),
+                    text: option,
+                    voteCount: 0,
+                  })),
+                }
+              : null,
             audience,
             createdAt: new Date().toISOString(),
             likeCount: 0,

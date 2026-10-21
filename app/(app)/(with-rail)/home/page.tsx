@@ -1,5 +1,8 @@
-import { PageHeader } from "@/components/shell/PageHeader";
+import { type Metadata } from "next";
+import { HomeFeed } from "@/components/feed/HomeFeed";
+
+export const metadata: Metadata = { title: "Home" };
 
 export default function HomePage() {
-  return <PageHeader title="Home" />;
+  return <HomeFeed />;
 }

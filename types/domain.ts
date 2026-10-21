@@ -16,11 +16,29 @@ export type User = {
 
 export type PostAudience = "everyone" | "following";
 
+export type PollOption = {
+  id: string;
+  text: string;
+  voteCount: number;
+};
+
+export type Poll = {
+  options: PollOption[];
+};
+
+// One vote per person per poll; the vote can't be changed.
+export type PollVote = {
+  postId: string;
+  userId: string;
+  optionId: string;
+};
+
 export type Post = {
   id: string;
   authorId: string;
   text: string;
   media: PostMedia | null;
+  poll: Poll | null;
   audience: PostAudience;
   createdAt: string;
   likeCount: number;
@@ -104,6 +122,8 @@ export type PostView = Post & {
   author: UserView;
   liked: boolean;
   reposted: boolean;
+  // The option the signed-in user voted for; null before voting or without a poll.
+  votedOptionId: string | null;
 };
 
 export type DeliveryStatus = "sending" | "sent" | "failed";

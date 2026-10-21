@@ -9,6 +9,7 @@ import {
   NAME_MAX_LENGTH,
   POST_MAX_LENGTH,
 } from "@/lib/data/constants";
+import { requirePollOptions } from "@/utils/requirePollOptions";
 import { requireText } from "@/utils/requireText";
 import { type JsonBody } from "@/types/api";
 import { type NewPost, type ProfileUpdate } from "@/types/dataSource";
@@ -64,6 +65,17 @@ export function readLimit(
   return Math.min(value, max);
 }
 
+function readPoll(value: unknown): string[] | null {
+  if (value === null || value === undefined) return null;
+  if (
+    !Array.isArray(value) ||
+    value.some((option) => typeof option !== "string")
+  ) {
+    invalid('"poll" must be a list of option texts.');
+  }
+  return requirePollOptions(value);
+}
+
 export function readNewPost(body: JsonBody): NewPost {
   // Photo and video uploads arrive in the media phase; until then posts are text only.
   if (body.media !== null && body.media !== undefined) {
@@ -73,6 +85,7 @@ export function readNewPost(body: JsonBody): NewPost {
     text: requireText(readString(body, "text"), POST_MAX_LENGTH, "Your post"),
     audience: readOption(body.audience, POST_AUDIENCES, "Audience"),
     media: null,
+    poll: readPoll(body.poll),
   };
 }
 

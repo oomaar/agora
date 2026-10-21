@@ -1,5 +1,6 @@
 import {
   byNewest,
+  getPollVote,
   getUser,
   hasReaction,
   isFollowing,
@@ -36,9 +37,13 @@ export function toPostView(db: Database, post: Post): PostView {
   return {
     ...post,
     media: post.media ? { ...post.media } : null,
+    poll: post.poll
+      ? { options: post.poll.options.map((option) => ({ ...option })) }
+      : null,
     author: toUserView(db, getUser(db, post.authorId)),
     liked: hasReaction(db, db.selfId, post.id, "like"),
     reposted: hasReaction(db, db.selfId, post.id, "repost"),
+    votedOptionId: getPollVote(db, db.selfId, post.id)?.optionId ?? null,
   };
 }
 

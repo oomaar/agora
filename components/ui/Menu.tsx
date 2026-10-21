@@ -3,6 +3,7 @@
 import { useId } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { useMenu } from "@/hooks/ui/useMenu";
+import { MENU_TRIGGER_BASE, MENU_TRIGGER_VARIANTS } from "@/lib/ui/menu";
 import { cn } from "@/utils/cn";
 import { type MenuProps } from "@/types/menu";
 
@@ -12,6 +13,7 @@ export function Menu({
   items,
   align = "end",
   side = "bottom",
+  triggerVariant = "icon",
   triggerClassName,
   className,
 }: MenuProps) {
@@ -38,7 +40,8 @@ export function Menu({
         onClick={onTriggerClick}
         onKeyDown={onTriggerKeyDown}
         className={cn(
-          "grid min-h-8.5 min-w-8.5 cursor-pointer place-items-center rounded-full text-ag-text-secondary outline-none transition-colors hover:bg-ag-hover hover:text-ag-text focus-visible:shadow-ag-focus-ring",
+          MENU_TRIGGER_BASE,
+          MENU_TRIGGER_VARIANTS[triggerVariant],
           triggerClassName,
         )}
       >
@@ -61,7 +64,8 @@ export function Menu({
               key={item.id}
               ref={setItemRef(index)}
               type="button"
-              role="menuitem"
+              role={item.selected === undefined ? "menuitem" : "menuitemradio"}
+              aria-checked={item.selected}
               tabIndex={-1}
               onClick={() => {
                 item.onSelect();
@@ -74,6 +78,11 @@ export function Menu({
             >
               {item.icon && <Icon name={item.icon} size={17} />}
               {item.label}
+              {item.selected && (
+                <span className="ml-auto text-ag-accent-text">
+                  <Icon name="check" size={16} />
+                </span>
+              )}
             </button>
           ))}
         </div>
