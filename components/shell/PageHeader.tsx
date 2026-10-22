@@ -3,7 +3,12 @@ import { NAV_ITEMS } from "@/lib/shell/constants";
 import { cn } from "@/utils/cn";
 import { type PageHeaderProps } from "@/types/shell";
 
-export function PageHeader({ title, back = false, children }: PageHeaderProps) {
+export function PageHeader({
+  title,
+  back = false,
+  action,
+  children,
+}: PageHeaderProps) {
   return (
     <header
       className={cn(
@@ -19,6 +24,7 @@ export function PageHeader({ title, back = false, children }: PageHeaderProps) {
       >
         {back && <BackButton fallbackHref={NAV_ITEMS[0].href} />}
         <h1 className="text-h3">{title}</h1>
+        {action && <div className="ml-auto">{action}</div>}
       </div>
       {children}
     </header>
