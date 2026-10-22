@@ -1,8 +1,8 @@
 import { type Metadata } from "next";
-import { PageHeader } from "@/components/shell/PageHeader";
+import { NotificationsView } from "@/components/notifications/NotificationsView";
 
 export const metadata: Metadata = { title: "Notifications" };
 
 export default function NotificationsPage() {
-  return <PageHeader title="Notifications" />;
+  return <NotificationsView />;
 }
