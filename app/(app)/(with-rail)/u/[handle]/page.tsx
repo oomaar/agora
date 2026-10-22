@@ -1,4 +1,5 @@
 import { type Metadata } from "next";
+import { ProfileView } from "@/components/profile/ProfileView";
 import { PageHeader } from "@/components/shell/PageHeader";
 
 export async function generateMetadata({
@@ -11,6 +12,11 @@ export async function generateMetadata({
 export default async function ProfilePage({
   params,
 }: PageProps<"/u/[handle]">) {
-  const { handle } = await params;
-  return <PageHeader title={`@${decodeURIComponent(handle)}`} />;
+  const handle = decodeURIComponent((await params).handle);
+  return (
+    <>
+      <PageHeader title={`@${handle}`} back />
+      <ProfileView handle={handle} />
+    </>
+  );
 }

@@ -46,6 +46,8 @@ export type PageHeaderProps = {
   title: string;
   // Shows a back button before the title.
   back?: boolean;
+  // Shown at the end of the title row, e.g. "Mark all as read".
+  action?: ReactNode;
   // Rendered under the title, e.g. tabs; they bring their own bottom border.
   children?: ReactNode;
 };
