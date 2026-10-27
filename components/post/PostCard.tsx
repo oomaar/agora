@@ -8,6 +8,8 @@ import { type PostCardProps } from "@/types/post";
 export function PostCard({
   author,
   time,
+  edited = false,
+  menu,
   text,
   media,
   poll,
@@ -42,11 +44,15 @@ export function PostCard({
         src={author.avatarUrl}
       />
       <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <div className="flex min-w-0 items-baseline gap-1.5 text-[14px]">
-          <span className="truncate font-semibold">{author.name}</span>
-          <span className="truncate text-ag-text-secondary">
-            @{author.handle} · {pending ? "Posting…" : time}
-          </span>
+        <div className="flex min-w-0 items-center gap-2">
+          <div className="flex min-w-0 flex-1 items-baseline gap-1.5 text-[14px]">
+            <span className="truncate font-semibold">{author.name}</span>
+            <span className="truncate text-ag-text-secondary">
+              @{author.handle} · {pending ? "Posting…" : time}
+              {edited && " · Edited"}
+            </span>
+          </div>
+          {menu}
         </div>
         <p className="whitespace-pre-line wrap-break-word text-body text-pretty">
           {text}

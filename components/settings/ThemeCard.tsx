@@ -23,7 +23,7 @@ export function ThemeCard({
     >
       <span
         aria-hidden="true"
-        className="flex h-11 overflow-hidden rounded-[6px] border border-ag-border"
+        className="flex h-11 overflow-hidden rounded-xs border border-ag-border"
       >
         {option.swatches.map((swatch) => (
           <span key={swatch} className={cn("flex-1", swatch)} />

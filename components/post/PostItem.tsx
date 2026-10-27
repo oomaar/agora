@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { PostCard } from "@/components/post/PostCard";
+import { PostOwnerMenu } from "@/components/post/PostOwnerMenu";
 import { useSharePost } from "@/hooks/posts/useSharePost";
 import { useToggleLike } from "@/hooks/posts/useToggleLike";
 import { useToggleRepost } from "@/hooks/posts/useToggleRepost";
@@ -11,7 +12,8 @@ import { formatRelativeTime } from "@/utils/formatRelativeTime";
 import { postPath } from "@/utils/postPath";
 import { type PostItemProps } from "@/types/feed";
 
-// A post card wired to the data layer: opens the post, likes, reposts, votes and shares.
+// A post card wired to the data layer: opens the post, likes, reposts, votes and
+// shares; your own posts also get Edit and Delete.
 export function PostItem({ post }: PostItemProps) {
   const router = useRouter();
   const like = useToggleLike();
@@ -22,6 +24,8 @@ export function PostItem({ post }: PostItemProps) {
     <PostCard
       author={post.author}
       time={formatRelativeTime(post.createdAt)}
+      edited={post.editedAt !== null}
+      menu={post.author.isSelf ? <PostOwnerMenu post={post} /> : undefined}
       text={post.text}
       media={post.media ?? undefined}
       poll={
