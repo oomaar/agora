@@ -37,6 +37,7 @@ export type SearchInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   "size" | "type"
 > & {
+  ref?: Ref<HTMLInputElement>;
   label: string;
   wrapperClassName?: string;
 };
