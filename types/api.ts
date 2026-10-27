@@ -26,6 +26,8 @@ export type HandleParams = { handle: string };
 
 export type UserIdParams = { userId: string };
 
+export type PhotoParams = { kind: string };
+
 // Every failed API response has this body.
 export type ApiErrorBody = {
   error: { code: DataErrorCode; message: string };
@@ -58,4 +60,10 @@ export type MentionInput = {
 export type PostTarget = {
   author_id: string;
   text: string;
+};
+
+export type CommentTarget = {
+  author_id: string;
+  post_id: string;
+  post_author_id: string;
 };

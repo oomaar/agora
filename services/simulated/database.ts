@@ -1,4 +1,5 @@
 import { DataError } from "@/services/dataError";
+import { NOT_FOUND, OWNER_ERRORS } from "@/lib/api/constants";
 import { DEFAULT_SETTINGS } from "@/lib/data/constants";
 import { type PollVote, type ReactionKind, type User } from "@/types/domain";
 import { type Database } from "@/types/simulation";
@@ -57,6 +58,24 @@ export function getPost(db: Database, postId: string) {
       "This post isn't available. It may have been deleted.",
     );
   return post;
+}
+
+// The signed-in user's own post or comment; anyone else's can't be changed.
+export function getOwnPost(db: Database, postId: string) {
+  const post = getPost(db, postId);
+  if (post.authorId !== db.selfId) {
+    throw new DataError("forbidden", OWNER_ERRORS.post);
+  }
+  return post;
+}
+
+export function getOwnComment(db: Database, commentId: string) {
+  const comment = db.comments.find((candidate) => candidate.id === commentId);
+  if (!comment) throw new DataError("not-found", NOT_FOUND.comment);
+  if (comment.authorId !== db.selfId) {
+    throw new DataError("forbidden", OWNER_ERRORS.comment);
+  }
+  return comment;
 }
 
 export function getConversation(db: Database, conversationId: string) {

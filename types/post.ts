@@ -1,9 +1,10 @@
+import { type ReactNode } from "react";
 import { type PollOption } from "@/types/domain";
 
 export type PostAuthor = {
   name: string;
   handle: string;
-  avatarUrl?: string;
+  avatarUrl?: string | null;
 };
 
 export type PostMediaKind = "image" | "video";
@@ -12,6 +13,9 @@ export type PostMedia = {
   kind: PostMediaKind;
   label: string;
   src?: string;
+  // Uploaded media's pixel size; missing on seed placeholders.
+  width?: number;
+  height?: number;
 };
 
 export type PostStats = {
@@ -33,6 +37,9 @@ export type PostPollProps = {
 export type PostCardProps = {
   author: PostAuthor;
   time: string;
+  edited?: boolean;
+  // Shown at the end of the header, e.g. the ⋯ menu on your own posts.
+  menu?: ReactNode;
   text: string;
   media?: PostMedia;
   poll?: PostPollData;
@@ -63,4 +70,10 @@ export type PostActionsProps = {
   onComment?: () => void;
   onRepost?: () => void;
   onShare?: () => void;
+};
+
+export type MediaViewerProps = {
+  open: boolean;
+  onClose: () => void;
+  media: PostMedia & { src: string };
 };

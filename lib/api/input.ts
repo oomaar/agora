@@ -2,7 +2,13 @@ import "server-only";
 import { type NextRequest } from "next/server";
 import { DataError } from "@/services/dataError";
 import { normalizeHandle } from "@/services/auth/validation";
-import { API_ERROR_MESSAGES, POST_AUDIENCES } from "@/lib/api/constants";
+import { readOwnedMedia } from "@/services/blob/readOwnedMedia";
+import {
+  API_ERROR_MESSAGES,
+  POST_AUDIENCES,
+  UPLOAD_PURPOSES,
+} from "@/lib/api/constants";
+import { MAX_MEDIA_DIMENSION, MEDIA_LABELS } from "@/lib/media/constants";
 import {
   BIO_MAX_LENGTH,
   HANDLE_PATTERN,
@@ -12,6 +18,8 @@ import {
 import { requirePollOptions } from "@/utils/requirePollOptions";
 import { requireText } from "@/utils/requireText";
 import { type JsonBody } from "@/types/api";
+import { type ProfilePhotoKind, type UploadRequest } from "@/types/media";
+import { type PostMedia } from "@/types/post";
 import {
   type NewPost,
   type ProfileUpdate,
@@ -80,17 +88,60 @@ function readPoll(value: unknown): string[] | null {
   return requirePollOptions(value);
 }
 
-export function readNewPost(body: JsonBody): NewPost {
-  // Photo and video uploads arrive in the media phase; until then posts are text only.
-  if (body.media !== null && body.media !== undefined) {
-    invalid("Photos and videos can't be attached yet.");
+// Pixel size measured in the browser, so posts can show media at its own shape.
+function readDimension(value: unknown): number | null {
+  return Number.isInteger(value) &&
+    (value as number) > 0 &&
+    (value as number) <= MAX_MEDIA_DIMENSION
+    ? (value as number)
+    : null;
+}
+
+// The file's URL is checked; kind and label come from the server.
+function readPostMedia(value: unknown, viewerId: string): PostMedia | null {
+  if (value === null || value === undefined) return null;
+  if (typeof value !== "object" || Array.isArray(value)) {
+    invalid('"media" must be an object with a "src".');
   }
+  const media = value as JsonBody;
+  const { url, kind } = readOwnedMedia(media.src, "post", viewerId);
+  const width = readDimension(media.width);
+  const height = readDimension(media.height);
+  return {
+    kind,
+    label: MEDIA_LABELS[kind],
+    src: url,
+    ...(width && height ? { width, height } : {}),
+  };
+}
+
+export function readNewPost(body: JsonBody, viewerId: string): NewPost {
   return {
     text: requireText(readString(body, "text"), POST_MAX_LENGTH, "Your post"),
     audience: readOption(body.audience, POST_AUDIENCES, "Audience"),
-    media: null,
+    media: readPostMedia(body.media, viewerId),
     poll: readPoll(body.poll),
   };
+}
+
+export function readUploadRequest(body: JsonBody): UploadRequest {
+  const size = body.size;
+  if (typeof size !== "number" || !Number.isInteger(size)) {
+    invalid('"size" must be a whole number of bytes.');
+  }
+  return {
+    purpose: readOption(body.purpose, UPLOAD_PURPOSES, "Purpose"),
+    contentType: readString(body, "contentType"),
+    size,
+  };
+}
+
+export function readPhotoUrl(
+  body: JsonBody,
+  kind: ProfilePhotoKind,
+  viewerId: string,
+): string {
+  return readOwnedMedia(body.url, kind, viewerId).url;
 }
 
 export function readProfileUpdate(body: JsonBody): ProfileUpdate {

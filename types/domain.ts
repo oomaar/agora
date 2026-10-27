@@ -9,6 +9,9 @@ export type User = {
   handle: string;
   bio: string;
   location: string | null;
+  // Uploaded to Blob; null shows initials / the striped placeholder.
+  avatarUrl: string | null;
+  coverUrl: string | null;
   joinedAt: string;
   followingCount: number;
   followerCount: number;
@@ -41,6 +44,8 @@ export type Post = {
   poll: Poll | null;
   audience: PostAudience;
   createdAt: string;
+  // null until the author edits the text.
+  editedAt: string | null;
   likeCount: number;
   repostCount: number;
   commentCount: number;
@@ -52,6 +57,7 @@ export type Comment = {
   authorId: string;
   text: string;
   createdAt: string;
+  editedAt: string | null;
 };
 
 export type ReactionKind = "like" | "repost";

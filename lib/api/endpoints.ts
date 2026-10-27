@@ -3,6 +3,7 @@ import {
   type NotificationFilter,
   type ProfileTab,
 } from "@/types/dataSource";
+import { type ProfilePhotoKind } from "@/types/media";
 
 const encode = encodeURIComponent;
 
@@ -10,10 +11,13 @@ const encode = encodeURIComponent;
 export const API_PATHS = {
   me: "/api/me",
   settings: "/api/me/settings",
+  photo: (kind: ProfilePhotoKind) => `/api/me/photos/${kind}`,
+  uploads: "/api/uploads",
   feed: (tab: FeedTab) => `/api/feed?tab=${tab}`,
   posts: "/api/posts",
   post: (postId: string) => `/api/posts/${encode(postId)}`,
   comments: (postId: string) => `/api/posts/${encode(postId)}/comments`,
+  comment: (commentId: string) => `/api/comments/${encode(commentId)}`,
   like: (postId: string) => `/api/posts/${encode(postId)}/like`,
   repost: (postId: string) => `/api/posts/${encode(postId)}/repost`,
   vote: (postId: string) => `/api/posts/${encode(postId)}/vote`,
