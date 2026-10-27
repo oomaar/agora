@@ -14,7 +14,12 @@ export function SuggestedPerson({ person }: SuggestedPersonProps) {
         href={`/u/${person.handle}`}
         className="flex min-w-0 flex-1 items-center gap-2.5 rounded-md outline-none focus-visible:shadow-ag-focus-ring"
       >
-        <Avatar name={person.name} handle={person.handle} size="sm" />
+        <Avatar
+          name={person.name}
+          handle={person.handle}
+          src={person.avatarUrl}
+          size="sm"
+        />
         <span className="flex min-w-0 flex-col">
           <span className="truncate text-[13.5px] font-semibold">
             {person.name}

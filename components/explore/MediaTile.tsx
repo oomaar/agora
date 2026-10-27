@@ -15,7 +15,18 @@ export function MediaTile({ post }: MediaTileProps) {
         aria-label={`${media.kind === "video" ? "Video" : "Photo"} by ${post.author.name}: ${media.label}`}
         className="media-stripes relative grid aspect-square place-items-center overflow-hidden rounded-sm border border-ag-border-subtle outline-none transition-opacity hover:opacity-85 focus-visible:shadow-ag-focus-ring"
       >
-        {media.src ? (
+        {media.src && media.kind === "video" ? (
+          // The first frame stands in for a thumbnail.
+          <video
+            src={media.src}
+            muted
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            tabIndex={-1}
+            className="absolute inset-0 size-full object-cover"
+          />
+        ) : media.src ? (
           <Image
             src={media.src}
             alt=""

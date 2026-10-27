@@ -14,7 +14,11 @@ export function PersonRow({ person }: PersonProps) {
         href={`/u/${person.handle}`}
         className="flex min-w-0 flex-1 gap-3 rounded-md outline-none focus-visible:shadow-ag-focus-ring"
       >
-        <Avatar name={person.name} handle={person.handle} />
+        <Avatar
+          name={person.name}
+          handle={person.handle}
+          src={person.avatarUrl}
+        />
         <span className="flex min-w-0 flex-col gap-0.5">
           <span className="truncate text-[14.5px] font-semibold">
             {person.name}

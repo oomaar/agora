@@ -20,7 +20,12 @@ export function NotificationItem({ notification }: NotificationItemProps) {
         {!read && <span className="block size-2 rounded-full bg-ag-accent" />}
       </span>
       {actor ? (
-        <Avatar name={actor.name} handle={actor.handle} size="sm" />
+        <Avatar
+          name={actor.name}
+          handle={actor.handle}
+          src={actor.avatarUrl}
+          size="sm"
+        />
       ) : (
         <LogoMark size={36} />
       )}

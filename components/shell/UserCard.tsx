@@ -68,14 +68,14 @@ export function UserCard() {
     );
   }
 
-  const { name, handle } = user.data;
+  const { name, handle, avatarUrl } = user.data;
   return (
     <div className="flex items-center gap-1 rounded-md transition-colors nav:hover:bg-ag-nav-hover">
       <Link
         href={`/u/${handle}`}
         className="flex min-w-0 flex-1 items-center justify-center gap-2.5 rounded-md px-1.5 py-2 outline-none focus-visible:shadow-ag-focus-ring nav:justify-start nav:px-2.5"
       >
-        <Avatar name={name} handle={handle} size="sm" />
+        <Avatar name={name} handle={handle} src={avatarUrl} size="sm" />
         <span className="hidden min-w-0 flex-col nav:flex">
           <span className="truncate text-[13.5px] font-semibold">{name}</span>
           <span className="truncate text-[12px] text-ag-text-secondary">

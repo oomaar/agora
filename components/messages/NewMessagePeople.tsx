@@ -68,7 +68,12 @@ export function NewMessagePeople({
             aria-busy={pendingId === person.id || undefined}
             className="flex w-full cursor-pointer items-center gap-3 px-4.5 py-2.5 text-left outline-none transition-colors hover:bg-ag-hover focus-visible:shadow-ag-focus-ring disabled:cursor-default"
           >
-            <Avatar name={person.name} handle={person.handle} size="sm" />
+            <Avatar
+              name={person.name}
+              handle={person.handle}
+              src={person.avatarUrl}
+              size="sm"
+            />
             <span className="flex min-w-0 flex-1 flex-col">
               <span className="truncate text-[14px] font-semibold">
                 {person.name}
