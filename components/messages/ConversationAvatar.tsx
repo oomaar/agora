@@ -15,6 +15,11 @@ export function ConversationAvatar({
       size={size}
     />
   ) : (
-    <Avatar name={person.name} handle={person.handle} size={size} />
+    <Avatar
+      name={person.name}
+      handle={person.handle}
+      src={person.avatarUrl}
+      size={size}
+    />
   );
 }

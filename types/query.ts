@@ -30,6 +30,8 @@ export type QueryCache = {
     id: string,
     update: (entity: E) => E,
   ) => void;
+  // Drops the entity with this id from every cached list that contains it.
+  removeEntity: (id: string) => void;
   invalidate: (match: (key: string) => boolean) => void;
   // Drops everything and reloads the queries still on screen.
   reset: () => void;
@@ -107,4 +109,9 @@ export type SendMessageVariables = {
 export type VotePollVariables = {
   post: PostView;
   optionId: string;
+};
+
+export type EditTextVariables = {
+  id: string;
+  text: string;
 };

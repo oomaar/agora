@@ -30,6 +30,7 @@ export function useAddComment(postId: string) {
                 authorId: self.id,
                 text,
                 createdAt: new Date().toISOString(),
+                editedAt: null,
                 author: self,
                 status: "sending",
               },

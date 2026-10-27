@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ProfileStat } from "@/components/profile/ProfileStat";
 import { Avatar } from "@/components/ui/Avatar";
@@ -21,14 +22,26 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
       aria-label={`${user.name}'s profile`}
       className="border-b border-ag-border-subtle"
     >
-      {/* Cover photos arrive with uploads (9.3). */}
-      <div
-        aria-hidden="true"
-        className="media-stripes h-45 border-b border-ag-border-subtle"
-      />
+      <div className="media-stripes relative h-45 border-b border-ag-border-subtle">
+        {user.coverUrl && (
+          <Image
+            src={user.coverUrl}
+            alt={`${user.name}'s cover image`}
+            fill
+            priority
+            sizes="(min-width: 640px) 640px, 100vw"
+            className="object-cover"
+          />
+        )}
+      </div>
       <div className="flex flex-col gap-3 px-5 pb-4.5">
         <div className="-mt-11 flex items-end justify-between gap-3">
-          <Avatar name={user.name} handle={user.handle} size="xl" />
+          <Avatar
+            name={user.name}
+            handle={user.handle}
+            src={user.avatarUrl}
+            size="xl"
+          />
           {user.isSelf ? (
             <Button
               variant="secondary"

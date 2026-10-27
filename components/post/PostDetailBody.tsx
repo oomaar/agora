@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { PostDetailActions } from "@/components/post/PostDetailActions";
 import { PostMedia } from "@/components/post/PostMedia";
+import { PostOwnerMenu } from "@/components/post/PostOwnerMenu";
 import { PostPoll } from "@/components/post/PostPoll";
 import { PostStatsLine } from "@/components/post/PostStatsLine";
 import { Avatar } from "@/components/ui/Avatar";
@@ -13,11 +15,14 @@ import { useToggleRepost } from "@/hooks/posts/useToggleRepost";
 import { useVotePoll } from "@/hooks/posts/useVotePoll";
 import { useToggleFollow } from "@/hooks/users/useToggleFollow";
 import { AUDIENCE_LABELS } from "@/lib/posts/constants";
+import { NAV_ITEMS } from "@/lib/shell/constants";
 import { formatPostDate } from "@/utils/formatPostDate";
 import { type PostDetailBodyProps } from "@/types/postDetail";
 
-// The full post: author and Follow, text, media or poll, date, stats and the action row.
+// The full post: author and Follow (or Edit / Delete on your own), text, media or
+// poll, date, stats and the action row. Deleting it goes back Home.
 export function PostDetailBody({ post, onComment }: PostDetailBodyProps) {
+  const router = useRouter();
   const like = useToggleLike();
   const repost = useToggleRepost();
   const vote = useVotePoll();
@@ -31,7 +36,12 @@ export function PostDetailBody({ post, onComment }: PostDetailBodyProps) {
           href={`/u/${author.handle}`}
           className="flex min-w-0 flex-1 items-center gap-3 rounded-md outline-none focus-visible:shadow-ag-focus-ring"
         >
-          <Avatar name={author.name} handle={author.handle} size="lg" />
+          <Avatar
+            name={author.name}
+            handle={author.handle}
+            src={author.avatarUrl}
+            size="lg"
+          />
           <span className="flex min-w-0 flex-col">
             <span className="truncate text-title">{author.name}</span>
             <span className="truncate text-[13.5px] text-ag-text-secondary">
@@ -39,7 +49,12 @@ export function PostDetailBody({ post, onComment }: PostDetailBodyProps) {
             </span>
           </span>
         </Link>
-        {!author.isSelf && (
+        {author.isSelf ? (
+          <PostOwnerMenu
+            post={post}
+            onDeleted={() => router.replace(NAV_ITEMS[0].href)}
+          />
+        ) : (
           <FollowButton
             following={author.isFollowing}
             onToggle={() => follow.run(author)}
@@ -59,6 +74,7 @@ export function PostDetailBody({ post, onComment }: PostDetailBodyProps) {
       )}
       <p className="text-[13.5px] text-ag-text-secondary">
         <time dateTime={post.createdAt}>{formatPostDate(post.createdAt)}</time>
+        {post.editedAt && " · Edited"}
         {post.audience === "following" &&
           ` · ${AUDIENCE_LABELS.following} only`}
       </p>

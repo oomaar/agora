@@ -60,6 +60,7 @@ function seedComments(
       authorId: comment.authorId,
       text: comment.text,
       createdAt: minutesAgo(now, comment.ageMinutes),
+      editedAt: null,
     });
   }
   post.commentCount = comments.length;
@@ -105,6 +106,7 @@ export function seedPosts(context: SeedContext): void {
       poll: null,
       audience: "everyone",
       createdAt: minutesAgo(now, seed.ageMinutes),
+      editedAt: null,
       likeCount: seed.likes,
       repostCount: seed.reposts,
       commentCount: 0,

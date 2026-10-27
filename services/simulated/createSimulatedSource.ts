@@ -2,6 +2,8 @@ import { DataError } from "@/services/dataError";
 import {
   byNewest,
   getConversation,
+  getOwnComment,
+  getOwnPost,
   getPollVote,
   getPost,
   getSelf,
@@ -11,6 +13,8 @@ import {
   isFollowing,
   nextId,
 } from "@/services/simulated/database";
+import { simulateProgress } from "@/services/simulated/simulateProgress";
+import { checkUpload } from "@/utils/checkUpload";
 import { requirePollOptions } from "@/utils/requirePollOptions";
 import { requireText } from "@/utils/requireText";
 import {
@@ -33,6 +37,8 @@ import {
   SEARCH_LIMIT,
 } from "@/lib/data/constants";
 import { CONVERSATION_ERRORS, POLL_ERRORS } from "@/lib/api/constants";
+import { MEDIA_LABELS, MEDIA_TYPES } from "@/lib/media/constants";
+import { NETWORK_ERROR_MESSAGE } from "@/lib/simulation/constants";
 import { firstName } from "@/utils/firstName";
 import { type Post, type PostView, type ReactionKind } from "@/types/domain";
 import { type DataSource, type ProfileTab } from "@/types/dataSource";
@@ -371,6 +377,7 @@ export function createSimulatedSource(
               : null,
             audience,
             createdAt: new Date().toISOString(),
+            editedAt: null,
             likeCount: 0,
             repostCount: 0,
             commentCount: 0,
@@ -379,6 +386,35 @@ export function createSimulatedSource(
           return toPostView(db, post);
         },
         { success: () => "Post published", failure: "Post failed to publish" },
+      ),
+
+    updatePost: (postId, text) =>
+      request(
+        () => {
+          const db = getDb();
+          const post = getOwnPost(db, postId);
+          post.text = requireText(text, POST_MAX_LENGTH, "Your post");
+          post.editedAt = new Date().toISOString();
+          return toPostView(db, post);
+        },
+        { success: () => "Post edited", failure: "Post edit wasn't saved" },
+      ),
+
+    deletePost: (postId) =>
+      request(
+        () => {
+          const db = getDb();
+          getOwnPost(db, postId);
+          db.posts = db.posts.filter((post) => post.id !== postId);
+          db.comments = db.comments.filter((item) => item.postId !== postId);
+          db.reactions = db.reactions.filter((item) => item.postId !== postId);
+          db.pollVotes = db.pollVotes.filter((item) => item.postId !== postId);
+          db.notifications = db.notifications.filter(
+            (item) => item.postId !== postId,
+          );
+          return null;
+        },
+        { success: () => "Post deleted", failure: "Post wasn't deleted" },
       ),
 
     addComment: (postId, text) =>
@@ -392,12 +428,41 @@ export function createSimulatedSource(
             authorId: db.selfId,
             text: requireText(text, COMMENT_MAX_LENGTH, "Your comment"),
             createdAt: new Date().toISOString(),
+            editedAt: null,
           };
           db.comments.push(comment);
           post.commentCount += 1;
           return toCommentView(db, comment);
         },
         { success: () => "Comment posted", failure: "Comment failed to send" },
+      ),
+
+    updateComment: (commentId, text) =>
+      request(
+        () => {
+          const db = getDb();
+          const comment = getOwnComment(db, commentId);
+          comment.text = requireText(text, COMMENT_MAX_LENGTH, "Your comment");
+          comment.editedAt = new Date().toISOString();
+          return toCommentView(db, comment);
+        },
+        {
+          success: () => "Comment edited",
+          failure: "Comment edit wasn't saved",
+        },
+      ),
+
+    deleteComment: (commentId) =>
+      request(
+        () => {
+          const db = getDb();
+          const comment = getOwnComment(db, commentId);
+          db.comments = db.comments.filter((item) => item.id !== commentId);
+          const post = getPost(db, comment.postId);
+          post.commentCount = Math.max(0, post.commentCount - 1);
+          return null;
+        },
+        { success: () => "Comment deleted", failure: "Comment wasn't deleted" },
       ),
 
     startConversation: (userId) =>
@@ -513,6 +578,48 @@ export function createSimulatedSource(
           failure: "Profile changes weren't saved",
         },
       ),
+
+    setProfilePhoto: (kind, url) =>
+      request(
+        () => {
+          const db = getDb();
+          const self = getSelf(db);
+          if (kind === "avatar") self.avatarUrl = url;
+          else self.coverUrl = url;
+          return toUserView(db, self);
+        },
+        {
+          success: () =>
+            `${kind === "avatar" ? "Profile photo" : "Cover"} ${url ? "saved" : "removed"}`,
+          failure: "Photo change wasn't saved",
+        },
+      ),
+
+    // The file stays in the browser: the "uploaded" URL is a local object URL.
+    uploadMedia: async (file, purpose, { onProgress, signal } = {}) => {
+      const stopProgress = simulateProgress(onProgress);
+      try {
+        return await request(
+          () => {
+            const problem = checkUpload(purpose, file.type, file.size);
+            if (problem) throw new DataError("validation", problem);
+            if (signal?.aborted) {
+              throw new DataError("network", NETWORK_ERROR_MESSAGE);
+            }
+            return {
+              url: URL.createObjectURL(file),
+              kind: MEDIA_TYPES[file.type].kind,
+            };
+          },
+          {
+            success: (media) => `${MEDIA_LABELS[media.kind]} uploaded`,
+            failure: "Upload failed",
+          },
+        );
+      } finally {
+        stopProgress();
+      }
+    },
 
     updateSettings: (update) =>
       request(

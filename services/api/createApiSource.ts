@@ -1,6 +1,9 @@
 import { request } from "@/services/api/request";
+import { uploadToBlob } from "@/services/api/uploadToBlob";
+import { MEDIA_TYPES } from "@/lib/media/constants";
 import { API_PATHS } from "@/lib/api/endpoints";
 import { type DataSource } from "@/types/dataSource";
+import { type UploadGrant } from "@/types/media";
 
 // The DataSource contract implemented against the app's API (app/api/*).
 export function createApiSource(): DataSource {
@@ -34,8 +37,19 @@ export function createApiSource(): DataSource {
       request(API_PATHS.vote(postId), { method: "PUT", body: { optionId } }),
     createPost: (post) =>
       request(API_PATHS.posts, { method: "POST", body: post }),
+    updatePost: (postId, text) =>
+      request(API_PATHS.post(postId), { method: "PATCH", body: { text } }),
+    deletePost: (postId) =>
+      request(API_PATHS.post(postId), { method: "DELETE" }),
     addComment: (postId, text) =>
       request(API_PATHS.comments(postId), { method: "POST", body: { text } }),
+    updateComment: (commentId, text) =>
+      request(API_PATHS.comment(commentId), {
+        method: "PATCH",
+        body: { text },
+      }),
+    deleteComment: (commentId) =>
+      request(API_PATHS.comment(commentId), { method: "DELETE" }),
     startConversation: (userId) =>
       request(API_PATHS.conversations, { method: "POST", body: { userId } }),
     sendMessage: (conversationId, text) =>
@@ -49,6 +63,20 @@ export function createApiSource(): DataSource {
       request(API_PATHS.conversationRead(conversationId), { method: "POST" }),
     updateProfile: (update) =>
       request(API_PATHS.me, { method: "PATCH", body: update }),
+    setProfilePhoto: (kind, url) =>
+      request(
+        API_PATHS.photo(kind),
+        url ? { method: "PUT", body: { url } } : { method: "DELETE" },
+      ),
+    // The API checks the file and grants a token; the file then goes straight to Blob.
+    uploadMedia: async (file, purpose, options) => {
+      const grant = await request<UploadGrant>(API_PATHS.uploads, {
+        method: "POST",
+        body: { purpose, contentType: file.type, size: file.size },
+      });
+      const url = await uploadToBlob(file, grant, options);
+      return { url, kind: MEDIA_TYPES[file.type].kind };
+    },
     updateSettings: (update) =>
       request(API_PATHS.settings, { method: "PATCH", body: update }),
   };

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CommentOwnerMenu } from "@/components/post/CommentOwnerMenu";
 import { Avatar } from "@/components/ui/Avatar";
 import { formatRelativeTime } from "@/utils/formatRelativeTime";
 import { cn } from "@/utils/cn";
@@ -14,9 +15,14 @@ export function CommentItem({ comment, onRetry }: CommentItemProps) {
         status === "sending" && "opacity-60",
       )}
     >
-      <Avatar name={author.name} handle={author.handle} size="sm" />
+      <Avatar
+        name={author.name}
+        handle={author.handle}
+        src={author.avatarUrl}
+        size="sm"
+      />
       <div className="flex min-w-0 flex-1 flex-col gap-1.25">
-        <p className="flex min-w-0 items-baseline gap-1.5 text-[13.5px]">
+        <div className="flex min-w-0 items-baseline gap-1.5 text-[13.5px]">
           <Link
             href={`/u/${author.handle}`}
             className="truncate rounded-sm font-semibold outline-none hover:underline focus-visible:shadow-ag-focus-ring"
@@ -35,9 +41,15 @@ export function CommentItem({ comment, onRetry }: CommentItemProps) {
               className="flex-none text-ag-text-secondary"
             >
               · {formatRelativeTime(comment.createdAt)}
+              {comment.editedAt && " · Edited"}
             </time>
           )}
-        </p>
+          {status === "sent" && author.isSelf && (
+            <span className="ml-auto -my-1.5">
+              <CommentOwnerMenu comment={comment} />
+            </span>
+          )}
+        </div>
         <p className="whitespace-pre-line wrap-break-word text-[14.5px] leading-normal">
           {comment.text}
         </p>

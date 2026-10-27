@@ -1,4 +1,5 @@
 import { toDataError } from "@/services/dataError";
+import { removeEntity } from "@/utils/removeEntity";
 import { replaceEntity } from "@/utils/replaceEntity";
 import { type Fetcher, type QueryCache, type QueryEntry } from "@/types/query";
 
@@ -65,6 +66,13 @@ export function createQueryCache(): QueryCache {
       entries.forEach((entry, key) => {
         if (entry.status !== "success") return;
         const data = replaceEntity(entry.data, id, update as never);
+        if (data !== entry.data) set(key, { status: "success", data });
+      });
+    },
+    removeEntity: (id) => {
+      entries.forEach((entry, key) => {
+        if (entry.status !== "success") return;
+        const data = removeEntity(entry.data, id);
         if (data !== entry.data) set(key, { status: "success", data });
       });
     },

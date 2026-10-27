@@ -14,7 +14,11 @@ export function PersonCard({ person }: PersonProps) {
         href={`/u/${person.handle}`}
         className="flex min-w-0 flex-col items-start gap-2 self-stretch rounded-md outline-none focus-visible:shadow-ag-focus-ring"
       >
-        <Avatar name={person.name} handle={person.handle} />
+        <Avatar
+          name={person.name}
+          handle={person.handle}
+          src={person.avatarUrl}
+        />
         <span className="flex min-w-0 flex-col self-stretch">
           <span className="truncate text-[14px] font-semibold">
             {person.name}

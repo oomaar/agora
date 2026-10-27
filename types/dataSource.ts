@@ -10,6 +10,12 @@ import {
   type UserSettings,
   type UserView,
 } from "@/types/domain";
+import {
+  type ProfilePhotoKind,
+  type UploadedMedia,
+  type UploadOptions,
+  type UploadPurpose,
+} from "@/types/media";
 import { type PostMedia } from "@/types/post";
 
 export type FeedTab = "for-you" | "following";
@@ -74,12 +80,27 @@ export type DataSource = {
   setFollow: (userId: string, following: boolean) => Promise<UserView>;
   votePoll: (postId: string, optionId: string) => Promise<PostView>;
   createPost: (post: NewPost) => Promise<PostView>;
+  // Editing and deleting are for the author only.
+  updatePost: (postId: string, text: string) => Promise<PostView>;
+  deletePost: (postId: string) => Promise<null>;
   addComment: (postId: string, text: string) => Promise<CommentView>;
+  updateComment: (commentId: string, text: string) => Promise<CommentView>;
+  deleteComment: (commentId: string) => Promise<null>;
   // Opens the one-to-one conversation with this person, creating it the first time.
   startConversation: (userId: string) => Promise<ConversationView>;
   sendMessage: (conversationId: string, text: string) => Promise<MessageView>;
   markNotificationsRead: () => Promise<UnreadCounts>;
   markConversationRead: (conversationId: string) => Promise<UnreadCounts>;
   updateProfile: (update: ProfileUpdate) => Promise<UserView>;
+  // Sets the photo to an uploaded file's URL, or removes it with null.
+  setProfilePhoto: (
+    kind: ProfilePhotoKind,
+    url: string | null,
+  ) => Promise<UserView>;
+  uploadMedia: (
+    file: File,
+    purpose: UploadPurpose,
+    options?: UploadOptions,
+  ) => Promise<UploadedMedia>;
   updateSettings: (update: SettingsUpdate) => Promise<UserSettings>;
 };

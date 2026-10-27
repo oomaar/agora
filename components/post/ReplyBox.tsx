@@ -28,7 +28,12 @@ export function ReplyBox({ postId, inputRef }: ReplyBoxProps) {
       className="flex items-start gap-3 border-b border-ag-border-subtle px-5 py-4"
     >
       {user ? (
-        <Avatar name={user.name} handle={user.handle} size="sm" />
+        <Avatar
+          name={user.name}
+          handle={user.handle}
+          src={user.avatarUrl}
+          size="sm"
+        />
       ) : (
         <Skeleton shape="circle" className="size-9 flex-none" />
       )}

@@ -9,6 +9,7 @@ import { escapeLike } from "@/utils/escapeLike";
 import { type Queryable } from "@/types/db";
 import { type UserView } from "@/types/domain";
 import { type ProfileUpdate } from "@/types/dataSource";
+import { type ProfilePhotoKind } from "@/types/media";
 
 // In every query $1 is the viewer.
 
@@ -126,5 +127,23 @@ export async function updateProfile(
     }
     throw error;
   }
+  return getUserById(viewerId, viewerId);
+}
+
+const PHOTO_COLUMN: Record<ProfilePhotoKind, string> = {
+  avatar: "avatar_url",
+  cover: "cover_url",
+};
+
+// Sets or removes (null) the viewer's profile photo or cover.
+export async function setProfilePhoto(
+  viewerId: string,
+  kind: ProfilePhotoKind,
+  url: string | null,
+): Promise<UserView> {
+  await query(
+    `update users set ${PHOTO_COLUMN[kind]} = $2, updated_at = now() where id = $1`,
+    [viewerId, url],
+  );
   return getUserById(viewerId, viewerId);
 }

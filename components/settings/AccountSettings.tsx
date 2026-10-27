@@ -1,6 +1,7 @@
 "use client";
 
 import { AccountForm } from "@/components/settings/AccountForm";
+import { ProfilePhotoSettings } from "@/components/settings/ProfilePhotoSettings";
 import { SettingsPanel } from "@/components/settings/SettingsPanel";
 import { Button } from "@/components/ui/Button";
 import { ErrorState } from "@/components/ui/ErrorState";
@@ -37,7 +38,10 @@ export function AccountSettings() {
         />
       )}
       {(user.status === "success" || user.status === "empty") && (
-        <AccountForm key={user.data.id} user={user.data} />
+        <>
+          <ProfilePhotoSettings user={user.data} />
+          <AccountForm key={user.data.id} user={user.data} />
+        </>
       )}
     </SettingsPanel>
   );

@@ -1,4 +1,5 @@
 import { type NotificationKind, type PostAudience } from "@/types/domain";
+import { type ProfilePhotoKind, type UploadPurpose } from "@/types/media";
 import {
   type DataErrorCode,
   type FeedTab,
@@ -24,6 +25,17 @@ export const NOTIFICATION_FILTERS: readonly NotificationFilter[] = [
 export const POST_AUDIENCES: readonly PostAudience[] = [
   "everyone",
   "following",
+];
+
+export const UPLOAD_PURPOSES: readonly UploadPurpose[] = [
+  "post",
+  "avatar",
+  "cover",
+];
+
+export const PROFILE_PHOTO_KINDS: readonly ProfilePhotoKind[] = [
+  "avatar",
+  "cover",
 ];
 
 export const STATUS_BY_CODE: Record<DataErrorCode, number> = {
@@ -62,6 +74,12 @@ export const NOT_FOUND = {
   user: "This account doesn't exist.",
   post: "This post isn't available. It may have been deleted.",
   conversation: "This conversation doesn't exist.",
+  comment: "This comment isn't available. It may have been deleted.",
+};
+
+export const OWNER_ERRORS = {
+  post: "You can only change your own posts.",
+  comment: "You can only change your own comments.",
 };
 
 export const CONVERSATION_ERRORS = {

@@ -9,6 +9,7 @@ import { getUserByHandle } from "@/services/database/users";
 import { query, selectView, selectViews, transaction } from "@/lib/db/query";
 import {
   NOT_FOUND,
+  OWNER_ERRORS,
   POLL_ERRORS,
   PROFILE_POSTS_LIMIT,
 } from "@/lib/api/constants";
@@ -171,12 +172,12 @@ export function setReaction(
 
 export function createPost(
   viewerId: string,
-  { text, audience, poll }: NewPost,
+  { text, audience, media, poll }: NewPost,
 ): Promise<PostView> {
   return transaction(async (client) => {
     const [{ id }] = await query<{ id: string }>(
-      "insert into posts (author_id, text, audience) values ($1, $2, $3) returning id",
-      [viewerId, text, audience],
+      "insert into posts (author_id, text, audience, media) values ($1, $2, $3, $4) returning id",
+      [viewerId, text, audience, media && JSON.stringify(media)],
       client,
     );
     if (poll) {
@@ -194,6 +195,42 @@ export function createPost(
       exclude: [],
     });
     return getPost(viewerId, id, client);
+  });
+}
+
+// Only the author can edit or delete a post. Edits change the text and mark it edited.
+async function lockOwnPost(
+  db: Queryable,
+  viewerId: string,
+  postId: string,
+): Promise<void> {
+  const post = await lockPost(db, viewerId, postId);
+  if (post.author_id !== viewerId) {
+    throw new DataError("forbidden", OWNER_ERRORS.post);
+  }
+}
+
+export function updatePost(
+  viewerId: string,
+  postId: string,
+  text: string,
+): Promise<PostView> {
+  return transaction(async (client) => {
+    await lockOwnPost(client, viewerId, postId);
+    await client.query(
+      "update posts set text = $2, edited_at = now() where id = $1",
+      [postId, text],
+    );
+    return getPost(viewerId, postId, client);
+  });
+}
+
+// Comments, reactions, poll votes and notifications about the post go with it.
+export function deletePost(viewerId: string, postId: string): Promise<null> {
+  return transaction(async (client) => {
+    await lockOwnPost(client, viewerId, postId);
+    await client.query("delete from posts where id = $1", [postId]);
+    return null;
   });
 }
 

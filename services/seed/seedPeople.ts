@@ -16,6 +16,8 @@ function createUser(context: SeedContext, person: PersonSeed): User {
     handle: person.handle,
     bio: person.bio,
     location: random.chance(0.7) ? random.pick(LOCATIONS) : null,
+    avatarUrl: null,
+    coverUrl: null,
     joinedAt: minutesAgo(now, random.int(200, 1800) * DAY_MINUTES),
     followingCount: random.int(20, 600),
     followerCount: random.int(30, 2400),
