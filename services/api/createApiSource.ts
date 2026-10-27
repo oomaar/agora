@@ -19,6 +19,7 @@ export function createApiSource(): DataSource {
     getConversation: (conversationId) =>
       request(API_PATHS.conversation(conversationId)),
     getUnreadCounts: () => request(API_PATHS.unread),
+    getSettings: () => request(API_PATHS.settings),
     setLike: (postId, liked) =>
       request(API_PATHS.like(postId), { method: liked ? "PUT" : "DELETE" }),
     setRepost: (postId, reposted) =>
@@ -35,6 +36,8 @@ export function createApiSource(): DataSource {
       request(API_PATHS.posts, { method: "POST", body: post }),
     addComment: (postId, text) =>
       request(API_PATHS.comments(postId), { method: "POST", body: { text } }),
+    startConversation: (userId) =>
+      request(API_PATHS.conversations, { method: "POST", body: { userId } }),
     sendMessage: (conversationId, text) =>
       request(API_PATHS.messages(conversationId), {
         method: "POST",
@@ -46,5 +49,7 @@ export function createApiSource(): DataSource {
       request(API_PATHS.conversationRead(conversationId), { method: "POST" }),
     updateProfile: (update) =>
       request(API_PATHS.me, { method: "PATCH", body: update }),
+    updateSettings: (update) =>
+      request(API_PATHS.settings, { method: "PATCH", body: update }),
   };
 }

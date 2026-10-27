@@ -10,6 +10,7 @@ import {
   type Reaction,
   type Trend,
   type User,
+  type UserSettings,
 } from "@/types/domain";
 import { type DataSource } from "@/types/dataSource";
 import { type PostMedia } from "@/types/post";
@@ -92,6 +93,7 @@ export type Database = {
   conversations: Conversation[];
   messages: Message[];
   trends: Trend[];
+  settings: UserSettings;
   nextId: number;
 };
 

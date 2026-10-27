@@ -7,6 +7,7 @@ import {
   type PostAudience,
   type PostView,
   type Trend,
+  type UserSettings,
   type UserView,
 } from "@/types/domain";
 import { type PostMedia } from "@/types/post";
@@ -43,6 +44,8 @@ export type ProfileUpdate = {
   bio: string;
 };
 
+export type SettingsUpdate = Partial<UserSettings>;
+
 export type DataErrorCode =
   | "network"
   | "not-found"
@@ -65,14 +68,18 @@ export type DataSource = {
   getConversations: () => Promise<ConversationView[]>;
   getConversation: (conversationId: string) => Promise<ConversationThread>;
   getUnreadCounts: () => Promise<UnreadCounts>;
+  getSettings: () => Promise<UserSettings>;
   setLike: (postId: string, liked: boolean) => Promise<PostView>;
   setRepost: (postId: string, reposted: boolean) => Promise<PostView>;
   setFollow: (userId: string, following: boolean) => Promise<UserView>;
   votePoll: (postId: string, optionId: string) => Promise<PostView>;
   createPost: (post: NewPost) => Promise<PostView>;
   addComment: (postId: string, text: string) => Promise<CommentView>;
+  // Opens the one-to-one conversation with this person, creating it the first time.
+  startConversation: (userId: string) => Promise<ConversationView>;
   sendMessage: (conversationId: string, text: string) => Promise<MessageView>;
   markNotificationsRead: () => Promise<UnreadCounts>;
   markConversationRead: (conversationId: string) => Promise<UnreadCounts>;
   updateProfile: (update: ProfileUpdate) => Promise<UserView>;
+  updateSettings: (update: SettingsUpdate) => Promise<UserSettings>;
 };

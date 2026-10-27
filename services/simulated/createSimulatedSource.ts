@@ -32,7 +32,7 @@ import {
   POST_MAX_LENGTH,
   SEARCH_LIMIT,
 } from "@/lib/data/constants";
-import { POLL_ERRORS } from "@/lib/api/constants";
+import { CONVERSATION_ERRORS, POLL_ERRORS } from "@/lib/api/constants";
 import { firstName } from "@/utils/firstName";
 import { type Post, type PostView, type ReactionKind } from "@/types/domain";
 import { type DataSource, type ProfileTab } from "@/types/dataSource";
@@ -258,6 +258,8 @@ export function createSimulatedSource(
 
     getUnreadCounts: () => request(() => toUnreadCounts(getDb())),
 
+    getSettings: () => request(() => ({ ...getDb().settings })),
+
     setLike: (postId, liked) =>
       request(
         () => {
@@ -398,6 +400,39 @@ export function createSimulatedSource(
         { success: () => "Comment posted", failure: "Comment failed to send" },
       ),
 
+    startConversation: (userId) =>
+      request(
+        () => {
+          const db = getDb();
+          const user = getUser(db, userId);
+          if (user.id === db.selfId) {
+            throw new DataError("validation", CONVERSATION_ERRORS.self);
+          }
+          let conversation = db.conversations.find(
+            (candidate) =>
+              candidate.name === null &&
+              candidate.memberIds.length === 2 &&
+              candidate.memberIds.includes(db.selfId) &&
+              candidate.memberIds.includes(user.id),
+          );
+          if (!conversation) {
+            conversation = {
+              id: nextId(db, "conversation"),
+              memberIds: [db.selfId, user.id],
+              name: null,
+              unread: false,
+            };
+            db.conversations.push(conversation);
+          }
+          return toConversationView(db, conversation);
+        },
+        {
+          success: (conversation) =>
+            `Opened your conversation with ${firstName(conversation.members[0].name)}`,
+          failure: "Couldn't start the conversation",
+        },
+      ),
+
     sendMessage: (conversationId, text) =>
       request(
         () => {
@@ -476,6 +511,22 @@ export function createSimulatedSource(
         {
           success: () => "Profile saved",
           failure: "Profile changes weren't saved",
+        },
+      ),
+
+    updateSettings: (update) =>
+      request(
+        () => {
+          const db = getDb();
+          const changes = Object.fromEntries(
+            Object.entries(update).filter(([, value]) => value !== undefined),
+          );
+          db.settings = { ...db.settings, ...changes };
+          return { ...db.settings };
+        },
+        {
+          success: () => "Settings saved",
+          failure: "Settings weren't saved · reverted",
         },
       ),
   };

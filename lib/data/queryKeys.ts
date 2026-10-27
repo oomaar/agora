@@ -18,4 +18,5 @@ export const queryKeys = {
   conversations: () => "conversations",
   conversation: (conversationId: string) => `conversation:${conversationId}`,
   unreadCounts: () => "unread-counts",
+  settings: () => "settings",
 };
