@@ -1,6 +1,6 @@
 import { type Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PageHeader } from "@/components/shell/PageHeader";
+import { SettingsSectionView } from "@/components/settings/SettingsSectionView";
 import { SETTINGS_SECTIONS } from "@/lib/shell/constants";
 
 // Only the known sections exist; anything else is a 404.
@@ -24,5 +24,5 @@ export default async function SettingsSectionPage({
   const { section } = await params;
   const current = SETTINGS_SECTIONS.find((item) => item.id === section);
   if (!current) notFound();
-  return <PageHeader title={current.label} />;
+  return <SettingsSectionView section={current.id} />;
 }

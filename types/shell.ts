@@ -4,6 +4,7 @@ import { type UnreadCountKey } from "@/types/dataSource";
 import { type UserView } from "@/types/domain";
 import { type IconName } from "@/types/icon";
 import { type QueryResult } from "@/types/query";
+import { type SettingsSectionId } from "@/types/settings";
 
 export type NavCounter = {
   // Which unread count the badge shows.
@@ -34,7 +35,7 @@ export type NavLinkProps = {
 };
 
 export type SettingsSection = {
-  id: string;
+  id: SettingsSectionId;
   label: string;
 };
 

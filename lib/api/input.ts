@@ -12,7 +12,11 @@ import {
 import { requirePollOptions } from "@/utils/requirePollOptions";
 import { requireText } from "@/utils/requireText";
 import { type JsonBody } from "@/types/api";
-import { type NewPost, type ProfileUpdate } from "@/types/dataSource";
+import {
+  type NewPost,
+  type ProfileUpdate,
+  type SettingsUpdate,
+} from "@/types/dataSource";
 
 function invalid(message: string): never {
   throw new DataError("validation", message);
@@ -104,5 +108,25 @@ export function readProfileUpdate(body: JsonBody): ProfileUpdate {
     name: requireText(readString(body, "name"), NAME_MAX_LENGTH, "Your name"),
     handle,
     bio,
+  };
+}
+
+function readOptionalBoolean(body: JsonBody, key: string): boolean | undefined {
+  const value = body[key];
+  if (value === undefined) return undefined;
+  if (typeof value !== "boolean") invalid(`"${key}" must be true or false.`);
+  return value;
+}
+
+// Every setting is optional; only the ones sent change.
+export function readSettingsUpdate(body: JsonBody): SettingsUpdate {
+  return {
+    defaultAudience:
+      body.defaultAudience === undefined
+        ? undefined
+        : readOption(body.defaultAudience, POST_AUDIENCES, "Default audience"),
+    notifyLikes: readOptionalBoolean(body, "notifyLikes"),
+    notifyReplies: readOptionalBoolean(body, "notifyReplies"),
+    notifyFollows: readOptionalBoolean(body, "notifyFollows"),
   };
 }

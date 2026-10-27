@@ -64,6 +64,10 @@ export const NOT_FOUND = {
   conversation: "This conversation doesn't exist.",
 };
 
+export const CONVERSATION_ERRORS = {
+  self: "You can't message yourself.",
+};
+
 export const POLL_ERRORS = {
   noPoll: "This post doesn't have a poll.",
   unknownOption: "That option isn't part of this poll.",

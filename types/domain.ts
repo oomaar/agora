@@ -104,6 +104,15 @@ export type Message = {
   createdAt: string;
 };
 
+// Per-person settings; notification switches decide which activity creates a notification.
+export type UserSettings = {
+  defaultAudience: PostAudience;
+  notifyLikes: boolean;
+  // Replies and mentions.
+  notifyReplies: boolean;
+  notifyFollows: boolean;
+};
+
 export type Trend = {
   id: string;
   category: string;

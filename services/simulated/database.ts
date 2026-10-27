@@ -1,4 +1,5 @@
 import { DataError } from "@/services/dataError";
+import { DEFAULT_SETTINGS } from "@/lib/data/constants";
 import { type PollVote, type ReactionKind, type User } from "@/types/domain";
 import { type Database } from "@/types/simulation";
 
@@ -15,6 +16,7 @@ export function createEmptyDatabase(): Database {
     conversations: [],
     messages: [],
     trends: [],
+    settings: { ...DEFAULT_SETTINGS },
     nextId: 0,
   };
 }

@@ -9,6 +9,7 @@ const encode = encodeURIComponent;
 // Every API path, built in one place for the API data source.
 export const API_PATHS = {
   me: "/api/me",
+  settings: "/api/me/settings",
   feed: (tab: FeedTab) => `/api/feed?tab=${tab}`,
   posts: "/api/posts",
   post: (postId: string) => `/api/posts/${encode(postId)}`,
