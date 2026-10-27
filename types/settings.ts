@@ -2,6 +2,7 @@ import { type ReactNode } from "react";
 import { type FieldErrors } from "@/types/auth";
 import { type UserSettings, type UserView } from "@/types/domain";
 import { type ProfileUpdate } from "@/types/dataSource";
+import { type ProfilePhotoKind } from "@/types/media";
 import { type RovingItemProps } from "@/types/selection";
 import { type Theme } from "@/types/theme";
 
@@ -55,6 +56,29 @@ export type ThemeCardProps = RovingItemProps & {
   option: ThemeOption;
   selected: boolean;
   onSelect: () => void;
+};
+
+export type ProfilePhoto = {
+  // The photo to show: the new upload while it's in progress, else the saved one.
+  src: string | null;
+  saved: boolean;
+  uploading: boolean;
+  busy: boolean;
+  progress: number;
+  error: string | null;
+  canRetry: boolean;
+  pick: (file: File) => void;
+  retry: () => void;
+  remove: () => void;
+};
+
+export type ProfilePhotoSettingsProps = {
+  user: UserView;
+};
+
+export type PhotoSettingProps = {
+  user: UserView;
+  kind: ProfilePhotoKind;
 };
 
 export type AccountFormProps = {

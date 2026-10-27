@@ -1,5 +1,6 @@
 import { AUDIENCE_LABELS } from "@/lib/posts/constants";
 import { type PostAudience } from "@/types/domain";
+import { type ProfilePhotoKind } from "@/types/media";
 import {
   type NotificationToggleItem,
   type ThemeOption,
@@ -35,3 +36,10 @@ export const SETTINGS_SKELETON_ROWS = 3;
 
 export const SETTINGS_NAV_ITEM =
   "flex-none whitespace-nowrap rounded-sm px-3 py-2.5 text-[14px] outline-none transition-colors hover:bg-ag-nav-hover focus-visible:shadow-ag-focus-ring";
+
+export const PROFILE_PHOTO_LABELS: Record<ProfilePhotoKind, string> = {
+  avatar: "Profile photo",
+  cover: "Cover image",
+};
+
+export const PROFILE_PHOTO_HINT = "JPG, PNG or WebP, up to 8 MB";
