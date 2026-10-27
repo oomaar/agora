@@ -36,3 +36,8 @@ export type IconButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "chi
   variant?: IconButtonVariant;
   size?: IconButtonSize;
 };
+
+export type FilePickerButtonProps = Omit<ButtonProps, "onClick"> & {
+  accept: string;
+  onPick: (file: File) => void;
+};

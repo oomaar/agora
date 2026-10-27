@@ -4,23 +4,30 @@ import { useEffect, useRef } from "react";
 import { AudiencePicker } from "@/components/compose/AudiencePicker";
 import { CharacterCounter } from "@/components/compose/CharacterCounter";
 import { ComposeError } from "@/components/compose/ComposeError";
+import { MediaAttachment } from "@/components/compose/MediaAttachment";
 import { PollEditor } from "@/components/compose/PollEditor";
 import { Avatar } from "@/components/ui/Avatar";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Button } from "@/components/ui/Button";
+import { FilePickerButton } from "@/components/ui/FilePickerButton";
 import { Modal } from "@/components/ui/Modal";
-import { useComposer } from "@/hooks/posts/useComposer";
+import { useComposerDraft } from "@/hooks/posts/useComposerDraft";
 import { useCompose } from "@/hooks/shell/useCompose";
 import { useCurrentUser } from "@/hooks/users/useCurrentUser";
 import { POLL_MIN_OPTIONS, POST_MAX_LENGTH } from "@/lib/data/constants";
+import { MEDIA_LABELS, POST_MEDIA_ACCEPT } from "@/lib/media/constants";
+import { type PostMediaKind } from "@/types/post";
 
-// Stays mounted while closed, so the draft survives closing and reopening.
+const MEDIA_KINDS: PostMediaKind[] = ["image", "video"];
+
+// Stays mounted while closed; the draft lives in ComposerContext, so it survives
+// closing and reopening.
 export function ComposeModal() {
   const { isOpen, close } = useCompose();
   const { data: user } = useCurrentUser();
-  const composer = useComposer();
+  const composer = useComposerDraft();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { posting, poll } = composer;
+  const { posting, poll, media } = composer;
 
   // Runs after the dialog opens, so the cursor lands in the text box.
   useEffect(() => {
@@ -40,6 +47,19 @@ export function ComposeModal() {
       title="New post"
       footer={
         <>
+          {MEDIA_KINDS.map((kind) => (
+            <FilePickerButton
+              key={kind}
+              accept={POST_MEDIA_ACCEPT[kind]}
+              onPick={(file) => void media.start(file)}
+              variant="secondary"
+              size="sm"
+              icon={kind}
+              disabled={posting}
+            >
+              {MEDIA_LABELS[kind]}
+            </FilePickerButton>
+          ))}
           <Button
             variant="secondary"
             size="sm"
@@ -57,7 +77,7 @@ export function ComposeModal() {
           <Button
             pill
             loading={posting}
-            disabled={!composer.text.trim()}
+            disabled={!composer.text.trim() || media.status === "uploading"}
             onClick={async () => {
               if (await composer.submit()) close();
             }}
@@ -69,7 +89,7 @@ export function ComposeModal() {
     >
       <div className="flex gap-3 p-4.5">
         {user ? (
-          <Avatar name={user.name} handle={user.handle} />
+          <Avatar name={user.name} handle={user.handle} src={user.avatarUrl} />
         ) : (
           <Skeleton shape="circle" className="size-10 flex-none" />
         )}
@@ -84,6 +104,7 @@ export function ComposeModal() {
             placeholder="What's happening in the square?"
             className="min-h-30 w-full resize-none bg-transparent text-[18px] leading-normal text-ag-text outline-none placeholder:text-ag-text-placeholder"
           />
+          <MediaAttachment media={media} disabled={posting} />
           {poll && <PollEditor options={poll} onChange={composer.setPoll} disabled={posting} />}
         </div>
       </div>
