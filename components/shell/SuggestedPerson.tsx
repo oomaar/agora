@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { AppLink } from "@/components/shell/AppLink";
 import { Avatar } from "@/components/ui/Avatar";
 import { FollowButton } from "@/components/ui/FollowButton";
 import { useToggleFollow } from "@/hooks/users/useToggleFollow";
@@ -10,7 +10,7 @@ export function SuggestedPerson({ person }: SuggestedPersonProps) {
   const follow = useToggleFollow();
   return (
     <li className="flex items-center gap-2.5 px-4 py-2.5">
-      <Link
+      <AppLink
         href={`/u/${person.handle}`}
         className="flex min-w-0 flex-1 items-center gap-2.5 rounded-md outline-none focus-visible:shadow-ag-focus-ring"
       >
@@ -28,7 +28,7 @@ export function SuggestedPerson({ person }: SuggestedPersonProps) {
             @{person.handle}
           </span>
         </span>
-      </Link>
+      </AppLink>
       <FollowButton
         following={person.isFollowing}
         onToggle={() => follow.run(person)}

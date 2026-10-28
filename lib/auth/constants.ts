@@ -14,6 +14,8 @@ export const WELCOME_PATH = "/";
 
 export const SIGNUP_PATH = "/signup";
 
+export const SIGN_OUT_LABEL = "Log out";
+
 // Signed-out visitors are sent to the welcome page from these.
 export const PROTECTED_PATHS = [
   HOME_PATH,

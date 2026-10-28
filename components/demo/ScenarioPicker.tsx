@@ -1,19 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { ScenarioOption } from "@/components/demo/ScenarioOption";
-import {
-  DEMO_ENTRY_PATH,
-  DEMO_SOLID_LINK,
-  SCENARIO_PARAM,
-} from "@/lib/public/constants";
+import { DEMO_SOLID_LINK } from "@/lib/public/constants";
 import { SCENARIOS } from "@/lib/simulation/constants";
+import { demoEntryPath } from "@/utils/demoEntryPath";
+import { type DemoLandingProps } from "@/types/demo";
 import { type ScenarioId } from "@/types/simulation";
 
 const SCENARIO_IDS = Object.keys(SCENARIOS) as ScenarioId[];
 
-export function ScenarioPicker() {
+export function ScenarioPicker({ returnPath }: DemoLandingProps) {
   const [picked, setPicked] = useState<ScenarioId>("busy");
   return (
     <>
@@ -33,12 +30,11 @@ export function ScenarioPicker() {
         </div>
       </fieldset>
       <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
-        <Link
-          href={`${DEMO_ENTRY_PATH}?${SCENARIO_PARAM}=${picked}`}
-          className={DEMO_SOLID_LINK}
-        >
+        {/* A full page load: the demo reads its scenario from the URL as it starts, and a
+            client navigation would render it before the URL changes. */}
+        <a href={demoEntryPath(picked, returnPath)} className={DEMO_SOLID_LINK}>
           Enter demo
-        </Link>
+        </a>
         <span className="text-[13px] text-ag-text-secondary">
           You can reset or change network conditions at any time.
         </span>

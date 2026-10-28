@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { AppLink } from "@/components/shell/AppLink";
 import { CommentOwnerMenu } from "@/components/post/CommentOwnerMenu";
 import { Avatar } from "@/components/ui/Avatar";
 import { formatRelativeTime } from "@/utils/formatRelativeTime";
@@ -23,12 +23,12 @@ export function CommentItem({ comment, onRetry }: CommentItemProps) {
       />
       <div className="flex min-w-0 flex-1 flex-col gap-1.25">
         <div className="flex min-w-0 items-baseline gap-1.5 text-[13.5px]">
-          <Link
+          <AppLink
             href={`/u/${author.handle}`}
             className="truncate rounded-sm font-semibold outline-none hover:underline focus-visible:shadow-ag-focus-ring"
           >
             {author.name}
-          </Link>
+          </AppLink>
           {status === "sending" && (
             <span className="text-ag-text-secondary">Sending…</span>
           )}

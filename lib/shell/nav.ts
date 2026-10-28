@@ -23,7 +23,11 @@ export const NAV_LINK_VARIANTS: Record<NavLinkVariant, NavLinkStyles> = {
   },
 };
 
-// Sticky shell columns span the viewport height and scroll on their own.
-export const SHELL_COLUMN = "sticky top-0 h-dvh flex-none overflow-y-auto";
+// Sticky shell columns span the viewport height and scroll on their own. --ag-shell-top is
+// the height of anything pinned above the shell (the demo bar), 0 in the app.
+export const SHELL_COLUMN =
+  "sticky top-[var(--ag-shell-top,0px)] h-[calc(100dvh-var(--ag-shell-top,0px))] flex-none overflow-y-auto";
+
+export const SHELL_STICKY_TOP = "sticky top-[var(--ag-shell-top,0px)]";
 
 export const SHELL_MAIN = "min-w-0 flex-1 border-r border-ag-border-subtle";

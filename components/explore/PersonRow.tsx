@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { AppLink } from "@/components/shell/AppLink";
 import { Avatar } from "@/components/ui/Avatar";
 import { FollowButton } from "@/components/ui/FollowButton";
 import { useToggleFollow } from "@/hooks/users/useToggleFollow";
@@ -10,7 +10,7 @@ export function PersonRow({ person }: PersonProps) {
   const follow = useToggleFollow();
   return (
     <li className="flex items-start gap-3 px-5 py-3">
-      <Link
+      <AppLink
         href={`/u/${person.handle}`}
         className="flex min-w-0 flex-1 gap-3 rounded-md outline-none focus-visible:shadow-ag-focus-ring"
       >
@@ -32,7 +32,7 @@ export function PersonRow({ person }: PersonProps) {
             </span>
           )}
         </span>
-      </Link>
+      </AppLink>
       {!person.isSelf && (
         <FollowButton
           following={person.isFollowing}

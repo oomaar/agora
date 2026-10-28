@@ -52,7 +52,7 @@ export type SimulationState = {
 
 export type SimulationControls = {
   getState: () => SimulationState;
-  // Snapshot from creation, with no activity, so server and client render the same markup.
+  // The preset's default scenario with no activity, so server and client render the same markup.
   getServerState: () => SimulationState;
   subscribe: (listener: () => void) => () => void;
   setNetwork: (network: NetworkCondition) => void;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { NewMessagePeople } from "@/components/messages/NewMessagePeople";
 import { Modal } from "@/components/ui/Modal";
 import { SearchInput } from "@/components/ui/SearchInput";
@@ -14,7 +14,7 @@ import { type NewMessageModalProps } from "@/types/messages";
 
 // Pick a person to open (or start) the conversation with them.
 export function NewMessageModal({ open, onClose }: NewMessageModalProps) {
-  const router = useRouter();
+  const router = useAppRouter();
   const start = useStartConversation();
   const inputRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState("");

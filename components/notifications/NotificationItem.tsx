@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { AppLink } from "@/components/shell/AppLink";
 import { Avatar } from "@/components/ui/Avatar";
 import { LogoMark } from "@/components/ui/LogoMark";
 import {
@@ -61,7 +61,7 @@ export function NotificationItem({ notification }: NotificationItemProps) {
   return (
     <li>
       {href ? (
-        <Link
+        <AppLink
           href={href}
           className={cn(
             className,
@@ -69,7 +69,7 @@ export function NotificationItem({ notification }: NotificationItemProps) {
           )}
         >
           {body}
-        </Link>
+        </AppLink>
       ) : (
         <div className={className}>{body}</div>
       )}

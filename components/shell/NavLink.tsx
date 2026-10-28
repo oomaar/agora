@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { NavCounterBadge } from "@/components/shell/NavCounterBadge";
 import { Icon } from "@/components/ui/Icon";
 import { useSession } from "@/hooks/auth/useSession";
+import { useAppPath } from "@/hooks/shell/useAppPath";
 import { NAV_LINK_VARIANTS } from "@/lib/shell/nav";
 import { isNavItemActive } from "@/utils/isNavItemActive";
 import { withHandle } from "@/utils/withHandle";
@@ -14,10 +15,11 @@ import { type NavLinkProps } from "@/types/shell";
 export function NavLink({ item, variant }: NavLinkProps) {
   const pathname = usePathname();
   const { session } = useSession();
-  const href = withHandle(item.href, session.handle);
+  const appPath = useAppPath();
+  const href = appPath(withHandle(item.href, session.handle));
   const active = isNavItemActive(
     pathname,
-    item.match.map((path) => withHandle(path, session.handle)),
+    item.match.map((path) => appPath(withHandle(path, session.handle))),
   );
   const styles = NAV_LINK_VARIANTS[variant];
   const isSidebar = variant === "sidebar";

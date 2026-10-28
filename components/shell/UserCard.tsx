@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { AppLink } from "@/components/shell/AppLink";
+import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { Avatar } from "@/components/ui/Avatar";
 import { Icon } from "@/components/ui/Icon";
 import { IconButton } from "@/components/ui/IconButton";
@@ -16,9 +16,9 @@ const SETTINGS_HREF =
   NAV_ITEMS.find((item) => item.id === "settings")?.href ?? "/settings";
 
 export function UserCard() {
-  const router = useRouter();
+  const router = useAppRouter();
   const user = useCurrentUser();
-  const { signOut } = useSession();
+  const { signOut, signOutLabel } = useSession();
   const items: MenuItem[] = [
     {
       id: "settings",
@@ -28,7 +28,7 @@ export function UserCard() {
     },
     {
       id: "logout",
-      label: "Log out",
+      label: signOutLabel,
       danger: true,
       onSelect: signOut,
     },
@@ -71,7 +71,7 @@ export function UserCard() {
   const { name, handle, avatarUrl } = user.data;
   return (
     <div className="flex items-center gap-1 rounded-md transition-colors nav:hover:bg-ag-nav-hover">
-      <Link
+      <AppLink
         href={`/u/${handle}`}
         className="flex min-w-0 flex-1 items-center justify-center gap-2.5 rounded-md px-1.5 py-2 outline-none focus-visible:shadow-ag-focus-ring nav:justify-start nav:px-2.5"
       >
@@ -82,7 +82,7 @@ export function UserCard() {
             @{handle}
           </span>
         </span>
-      </Link>
+      </AppLink>
       <div className="hidden nav:block">
         <Menu
           label="Account options"

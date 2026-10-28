@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { PostThread } from "@/components/post/PostThread";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -11,7 +11,7 @@ import { NAV_ITEMS } from "@/lib/shell/constants";
 import { type PostDetailProps } from "@/types/postDetail";
 
 export function PostDetail({ postId }: PostDetailProps) {
-  const router = useRouter();
+  const router = useAppRouter();
   const post = usePost(postId);
 
   if (post.status === "loading") {
