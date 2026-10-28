@@ -1,3 +1,4 @@
+import { type SegmentedOption } from "@/types/toggle";
 import {
   type NetworkCondition,
   type NetworkProfile,
@@ -31,6 +32,13 @@ export const NETWORK_PROFILES: Record<NetworkCondition, NetworkProfile> = {
     maxLatencyMs: 800,
   },
 };
+
+export const NETWORK_OPTIONS: SegmentedOption<NetworkCondition>[] = (
+  Object.keys(NETWORK_PROFILES) as NetworkCondition[]
+).map((network) => ({
+  value: network,
+  label: NETWORK_PROFILES[network].label,
+}));
 
 export const SCENARIOS: Record<ScenarioId, Scenario> = {
   busy: {
