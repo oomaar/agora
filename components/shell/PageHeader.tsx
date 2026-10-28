@@ -1,5 +1,6 @@
 import { BackButton } from "@/components/shell/BackButton";
 import { NAV_ITEMS } from "@/lib/shell/constants";
+import { SHELL_STICKY_TOP } from "@/lib/shell/nav";
 import { cn } from "@/utils/cn";
 import { type PageHeaderProps } from "@/types/shell";
 
@@ -12,7 +13,8 @@ export function PageHeader({
   return (
     <header
       className={cn(
-        "sticky top-0 z-10 bg-ag-bg/92 backdrop-blur-sm",
+        SHELL_STICKY_TOP,
+        "z-10 bg-ag-bg/92 backdrop-blur-sm",
         !children && "border-b border-ag-border-subtle",
       )}
     >

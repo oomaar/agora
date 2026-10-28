@@ -29,7 +29,13 @@ export function createSimulation(
     scenario: scenario.id,
     activity: log.getEntries(),
   };
-  const serverState = state;
+  // The server can't read ?scenario=, so it renders the preset's default; the browser
+  // hydrates from the same snapshot, then switches to the real state.
+  const serverState: SimulationState = {
+    network: SCENARIOS[preset.scenario].network,
+    scenario: preset.scenario,
+    activity: [],
+  };
 
   const seed = () =>
     generateSeed({
