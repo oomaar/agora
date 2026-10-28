@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/ui/useToast";
 import { signOut as endSession } from "@/services/auth/authApi";
 import { AUTH_ERROR_MESSAGES } from "@/lib/auth/errors";
-import { WELCOME_PATH } from "@/lib/auth/constants";
+import { SIGN_OUT_LABEL, WELCOME_PATH } from "@/lib/auth/constants";
 import { type AuthContextValue, type AuthProviderProps } from "@/types/auth";
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
@@ -23,6 +23,9 @@ export function AuthProvider({ session, children }: AuthProviderProps) {
       toast.error(AUTH_ERROR_MESSAGES.signOut);
     }
   }, [router, toast]);
-  const value = useMemo(() => ({ session, signOut }), [session, signOut]);
+  const value = useMemo(
+    () => ({ session, signOut, signOutLabel: SIGN_OUT_LABEL }),
+    [session, signOut],
+  );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

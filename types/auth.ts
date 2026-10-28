@@ -62,6 +62,8 @@ export type GoogleSignInResult = {
 export type AuthContextValue = {
   session: Session;
   signOut: () => Promise<void>;
+  // "Log out" in the app, "Exit demo" in the demo.
+  signOutLabel: string;
 };
 
 export type AuthProviderProps = {
