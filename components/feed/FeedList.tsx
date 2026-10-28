@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { FeedLoading } from "@/components/feed/FeedLoading";
 import { PostList } from "@/components/post/PostList";
 import { Button } from "@/components/ui/Button";
@@ -14,7 +14,7 @@ const EXPLORE_HREF =
   NAV_ITEMS.find((item) => item.id === "explore")?.href ?? "/explore";
 
 export function FeedList({ tab }: FeedListProps) {
-  const router = useRouter();
+  const router = useAppRouter();
   const feed = useFeed(tab);
   const openCompose = useOpenCompose();
   return (

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { AppLink } from "@/components/shell/AppLink";
 import { ConversationAvatar } from "@/components/messages/ConversationAvatar";
 import { conversationPath } from "@/utils/conversationPath";
 import { conversationPreview } from "@/utils/conversationPreview";
@@ -14,7 +14,7 @@ export function ConversationRow({
   const { lastMessage, unread } = conversation;
   return (
     <li>
-      <Link
+      <AppLink
         href={conversationPath(conversation.id)}
         aria-current={active ? "page" : undefined}
         className={cn(
@@ -53,7 +53,7 @@ export function ConversationRow({
             )}
           </span>
         </span>
-      </Link>
+      </AppLink>
     </li>
   );
 }

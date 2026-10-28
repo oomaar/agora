@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { ChatComposer } from "@/components/messages/ChatComposer";
 import { ChatHeader } from "@/components/messages/ChatHeader";
 import { ChatMessages } from "@/components/messages/ChatMessages";
@@ -16,7 +16,7 @@ import { cn } from "@/utils/cn";
 import { type ChatThreadProps } from "@/types/messages";
 
 export function ChatThread({ conversationId }: ChatThreadProps) {
-  const router = useRouter();
+  const router = useAppRouter();
   const thread = useConversation(conversationId);
   const message = useSendMessage(conversationId);
   useMarkReadOnOpen(thread.data?.conversation);

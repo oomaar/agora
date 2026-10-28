@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfilePosts } from "@/components/profile/ProfilePosts";
 import { Button } from "@/components/ui/Button";
@@ -12,7 +12,7 @@ import { NAV_ITEMS } from "@/lib/shell/constants";
 import { type ProfileViewProps } from "@/types/profile";
 
 export function ProfileView({ handle }: ProfileViewProps) {
-  const router = useRouter();
+  const router = useAppRouter();
   const user = useUser(handle);
 
   if (user.status === "loading") {

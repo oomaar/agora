@@ -1,4 +1,5 @@
-import { type ReactNode } from "react";
+import { type ComponentProps, type ReactNode } from "react";
+import type Link from "next/link";
 import { type CounterTone } from "@/types/badge";
 import { type UnreadCountKey } from "@/types/dataSource";
 import { type UserView } from "@/types/domain";
@@ -84,4 +85,15 @@ export type RailQueryProps<T> = {
   errorText: string;
   emptyText: string;
   children: (data: T) => ReactNode;
+};
+
+export type AppLinkProps = Omit<ComponentProps<typeof Link>, "href"> & {
+  // An app path such as "/home"; the demo prefix is added inside the demo.
+  href: string;
+};
+
+export type AppRouter = {
+  push: (href: string) => void;
+  replace: (href: string) => void;
+  back: () => void;
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { ProfileStat } from "@/components/profile/ProfileStat";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
@@ -15,7 +15,7 @@ const SETTINGS_HREF =
   NAV_ITEMS.find((item) => item.id === "settings")?.href ?? "/settings";
 
 export function ProfileHeader({ user }: ProfileHeaderProps) {
-  const router = useRouter();
+  const router = useAppRouter();
   const follow = useToggleFollow();
   return (
     <section

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { AppLink } from "@/components/shell/AppLink";
 import { Avatar } from "@/components/ui/Avatar";
 import { FollowButton } from "@/components/ui/FollowButton";
 import { useToggleFollow } from "@/hooks/users/useToggleFollow";
@@ -10,7 +10,7 @@ export function PersonCard({ person }: PersonProps) {
   const follow = useToggleFollow();
   return (
     <li className="flex flex-col items-start gap-2 rounded-lg border border-ag-border bg-ag-surface p-3.5">
-      <Link
+      <AppLink
         href={`/u/${person.handle}`}
         className="flex min-w-0 flex-col items-start gap-2 self-stretch rounded-md outline-none focus-visible:shadow-ag-focus-ring"
       >
@@ -27,7 +27,7 @@ export function PersonCard({ person }: PersonProps) {
             @{person.handle}
           </span>
         </span>
-      </Link>
+      </AppLink>
       {person.bio && (
         <p className="line-clamp-3 text-[13px] leading-[1.45] text-ag-text-secondary">
           {person.bio}

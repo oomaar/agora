@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { AppLink } from "@/components/shell/AppLink";
 import { Icon } from "@/components/ui/Icon";
 import { postPath } from "@/utils/postPath";
 import { type MediaTileProps } from "@/types/explore";
@@ -10,7 +10,7 @@ export function MediaTile({ post }: MediaTileProps) {
   if (!media) return null;
   return (
     <li>
-      <Link
+      <AppLink
         href={postPath(post.id)}
         aria-label={`${media.kind === "video" ? "Video" : "Photo"} by ${post.author.name}: ${media.label}`}
         className="media-stripes relative grid aspect-square place-items-center overflow-hidden rounded-sm border border-ag-border-subtle outline-none transition-opacity hover:opacity-85 focus-visible:shadow-ag-focus-ring"
@@ -44,7 +44,7 @@ export function MediaTile({ post }: MediaTileProps) {
             <Icon name="play" size={12} />
           </span>
         )}
-      </Link>
+      </AppLink>
     </li>
   );
 }

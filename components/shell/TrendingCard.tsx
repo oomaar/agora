@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { AppLink } from "@/components/shell/AppLink";
 import { RailCard } from "@/components/shell/RailCard";
 import { RailQuery } from "@/components/shell/RailQuery";
 import { useTrends } from "@/hooks/explore/useTrends";
+import { EXPLORE_PATH } from "@/lib/explore/constants";
 import { RAIL_TREND_LIMIT } from "@/lib/shell/constants";
 
 export function TrendingCard() {
@@ -29,12 +30,12 @@ export function TrendingCard() {
           </ul>
         )}
       </RailQuery>
-      <Link
-        href="/explore"
+      <AppLink
+        href={EXPLORE_PATH}
         className="px-4 py-2.5 text-[13.5px] text-ag-accent-text outline-none hover:underline focus-visible:underline"
       >
         Show more
-      </Link>
+      </AppLink>
     </RailCard>
   );
 }

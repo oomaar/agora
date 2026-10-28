@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { AppLink } from "@/components/shell/AppLink";
+import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { PostDetailActions } from "@/components/post/PostDetailActions";
 import { PostMedia } from "@/components/post/PostMedia";
 import { PostOwnerMenu } from "@/components/post/PostOwnerMenu";
@@ -22,7 +22,7 @@ import { type PostDetailBodyProps } from "@/types/postDetail";
 // The full post: author and Follow (or Edit / Delete on your own), text, media or
 // poll, date, stats and the action row. Deleting it goes back Home.
 export function PostDetailBody({ post, onComment }: PostDetailBodyProps) {
-  const router = useRouter();
+  const router = useAppRouter();
   const like = useToggleLike();
   const repost = useToggleRepost();
   const vote = useVotePoll();
@@ -32,7 +32,7 @@ export function PostDetailBody({ post, onComment }: PostDetailBodyProps) {
   return (
     <article className="flex flex-col gap-3.5 border-b border-ag-border-subtle p-5">
       <div className="flex items-center gap-3">
-        <Link
+        <AppLink
           href={`/u/${author.handle}`}
           className="flex min-w-0 flex-1 items-center gap-3 rounded-md outline-none focus-visible:shadow-ag-focus-ring"
         >
@@ -48,7 +48,7 @@ export function PostDetailBody({ post, onComment }: PostDetailBodyProps) {
               @{author.handle}
             </span>
           </span>
-        </Link>
+        </AppLink>
         {author.isSelf ? (
           <PostOwnerMenu
             post={post}

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { AppLink } from "@/components/shell/AppLink";
 import { explorePath } from "@/utils/explorePath";
 import { pluralize } from "@/utils/pluralize";
 import { type TrendListProps } from "@/types/explore";
@@ -9,7 +9,7 @@ export function TrendList({ trends }: TrendListProps) {
     <ul>
       {trends.map((trend) => (
         <li key={trend.id}>
-          <Link
+          <AppLink
             href={explorePath(trend.title)}
             className="flex flex-col gap-0.75 px-5 py-3 outline-none transition-colors hover:bg-ag-hover focus-visible:shadow-ag-focus-ring"
           >
@@ -21,7 +21,7 @@ export function TrendList({ trends }: TrendListProps) {
               {trend.postCount.toLocaleString("en-US")}{" "}
               {pluralize(trend.postCount, "post")}
             </span>
-          </Link>
+          </AppLink>
         </li>
       ))}
     </ul>

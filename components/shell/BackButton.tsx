@@ -1,11 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { IconButton } from "@/components/ui/IconButton";
 import { type BackButtonProps } from "@/types/shell";
 
 export function BackButton({ fallbackHref }: BackButtonProps) {
-  const router = useRouter();
+  const router = useAppRouter();
   return (
     <IconButton
       icon="arrowLeft"

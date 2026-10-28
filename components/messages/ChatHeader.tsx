@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { AppLink } from "@/components/shell/AppLink";
+import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { ConversationAvatar } from "@/components/messages/ConversationAvatar";
 import { IconButton } from "@/components/ui/IconButton";
 import { MESSAGES_PATH } from "@/lib/messages/constants";
@@ -11,7 +11,7 @@ import { cn } from "@/utils/cn";
 import { type ChatHeaderProps } from "@/types/messages";
 
 export function ChatHeader({ conversation, messages }: ChatHeaderProps) {
-  const router = useRouter();
+  const router = useAppRouter();
   const status = getActivityStatus(conversation, messages);
   const person = conversation.name ? null : conversation.members[0];
   return (
@@ -41,12 +41,12 @@ export function ChatHeader({ conversation, messages }: ChatHeaderProps) {
         </span>
       </div>
       {person && (
-        <Link
+        <AppLink
           href={`/u/${person.handle}`}
           className="flex-none rounded-sm text-[13px] text-ag-text-secondary outline-none transition-colors hover:text-ag-text focus-visible:shadow-ag-focus-ring"
         >
           View profile
-        </Link>
+        </AppLink>
       )}
     </header>
   );

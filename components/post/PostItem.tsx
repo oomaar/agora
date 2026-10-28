@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { PostCard } from "@/components/post/PostCard";
 import { PostOwnerMenu } from "@/components/post/PostOwnerMenu";
 import { useSharePost } from "@/hooks/posts/useSharePost";
@@ -15,7 +15,7 @@ import { type PostItemProps } from "@/types/feed";
 // A post card wired to the data layer: opens the post, likes, reposts, votes and
 // shares; your own posts also get Edit and Delete.
 export function PostItem({ post }: PostItemProps) {
-  const router = useRouter();
+  const router = useAppRouter();
   const like = useToggleLike();
   const repost = useToggleRepost();
   const vote = useVotePoll();
