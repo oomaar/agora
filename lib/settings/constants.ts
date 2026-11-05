@@ -1,4 +1,5 @@
 import { AUDIENCE_LABELS } from "@/lib/posts/constants";
+import { TAP_TARGET } from "@/lib/ui/tapTarget";
 import { type PostAudience } from "@/types/domain";
 import { type ProfilePhotoKind } from "@/types/media";
 import {
@@ -34,8 +35,7 @@ export const THEME_OPTIONS: ThemeOption[] = [
 
 export const SETTINGS_SKELETON_ROWS = 3;
 
-export const SETTINGS_NAV_ITEM =
-  "flex-none whitespace-nowrap rounded-sm px-3 py-2.5 text-[14px] outline-none transition-colors hover:bg-ag-nav-hover focus-visible:shadow-ag-focus-ring";
+export const SETTINGS_NAV_ITEM = `${TAP_TARGET} flex-none whitespace-nowrap rounded-sm px-3 py-2.5 text-[14px] outline-none transition-colors hover:bg-ag-nav-hover focus-visible:shadow-ag-focus-ring`;
 
 export const PROFILE_PHOTO_LABELS: Record<ProfilePhotoKind, string> = {
   avatar: "Profile photo",

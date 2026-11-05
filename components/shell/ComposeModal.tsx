@@ -45,6 +45,7 @@ export function ComposeModal() {
       open={isOpen}
       onClose={onClose}
       title="New post"
+      fullScreenOnPhone
       footer={
         <>
           {MEDIA_KINDS.map((kind) => (
@@ -56,8 +57,10 @@ export function ComposeModal() {
               size="sm"
               icon={kind}
               disabled={posting}
+              aria-label={`Add a ${MEDIA_LABELS[kind].toLowerCase()}`}
+              className="max-sm:px-2.5"
             >
-              {MEDIA_LABELS[kind]}
+              <span className="max-sm:hidden">{MEDIA_LABELS[kind]}</span>
             </FilePickerButton>
           ))}
           <Button
@@ -65,12 +68,14 @@ export function ComposeModal() {
             size="sm"
             icon="poll"
             aria-pressed={poll !== null}
+            aria-label="Poll"
             disabled={posting}
+            className="max-sm:px-2.5"
             onClick={() =>
               composer.setPoll(poll ? null : Array.from({ length: POLL_MIN_OPTIONS }, () => ""))
             }
           >
-            Poll
+            <span className="max-sm:hidden">Poll</span>
           </Button>
           <span className="ml-auto" />
           <CharacterCounter length={composer.text.length} max={POST_MAX_LENGTH} />

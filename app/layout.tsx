@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { cn } from "@/utils/cn";
 import { themeScript } from "@/lib/theme/themeScript";
+import { SkipLink } from "@/components/ui/SkipLink";
 import { ToastProvider } from "@/context/ToastContext";
 import {
   SITE_DESCRIPTION,
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-full flex flex-col bg-ag-bg text-ag-text text-body font-sans">
+        <SkipLink />
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>

@@ -28,10 +28,19 @@ export const DEMO_HIGHLIGHTS: DemoHighlight[] = [
 ];
 
 export const DEMO_OUTLINE_LINK =
-  "grid h-10 place-items-center rounded-md border border-ag-demo text-[14px] font-semibold text-ag-demo-text outline-none transition-colors hover:bg-ag-demo-soft focus-visible:shadow-ag-focus-ring";
+  "grid h-11 place-items-center rounded-md border border-ag-demo text-[14px] font-semibold text-ag-demo-text outline-none transition-colors hover:bg-ag-demo-soft focus-visible:shadow-ag-focus-ring";
 
 export const DEMO_SOLID_LINK =
   "inline-flex h-11.5 flex-none items-center justify-center rounded-md bg-ag-demo px-6 text-[15px] font-semibold text-ag-on-demo outline-none transition-opacity hover:opacity-90 focus-visible:shadow-ag-focus-ring";
 
 export const TEXT_LINK =
   "rounded-xs text-ag-accent-text outline-none hover:underline focus-visible:shadow-ag-focus-ring";
+
+// The home feed in each theme, captured from the demo at 1280 × 560 (16:7).
+export const PRODUCT_SCREENSHOT = {
+  dark: "/screenshots/home-dark.webp",
+  light: "/screenshots/home-light.webp",
+  width: 1280,
+  height: 560,
+  alt: "The Agora home feed: the sidebar, the For you feed with a post, and the Trending and Who to follow cards",
+};

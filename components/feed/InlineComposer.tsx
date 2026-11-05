@@ -7,6 +7,8 @@ import { useComposerDraft } from "@/hooks/posts/useComposerDraft";
 import { useOpenCompose } from "@/hooks/shell/useOpenCompose";
 import { useCurrentUser } from "@/hooks/users/useCurrentUser";
 import { MEDIA_LABELS, POST_MEDIA_ACCEPT } from "@/lib/media/constants";
+import { TAP_TARGET } from "@/lib/ui/tapTarget";
+import { cn } from "@/utils/cn";
 import { type PostMediaKind } from "@/types/post";
 
 const MEDIA_KINDS: PostMediaKind[] = ["image", "video"];
@@ -27,7 +29,7 @@ export function InlineComposer() {
       <button
         type="button"
         onClick={openCompose}
-        className="h-10 min-w-0 flex-1 cursor-text truncate rounded-md text-left text-[16px] text-ag-text-placeholder outline-none focus-visible:shadow-ag-focus-ring"
+        className="h-10 min-w-0 flex-1 cursor-text truncate rounded-md text-left text-[16px] text-ag-text-placeholder outline-none focus-visible:shadow-ag-focus-ring max-sm:h-11"
       >
         What&apos;s happening in the square?
       </button>
@@ -51,7 +53,10 @@ export function InlineComposer() {
       <button
         type="button"
         onClick={openCompose}
-        className="flex h-8.5 flex-none cursor-pointer items-center rounded-full bg-ag-accent-soft px-4 text-[13.5px] font-semibold text-ag-accent-text outline-none transition-opacity hover:opacity-85 focus-visible:shadow-ag-focus-ring"
+        className={cn(
+          TAP_TARGET,
+          "flex h-8.5 flex-none cursor-pointer items-center rounded-full bg-ag-accent-soft px-4 text-[13.5px] font-semibold text-ag-accent-text outline-none transition-opacity hover:opacity-85 focus-visible:shadow-ag-focus-ring",
+        )}
       >
         Post
       </button>

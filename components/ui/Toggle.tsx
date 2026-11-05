@@ -1,5 +1,6 @@
 "use client";
 
+import { TAP_TARGET } from "@/lib/ui/tapTarget";
 import { cn } from "@/utils/cn";
 import { type ToggleProps } from "@/types/toggle";
 
@@ -19,7 +20,8 @@ export function Toggle({
       disabled={disabled}
       onClick={() => onChange(!checked)}
       className={cn(
-        "relative h-6 w-10 flex-none cursor-pointer rounded-xl outline-none transition-colors focus-visible:shadow-ag-focus-ring disabled:cursor-not-allowed disabled:opacity-50",
+        TAP_TARGET,
+        "h-6 w-10 flex-none cursor-pointer rounded-xl outline-none transition-colors focus-visible:shadow-ag-focus-ring disabled:cursor-not-allowed disabled:opacity-50",
         checked ? "bg-ag-accent" : "bg-ag-border",
         className,
       )}

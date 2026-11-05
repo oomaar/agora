@@ -60,14 +60,15 @@ export function MediaAttachment({
           />
         )}
         {!disabled && (
-          <IconButton
-            icon="close"
-            label={`Remove ${label}`}
-            variant="soft"
-            size="sm"
-            onClick={media.clear}
-            className="absolute right-2 top-2"
-          />
+          <span className="absolute right-2 top-2">
+            <IconButton
+              icon="close"
+              label={`Remove ${label}`}
+              variant="soft"
+              size="sm"
+              onClick={media.clear}
+            />
+          </span>
         )}
       </div>
       {status === "uploading" && (

@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* light: styles for the light theme (the .light class on <html>) */
+@custom-variant light (&:where(.light, .light *));
+
 :root,
 .dark {
   /* Surface: Backgrounds, from page to raised */
@@ -95,13 +98,13 @@
   /* Text: Three levels only */
   --ag-text: #1d1b17;
   --ag-text-secondary: #6b665d;
-  --ag-text-placeholder: #8a847a;
+  --ag-text-placeholder: #777269;
 
   /* Accent - Agora Amber: Primary actions and brand */
   --ag-accent: #f0a35e;
   --ag-accent-hover: #e8954c;
   --ag-on-accent: #1a1208;
-  --ag-accent-text: #a65a1c;
+  --ag-accent-text: #9b541a;
   --ag-accent-soft: #f7e3cf;
   --ag-accent-border: #edc9a4;
 
@@ -115,11 +118,11 @@
   --ag-demo-text-muted: #4a4280;
 
   /* Status: Feedback from actions */
-  --ag-success: #2f9a64;
+  --ag-success: #267d51;
   --ag-success-surface: #e9f7ef;
   --ag-success-text: #1e5c3a;
   --ag-success-border: #a9dcbf;
-  --ag-danger: #d64545;
+  --ag-danger: #d12e2e;
   --ag-on-danger: #ffffff;
   --ag-danger-surface: #fdeeee;
   --ag-danger-text: #8f1f1f;

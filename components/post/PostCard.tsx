@@ -1,3 +1,4 @@
+import { AppLink } from "@/components/shell/AppLink";
 import { Avatar } from "@/components/ui/Avatar";
 import { PostActions } from "@/components/post/PostActions";
 import { PostMedia } from "@/components/post/PostMedia";
@@ -18,6 +19,7 @@ export function PostCard({
   reposted,
   pending = false,
   divider = true,
+  href,
   onOpen,
   onVote,
   onLike,
@@ -48,7 +50,20 @@ export function PostCard({
           <div className="flex min-w-0 flex-1 items-baseline gap-1.5 text-[14px]">
             <span className="truncate font-semibold">{author.name}</span>
             <span className="truncate text-ag-text-secondary">
-              @{author.handle} · {pending ? "Posting…" : time}
+              @{author.handle} ·{" "}
+              {pending ? (
+                "Posting…"
+              ) : href ? (
+                <AppLink
+                  href={href}
+                  onClick={(event) => event.stopPropagation()}
+                  className="rounded-xs outline-none hover:underline focus-visible:shadow-ag-focus-ring"
+                >
+                  {time}
+                </AppLink>
+              ) : (
+                time
+              )}
               {edited && " · Edited"}
             </span>
           </div>

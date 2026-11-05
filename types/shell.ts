@@ -48,6 +48,8 @@ export type PageHeaderProps = {
   title: string;
   // Shows a back button before the title.
   back?: boolean;
+  // On phones, shows the account menu and logo in place of the title row (the home feed).
+  brand?: boolean;
   // Shown at the end of the title row, e.g. "Mark all as read".
   action?: ReactNode;
   // Rendered under the title, e.g. tabs; they bring their own bottom border.

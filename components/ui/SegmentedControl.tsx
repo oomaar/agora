@@ -6,6 +6,7 @@ import {
   SEGMENTED_SELECTED,
   SEGMENTED_TRACK,
 } from "@/lib/ui/toggle";
+import { TAP_TARGET } from "@/lib/ui/tapTarget";
 import { cn } from "@/utils/cn";
 import { type SegmentedControlProps } from "@/types/toggle";
 
@@ -42,6 +43,7 @@ export function SegmentedControl<T extends string>({
             aria-checked={selected}
             onClick={() => onChange(option.value)}
             className={cn(
+              TAP_TARGET,
               "flex-1 cursor-pointer rounded-[7px] py-1.75 text-center text-[13px] font-semibold outline-none transition-colors focus-visible:shadow-ag-focus-ring",
               selected ? SEGMENTED_SELECTED[tone] : SEGMENTED_IDLE[tone],
             )}

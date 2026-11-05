@@ -1,38 +1,17 @@
 "use client";
 
 import { AppLink } from "@/components/shell/AppLink";
-import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { Avatar } from "@/components/ui/Avatar";
 import { Icon } from "@/components/ui/Icon";
 import { IconButton } from "@/components/ui/IconButton";
 import { Menu } from "@/components/ui/Menu";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { useSession } from "@/hooks/auth/useSession";
+import { useAccountMenuItems } from "@/hooks/shell/useAccountMenuItems";
 import { useCurrentUser } from "@/hooks/users/useCurrentUser";
-import { NAV_ITEMS } from "@/lib/shell/constants";
-import { type MenuItem } from "@/types/menu";
-
-const SETTINGS_HREF =
-  NAV_ITEMS.find((item) => item.id === "settings")?.href ?? "/settings";
 
 export function UserCard() {
-  const router = useAppRouter();
   const user = useCurrentUser();
-  const { signOut, signOutLabel } = useSession();
-  const items: MenuItem[] = [
-    {
-      id: "settings",
-      label: "Settings",
-      icon: "settings",
-      onSelect: () => router.push(SETTINGS_HREF),
-    },
-    {
-      id: "logout",
-      label: signOutLabel,
-      danger: true,
-      onSelect: signOut,
-    },
-  ];
+  const items = useAccountMenuItems();
 
   if (user.status === "error") {
     return (

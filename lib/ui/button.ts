@@ -4,14 +4,17 @@ import {
   type IconButtonSize,
   type IconButtonVariant,
 } from "@/types/button";
+import { TAP_TARGET } from "@/lib/ui/tapTarget";
 
-export const BUTTON_BASE =
-  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap outline-none transition-colors focus-visible:shadow-ag-focus-ring disabled:cursor-not-allowed disabled:opacity-50";
+export const BUTTON_BASE = `${TAP_TARGET} inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap outline-none transition-[color,background-color,border-color,opacity,scale] enabled:active:scale-97 focus-visible:shadow-ag-focus-ring disabled:cursor-not-allowed disabled:opacity-50`;
+
+export const ICON_BUTTON_BASE = `${TAP_TARGET} grid flex-none cursor-pointer place-items-center rounded-full outline-none transition-[color,background-color,border-color,opacity,scale] enabled:active:scale-97 focus-visible:shadow-ag-focus-ring disabled:cursor-not-allowed disabled:opacity-50`;
 
 export const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
   primary: "bg-ag-accent font-semibold text-ag-on-accent enabled:hover:bg-ag-accent-hover",
   secondary: "border border-ag-border-strong text-ag-text enabled:hover:bg-ag-hover",
   demo: "border border-ag-demo font-semibold text-ag-demo-text enabled:hover:bg-ag-demo-soft",
+  demoSolid: "bg-ag-demo font-semibold text-ag-on-demo enabled:hover:opacity-90",
   danger: "bg-ag-danger font-semibold text-ag-on-danger enabled:hover:opacity-90",
   dangerOutline: "border border-ag-danger-border text-ag-danger-text enabled:hover:bg-ag-danger-surface",
   follow: "bg-ag-text font-semibold text-ag-bg enabled:hover:opacity-90",

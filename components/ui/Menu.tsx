@@ -3,7 +3,12 @@
 import { useId } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { useMenu } from "@/hooks/ui/useMenu";
-import { MENU_TRIGGER_BASE, MENU_TRIGGER_VARIANTS } from "@/lib/ui/menu";
+import {
+  MENU_ENTER,
+  MENU_POSITIONS,
+  MENU_TRIGGER_BASE,
+  MENU_TRIGGER_VARIANTS,
+} from "@/lib/ui/menu";
 import { cn } from "@/utils/cn";
 import { type MenuProps } from "@/types/menu";
 
@@ -55,8 +60,8 @@ export function Menu({
           onKeyDown={onMenuKeyDown}
           className={cn(
             "absolute z-40 flex min-w-50 flex-col rounded-lg p-1.5 elev-1",
-            side === "bottom" ? "top-full mt-1.5" : "bottom-full mb-1.5",
-            align === "end" ? "right-0" : "left-0",
+            MENU_POSITIONS[side][align],
+            MENU_ENTER,
           )}
         >
           {items.map((item, index) => (

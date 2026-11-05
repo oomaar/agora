@@ -6,8 +6,9 @@ export const FIELD_CONTROL_BASE =
 export const FIELD_BORDER = "border-ag-border";
 export const FIELD_BORDER_ERROR = "border-ag-danger";
 
+// 44px tall on phones, the minimum tap target.
 export const FIELD_SIZES: Record<FieldSize, string> = {
-  sm: "h-[38px]",
-  md: "h-[42px]",
+  sm: "h-[38px] max-sm:h-11",
+  md: "h-[42px] max-sm:h-11",
   lg: "h-11",
 };

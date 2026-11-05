@@ -145,7 +145,7 @@ export const COLOR_GROUPS: ColorGroup[] = [
       {
         name: "--ag-text-placeholder",
         dark: "#7d858d",
-        light: "#8a847a",
+        light: "#777269",
         use: "Placeholders, disabled",
         swatchClassName: "bg-ag-text-placeholder",
       },
@@ -179,7 +179,7 @@ export const COLOR_GROUPS: ColorGroup[] = [
       {
         name: "--ag-accent-text",
         dark: "#f0a35e",
-        light: "#a65a1c",
+        light: "#9b541a",
         use: "Links, accent text",
         swatchClassName: "bg-ag-accent-text",
       },
@@ -261,7 +261,7 @@ export const COLOR_GROUPS: ColorGroup[] = [
       {
         name: "--ag-success",
         dark: "#5cc28f",
-        light: "#2f9a64",
+        light: "#267d51",
         use: "Success dot, activity",
         swatchClassName: "bg-ag-success",
       },
@@ -289,7 +289,7 @@ export const COLOR_GROUPS: ColorGroup[] = [
       {
         name: "--ag-danger",
         dark: "#f07171",
-        light: "#d64545",
+        light: "#d12e2e",
         use: "Error, liked heart, destructive",
         swatchClassName: "bg-ag-danger",
       },

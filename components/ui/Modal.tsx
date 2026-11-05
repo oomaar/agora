@@ -3,6 +3,11 @@
 import { useId } from "react";
 import { IconButton } from "@/components/ui/IconButton";
 import { useDialog } from "@/hooks/ui/useDialog";
+import {
+  DIALOG_FADE,
+  MODAL_FULL_SCREEN_ON_PHONE,
+  MODAL_VARIANTS,
+} from "@/lib/ui/modal";
 import { cn } from "@/utils/cn";
 import { type ModalProps } from "@/types/modal";
 
@@ -11,6 +16,7 @@ export function Modal({
   onClose,
   title,
   variant = "modal",
+  fullScreenOnPhone = false,
   footer,
   className,
   children,
@@ -32,13 +38,15 @@ export function Modal({
       onClick={onClick}
       className={cn(
         "p-0 text-ag-text backdrop:bg-ag-scrim",
-        isSheet
-          ? "mx-0 mb-0 mt-auto w-full max-w-none rounded-t-[22px] border border-b-0 border-ag-border bg-ag-surface shadow-ag-xl"
-          : "mx-auto mb-auto mt-20 w-145 max-w-[calc(100%-32px)] rounded-2xl elev-2",
+        DIALOG_FADE,
+        MODAL_VARIANTS[variant],
+        fullScreenOnPhone && MODAL_FULL_SCREEN_ON_PHONE,
         className,
       )}
     >
-      <div className="flex flex-col">
+      <div
+        className={cn("flex flex-col", fullScreenOnPhone && "max-sm:h-full")}
+      >
         {isSheet && (
           <span
             aria-hidden="true"
@@ -65,9 +73,15 @@ export function Modal({
             onClick={onClose}
           />
         </div>
-        {children}
+        {fullScreenOnPhone ? (
+          <div className="max-sm:min-h-0 max-sm:flex-1 max-sm:overflow-y-auto">
+            {children}
+          </div>
+        ) : (
+          children
+        )}
         {footer && (
-          <div className="flex items-center gap-2 border-t border-ag-border-subtle px-4.5 py-3">
+          <div className="flex items-center gap-2 border-t border-ag-border-subtle px-4.5 pb-[max(--spacing(3),env(safe-area-inset-bottom))] pt-3">
             {footer}
           </div>
         )}

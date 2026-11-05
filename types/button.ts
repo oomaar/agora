@@ -5,6 +5,7 @@ export type ButtonVariant =
   | "primary"
   | "secondary"
   | "demo"
+  | "demoSolid"
   | "danger"
   | "dangerOutline"
   | "follow"
