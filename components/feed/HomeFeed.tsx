@@ -12,7 +12,7 @@ export function HomeFeed() {
   const [tab, setTab] = useState<FeedTab>("for-you");
   return (
     <>
-      <PageHeader title="Home">
+      <PageHeader title="Home" brand>
         <Tabs
           items={FEED_TAB_ITEMS}
           value={tab}
