@@ -48,6 +48,9 @@ export type PostCardProps = {
   reposted?: boolean;
   pending?: boolean;
   divider?: boolean;
+  // The post's page. The time links there, so the post opens from the keyboard too
+  // (the card itself only takes clicks).
+  href?: string;
   onOpen?: () => void;
   onVote?: (optionId: string) => void;
   onLike?: () => void;

@@ -30,4 +30,6 @@ export const SHELL_COLUMN =
 
 export const SHELL_STICKY_TOP = "sticky top-[var(--ag-shell-top,0px)]";
 
-export const SHELL_MAIN = "min-w-0 flex-1 border-r border-ag-border-subtle";
+// tabIndex -1 on <main> lets Skip to content move focus there; it shows no ring.
+export const SHELL_MAIN =
+  "min-w-0 flex-1 border-r border-ag-border-subtle outline-none";

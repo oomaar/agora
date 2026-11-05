@@ -40,6 +40,7 @@ export function PostItem({ post }: PostItemProps) {
       }}
       liked={post.liked}
       reposted={post.reposted}
+      href={postPath(post.id)}
       onOpen={() => router.push(postPath(post.id))}
       onVote={(optionId) => vote.run({ post, optionId })}
       onLike={() => like.run(post)}

@@ -5,3 +5,6 @@ export const SITE_DESCRIPTION =
 
 // Pages set a short title; the root layout turns "Home" into "Home · Agora".
 export const TITLE_TEMPLATE = `%s · ${SITE_NAME}`;
+
+// The id of each page's <main>, where Skip to content lands.
+export const MAIN_ID = "main";

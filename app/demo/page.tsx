@@ -5,6 +5,7 @@ import { DemoPersonaCard } from "@/components/demo/DemoPersonaCard";
 import { ScenarioPicker } from "@/components/demo/ScenarioPicker";
 import { WELCOME_PATH } from "@/lib/auth/constants";
 import { RETURN_PATH_PARAM } from "@/lib/demo/constants";
+import { MAIN_ID } from "@/lib/site/constants";
 import { readReturnPath } from "@/utils/readReturnPath";
 
 export const metadata: Metadata = { title: "Demo" };
@@ -19,7 +20,11 @@ export default async function DemoLandingPage({
   return (
     <>
       <DemoLandingHeader returnPath={returnPath} />
-      <main className="mx-auto flex w-full max-w-220 flex-col gap-8 px-4 py-8 sm:px-8 sm:py-12">
+      <main
+        id={MAIN_ID}
+        tabIndex={-1}
+        className="mx-auto flex w-full max-w-220 flex-col gap-8 px-4 py-8 outline-none sm:px-8 sm:py-12"
+      >
         <div className="flex flex-col gap-3">
           <h1 className="text-[28px] font-semibold leading-[1.1] tracking-tight sm:text-h1">
             Explore Agora with a simulated backend
