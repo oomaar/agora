@@ -7,6 +7,8 @@ export type ModalProps = {
   onClose: () => void;
   title: string;
   variant?: ModalVariant;
+  // Fills the screen below `sm` (e.g. compose); a centred modal above it.
+  fullScreenOnPhone?: boolean;
   footer?: ReactNode;
   className?: string;
   children: ReactNode;
