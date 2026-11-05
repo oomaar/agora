@@ -5,6 +5,7 @@ import { useAppRouter } from "@/hooks/shell/useAppRouter";
 import { ConversationAvatar } from "@/components/messages/ConversationAvatar";
 import { IconButton } from "@/components/ui/IconButton";
 import { MESSAGES_PATH } from "@/lib/messages/constants";
+import { TAP_TARGET } from "@/lib/ui/tapTarget";
 import { conversationTitle } from "@/utils/conversationTitle";
 import { getActivityStatus } from "@/utils/getActivityStatus";
 import { cn } from "@/utils/cn";
@@ -43,7 +44,10 @@ export function ChatHeader({ conversation, messages }: ChatHeaderProps) {
       {person && (
         <AppLink
           href={`/u/${person.handle}`}
-          className="flex-none rounded-sm text-[13px] text-ag-text-secondary outline-none transition-colors hover:text-ag-text focus-visible:shadow-ag-focus-ring"
+          className={cn(
+            TAP_TARGET,
+            "flex-none rounded-sm text-[13px] text-ag-text-secondary outline-none transition-colors hover:text-ag-text focus-visible:shadow-ag-focus-ring",
+          )}
         >
           View profile
         </AppLink>

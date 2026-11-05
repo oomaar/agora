@@ -7,6 +7,8 @@ import { Tabs } from "@/components/ui/Tabs";
 import { useMarkNotificationsRead } from "@/hooks/notifications/useMarkNotificationsRead";
 import { useUnreadCounts } from "@/hooks/shell/useUnreadCounts";
 import { NOTIFICATION_TAB_ITEMS } from "@/lib/notifications/constants";
+import { TAP_TARGET } from "@/lib/ui/tapTarget";
+import { cn } from "@/utils/cn";
 import { type NotificationFilter } from "@/types/dataSource";
 
 export function NotificationsView() {
@@ -23,7 +25,10 @@ export function NotificationsView() {
             type="button"
             onClick={() => markRead.run()}
             disabled={!hasUnread}
-            className="cursor-pointer rounded-sm text-[13px] text-ag-text-secondary outline-none transition-colors hover:text-ag-text focus-visible:shadow-ag-focus-ring disabled:cursor-default disabled:opacity-50 disabled:hover:text-ag-text-secondary"
+            className={cn(
+              TAP_TARGET,
+              "cursor-pointer rounded-sm text-[13px] text-ag-text-secondary outline-none transition-colors hover:text-ag-text focus-visible:shadow-ag-focus-ring disabled:cursor-default disabled:opacity-50 disabled:hover:text-ag-text-secondary",
+            )}
           >
             Mark all as read
           </button>

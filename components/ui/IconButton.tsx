@@ -1,5 +1,6 @@
 import { Icon } from "@/components/ui/Icon";
 import {
+  ICON_BUTTON_BASE,
   ICON_BUTTON_ICON_SIZES,
   ICON_BUTTON_SIZES,
   ICON_BUTTON_VARIANTS,
@@ -22,7 +23,7 @@ export function IconButton({
       aria-label={label}
       title={label}
       className={cn(
-        "grid flex-none cursor-pointer place-items-center rounded-full outline-none transition-colors focus-visible:shadow-ag-focus-ring disabled:cursor-not-allowed disabled:opacity-50",
+        ICON_BUTTON_BASE,
         ICON_BUTTON_VARIANTS[variant],
         ICON_BUTTON_SIZES[size],
         className,
