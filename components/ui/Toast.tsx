@@ -8,7 +8,7 @@ export function Toast({ kind, message, className }: ToastProps) {
     <div
       role={kind === "error" ? "alert" : "status"}
       className={cn(
-        "flex items-center gap-3 rounded-lg border px-4.5 py-3 text-[14px] shadow-ag-lg",
+        "flex items-center gap-3 rounded-lg border px-4.5 py-3 text-[14px] shadow-ag-lg transition-[opacity,translate] duration-200 ease-out starting:opacity-0 motion-safe:starting:translate-y-2",
         config.className,
         className,
       )}

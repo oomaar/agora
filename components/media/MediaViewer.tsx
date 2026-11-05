@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { IconButton } from "@/components/ui/IconButton";
 import { useDialog } from "@/hooks/ui/useDialog";
+import { DIALOG_FADE } from "@/lib/ui/modal";
+import { cn } from "@/utils/cn";
 import { type MediaViewerProps } from "@/types/post";
 
 // A photo over a dark backdrop, as large as the screen allows and never cropped,
@@ -22,7 +24,10 @@ export function MediaViewer({ open, onClose, media }: MediaViewerProps) {
       onCancel={onCancel}
       onClose={onDialogClose}
       onClick={onClick}
-      className="m-auto h-dvh max-h-none w-screen max-w-none bg-transparent p-0 text-white backdrop:bg-black/85"
+      className={cn(
+        "m-auto h-dvh max-h-none w-screen max-w-none bg-transparent p-0 text-white backdrop:bg-black/85",
+        DIALOG_FADE,
+      )}
     >
       {open && (
         <div
@@ -56,13 +61,14 @@ export function MediaViewer({ open, onClose, media }: MediaViewerProps) {
               Open original
             </a>
           </p>
-          <IconButton
-            icon="close"
-            label="Close"
-            variant="soft"
-            onClick={onClose}
-            className="absolute right-4 top-4"
-          />
+          <span className="absolute right-4 top-4">
+            <IconButton
+              icon="close"
+              label="Close"
+              variant="soft"
+              onClick={onClose}
+            />
+          </span>
         </div>
       )}
     </dialog>
