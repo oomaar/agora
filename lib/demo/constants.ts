@@ -1,4 +1,5 @@
 import { DEMO_CONTENT } from "@/lib/seed/demoContent";
+import { TAP_TARGET } from "@/lib/ui/tapTarget";
 import { type Session } from "@/types/auth";
 import { type ActivityTone } from "@/types/simulation";
 
@@ -21,6 +22,8 @@ export const DEMO_SESSION: Session = {
 
 // The demo bar's height, which the sticky shell columns and headers sit under.
 export const DEMO_SHELL_OFFSET = "[--ag-shell-top:--spacing(9.5)]";
+
+export const DEMO_BAR_BUTTON = `${TAP_TARGET} h-6.5 flex-none cursor-pointer whitespace-nowrap rounded-[6px] text-[12.5px] outline-none transition-[color,background-color,opacity] focus-visible:shadow-ag-focus-ring`;
 
 // Activity rows shown in the rail's Simulation card.
 export const RAIL_ACTIVITY_LIMIT = 4;

@@ -13,6 +13,11 @@ export type DemoProvidersProps = {
   children: ReactNode;
 };
 
+export type SimulationSheetProps = {
+  open: boolean;
+  onClose: () => void;
+};
+
 export type ActivityListProps = {
   entries: ActivityEntry[];
 };
