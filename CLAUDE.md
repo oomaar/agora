@@ -94,6 +94,8 @@ Phase 10 demo mode: `app/demo/page.tsx` is the landing; `app/demo/(app)/` mirror
 
 Phase 11 mobile, accessibility & polish: on phones the home feed's `PageHeader` (`brand`) shows `MobileTopBar` (your avatar opens the account menu, from `useAccountMenuItems`, which `UserCard` shares) with the logo; `ComposeFab` floats above the tab bar on the rail pages (not Messages or Settings), and the compose `Modal` is `fullScreenOnPhone`. Below the rail breakpoint the demo bar's Network button opens `SimulationSheet` (the rail card's `SimulationControls` plus Reset / Exit); on phones Reset lives only there. Tap targets: `TAP_TARGET` (`lib/ui/tapTarget.ts`) grows a control's hit area to 44 × 44 with an invisible `::after` and makes it `relative`, so a control that needs other positioning goes in a positioned wrapper; it's built into buttons, icon buttons, menu triggers, post actions, pill tabs, segments, switches and the settings nav, and fields are 44px tall below `sm`. Accessibility: `SkipLink` (first in `<body>`) jumps to `#main` (`MAIN_ID`, every page's `<main>`), a post's time links to the post so it opens from the keyboard, and toasts render in a live region; four light-theme tokens were darkened to pass WCAG AA (placeholder `#777269`, accent text `#9b541a`, success `#267d51`, danger `#d12e2e`). Motion: dialogs fade (sheets slide, modals scale) through the `open` attribute, `@starting-style` and `transition-discrete` (`lib/ui/modal.ts`); menus and toasts animate in; buttons and post actions dip when pressed; movement sits behind `motion-safe`. The welcome page shows `ProductScreenshot` (`public/screenshots/home-{dark,light}.webp`, the demo's home feed without its demo parts), switched with the `light:` variant from `globals.css`.
 
+Phase 12 chat: messages carry up to 4 `attachments` (`0008_chat.sql`; the text can be empty when there are attachments): photos, video, documents (`file`) and voice notes (`audio`), uploaded for the `message` purpose into `message/<userId>/` (WebM audio is saved as `.weba`, so an extension still names one kind). The API takes the kind from the URL; the name, size, pixel size, duration and waveform come from the browser and are only shown. Picked files wait in `useChatAttachments` with local previews and upload when the message is sent: `useSendMessage` uploads whatever isn't uploaded yet (progress on the bubble), and a failed message keeps its files (`outgoing`) so Retry doesn't need them picked again. `useVoiceRecorder` records with `MediaRecorder` (WebM, or MP4 in Safari), samples the loudness for the live bars and the waveform, and stops at 2 minutes; `useVoicePlayer` uses the saved length, since recorded WebM often reports none. Live updates are polling: while a conversation is open and the tab is visible, `useConversationUpdates` calls `getConversationUpdates` every 2s (messages from the others newer than the latest one on screen, plus `typingIds`), adds them to the thread and marks it read. `useTypingSignal` sends `PUT` / `DELETE /api/conversations/[id]/typing` (at most every 3s); `conversation_members.typing_at` counts for 6s and sending a message clears it. In the demo, `createChatPartners` has someone type for a few seconds and then reply to what you sent; polls go through the network's `poll`, which fails when offline but doesn't count towards Flaky. Constants in `lib/messages/` and `lib/media/`.
+
 Hooks are grouped by feature: `hooks/data/` (provider access, `useQuery`, `useMutation`, simulation), `hooks/posts/`, `hooks/users/`, `hooks/explore/`, `hooks/notifications/`, `hooks/messages/`, `hooks/settings/`, `hooks/media/`, `hooks/demo/` (mode, exit, reset), `hooks/shell/` (compose, unread counts), `hooks/auth/` (session, sign-in, sign-up and Google) and `hooks/ui/` (component behaviour, toast, theme).
 
 Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind defaults are disabled.
@@ -103,7 +105,7 @@ Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind de
 ## Delivery Estimate
 
 - **Start:** 2026-10-18
-- **Target delivery:** 2027-01-09 (~12 weeks; moved from 2026-12-20 when the app became full-stack)
+- **Target delivery:** 2027-01-13 (~12 weeks; moved from 2026-12-20 when the app became full-stack, and from 2027-01-09 when the chat phase was added)
 
 | Phase | Name | Target end |
 |---|---|---|
@@ -119,7 +121,8 @@ Breakpoints (min-width): `sm:` 640 · `nav:` 900 · `rail:` 1100 — Tailwind de
 | 9 | Media uploads | 2026-12-26 |
 | 10 | Demo mode experience | 2026-12-31 |
 | 11 | Mobile, accessibility & polish | 2027-01-05 |
-| 12 | QA, performance & deployment | 2027-01-09 |
+| 12 | Chat: attachments, voice notes & typing | 2027-01-08 |
+| 13 | QA, performance & deployment | 2027-01-13 |
 
 ---
 
@@ -247,15 +250,23 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 - [x] 11.7 Transitions and micro-interactions
 - [x] 11.8 Product screenshot on the welcome page (dark + light)
 
-### Phase 12 — QA, Performance & Deployment
+### Phase 12 — Chat: Attachments, Voice Notes & Typing
 
-- [ ] 12.1 Lint and type-check clean
-- [ ] 12.2 Manual QA against wireframes (dark + light)
-- [ ] 12.3 Performance pass (bundle size, images, Lighthouse)
-- [ ] 12.4 SEO metadata, favicon / app icon
-- [ ] 12.5 README for the portfolio
-- [ ] 12.6 Security review: auth flows, session cookies, API authorization, rate limits
-- [ ] 12.7 Deployment: Vercel + Neon + Blob, production environment variables, Google OAuth production redirect URL
+- [x] 12.1 Attachments: up to 4 photos, videos or documents (PDF, Word, Excel, PowerPoint, text, CSV) per message — picker, previews, remove, type / size / count checks
+- [x] 12.2 Voice notes: record from the microphone (live level, discard, send), player with waveform, seek and length
+- [x] 12.3 Attachments in the thread: photo / video grid with the full-size viewer, document rows, list previews ("Photo", "Voice note · 0:12")
+- [x] 12.4 Live updates: an open conversation checks for new messages and marks them read
+- [x] 12.5 Typing status: "Lena is typing…" in the header and animated dots in the thread; simulated replies in the demo
+
+### Phase 13 — QA, Performance & Deployment
+
+- [ ] 13.1 Lint and type-check clean
+- [ ] 13.2 Manual QA against wireframes (dark + light)
+- [ ] 13.3 Performance pass (bundle size, images, Lighthouse)
+- [ ] 13.4 SEO metadata, favicon / app icon
+- [ ] 13.5 README for the portfolio
+- [ ] 13.6 Security review: auth flows, session cookies, API authorization, rate limits
+- [ ] 13.7 Deployment: Vercel + Neon + Blob, production environment variables, Google OAuth production redirect URL
 
 ---
 
@@ -282,3 +293,5 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | 2026-10-27 | 9.5 – 9.7 | Add-ons: edit and delete your own posts and comments from a ⋯ menu (edit dialog with counter, delete confirmation, "Edited" label, deleted items leave every list, deleting on the post page goes Home); author-only API with 403s; media keeps its own shape using the size measured at upload, and photos open full size with their real dimensions and Open original. Migration `0007_editing.sql`; new `DataSource` methods `updatePost`, `deletePost`, `updateComment`, `deleteComment` |
 | 2026-10-28 | 10.1 – 10.5 | Demo mirrors every app route under `/demo/*` with the same pages (re-exported) on the simulated backend, no sign-in needed; links, redirects, the rail search and the nav stay inside the demo. Demo bar on every demo page: DEMO, signed in as Maya Chen, scenario, Reset, Exit demo (pinned; the shell's sticky parts sit under it). Simulation card at the top of the rail: Normal / Slow / Offline / Flaky with a hint, and the latest activity. Entry points: welcome page, sidebar card, Settings › Demo (which offers Reset / Exit inside the demo) and direct links; `?scenario=` picks the scenario, `?from=` is where Exit goes back to (the welcome page otherwise). The app's Log out reads Exit demo inside the demo. On screens under 1100px the network controls arrive with the bottom sheet in 11.4. **Phase 10 complete** |
 | 2026-11-04 | 11.1 – 11.8 | Phones: a top bar on the home feed (avatar → Settings / Log out, logo), a floating New post button above the tab bar, compose as a full-screen sheet that slides up (Photo / Video / Poll become icons), Messages list → thread with Back. Demo: below 1100px the bar's Network: … button opens the Simulation sheet (network, recent activity, Reset demo, Exit demo); on phones the bar reads DEMO · Simulated data · Network · Exit. Every control is at least 44 × 44 to tap (inline text links aside), without changing how it looks; fields are 44px tall on phones. Skip to content, keyboard-openable posts, a live region for toasts; contrast checked for every text token in both themes, four light tokens darkened to pass AA. Dialogs, sheets, menus and toasts animate in and out, presses dip, reduced motion drops the movement. The welcome page shows a real screenshot of the home feed in the current theme. **Phase 11 complete** |
+| 2026-11-17 | Scope change | Chat phase added before QA: attachments, voice notes, live updates and typing status. QA, performance & deployment becomes Phase 13; target delivery moved to 2027-01-13 |
+| 2026-11-17 | 12.1 – 12.5 | Chat: attach up to 4 photos, videos or documents (previews, remove, checks before anything uploads; files upload when the message is sent, with progress, and a failed message keeps them for Retry). Voice notes: tap the mic, watch the live level, discard or Send; recordings stop at 2 minutes and play back with a waveform, seeking and their length. The thread shows photos and video in a grid (photos open full size), documents as download rows, and the list previews attachments ("Photo", "2 files", "Voice note · 0:12"). An open conversation checks every 2 seconds for new messages and who's typing: "Lena is typing…" in the header with animated dots in the thread. The demo's people type, then reply to what you sent. Migration `0008_chat.sql` (`messages.attachments`, `conversation_members.typing_at`); new `DataSource` methods `getConversationUpdates` and `setTyping`; `sendMessage` takes text and attachments. **Phase 12 complete** |
