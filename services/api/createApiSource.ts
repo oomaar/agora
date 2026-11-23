@@ -21,6 +21,8 @@ export function createApiSource(): DataSource {
     getConversations: () => request(API_PATHS.conversations),
     getConversation: (conversationId) =>
       request(API_PATHS.conversation(conversationId)),
+    getConversationUpdates: (conversationId, since) =>
+      request(API_PATHS.conversationUpdates(conversationId, since)),
     getUnreadCounts: () => request(API_PATHS.unread),
     getSettings: () => request(API_PATHS.settings),
     setLike: (postId, liked) =>
@@ -52,10 +54,14 @@ export function createApiSource(): DataSource {
       request(API_PATHS.comment(commentId), { method: "DELETE" }),
     startConversation: (userId) =>
       request(API_PATHS.conversations, { method: "POST", body: { userId } }),
-    sendMessage: (conversationId, text) =>
+    sendMessage: (conversationId, message) =>
       request(API_PATHS.messages(conversationId), {
         method: "POST",
-        body: { text },
+        body: message,
+      }),
+    setTyping: (conversationId, typing) =>
+      request(API_PATHS.typing(conversationId), {
+        method: typing ? "PUT" : "DELETE",
       }),
     markNotificationsRead: () =>
       request(API_PATHS.notificationsRead, { method: "POST" }),

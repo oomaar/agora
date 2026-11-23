@@ -1,7 +1,9 @@
 import {
   type CommentView,
   type ConversationThread,
+  type ConversationUpdates,
   type ConversationView,
+  type MessageAttachment,
   type MessageView,
   type NotificationView,
   type PostAudience,
@@ -44,6 +46,12 @@ export type NewPost = {
   poll: string[] | null;
 };
 
+export type NewMessage = {
+  text: string;
+  // Already uploaded; the API checks each URL and takes the kind from it.
+  attachments: MessageAttachment[];
+};
+
 export type ProfileUpdate = {
   name: string;
   handle: string;
@@ -53,11 +61,7 @@ export type ProfileUpdate = {
 export type SettingsUpdate = Partial<UserSettings>;
 
 export type DataErrorCode =
-  | "network"
-  | "not-found"
-  | "validation"
-  | "unauthorized"
-  | "forbidden";
+  "network" | "not-found" | "validation" | "unauthorized" | "forbidden";
 
 // The one contract every data source implements, so the app and the demo share components.
 export type DataSource = {
@@ -73,6 +77,12 @@ export type DataSource = {
   getNotifications: (filter: NotificationFilter) => Promise<NotificationView[]>;
   getConversations: () => Promise<ConversationView[]>;
   getConversation: (conversationId: string) => Promise<ConversationThread>;
+  // Polled while a conversation is open. `since` is the latest message from
+  // someone else already on screen (null when there's none).
+  getConversationUpdates: (
+    conversationId: string,
+    since: string | null,
+  ) => Promise<ConversationUpdates>;
   getUnreadCounts: () => Promise<UnreadCounts>;
   getSettings: () => Promise<UserSettings>;
   setLike: (postId: string, liked: boolean) => Promise<PostView>;
@@ -88,7 +98,12 @@ export type DataSource = {
   deleteComment: (commentId: string) => Promise<null>;
   // Opens the one-to-one conversation with this person, creating it the first time.
   startConversation: (userId: string) => Promise<ConversationView>;
-  sendMessage: (conversationId: string, text: string) => Promise<MessageView>;
+  sendMessage: (
+    conversationId: string,
+    message: NewMessage,
+  ) => Promise<MessageView>;
+  // Tells the other members you're typing (true) or stopped (false).
+  setTyping: (conversationId: string, typing: boolean) => Promise<null>;
   markNotificationsRead: () => Promise<UnreadCounts>;
   markConversationRead: (conversationId: string) => Promise<UnreadCounts>;
   updateProfile: (update: ProfileUpdate) => Promise<UserView>;

@@ -1,12 +1,15 @@
 import { type PostMediaKind } from "@/types/post";
 
 // What an upload is for; each purpose has its own folder in the Blob store.
-export type UploadPurpose = "post" | "avatar" | "cover";
+export type UploadPurpose = "post" | "avatar" | "cover" | "message";
 
-export type ProfilePhotoKind = Exclude<UploadPurpose, "post">;
+export type ProfilePhotoKind = Exclude<UploadPurpose, "post" | "message">;
+
+// Posts take photos and video; messages also take voice notes (audio) and documents.
+export type MediaKind = PostMediaKind | "audio" | "file";
 
 export type MediaType = {
-  kind: PostMediaKind;
+  kind: MediaKind;
   extension: string;
 };
 
@@ -24,7 +27,7 @@ export type UploadGrant = {
 
 export type UploadedMedia = {
   url: string;
-  kind: PostMediaKind;
+  kind: MediaKind;
 };
 
 export type UploadOptions = {

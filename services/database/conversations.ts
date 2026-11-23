@@ -7,14 +7,16 @@ import {
   CONVERSATION_ERRORS,
   MESSAGE_LIMIT,
   NOT_FOUND,
+  TYPING_TTL_SECONDS,
 } from "@/lib/api/constants";
 import { type Queryable } from "@/types/db";
 import {
   type ConversationThread,
+  type ConversationUpdates,
   type ConversationView,
   type MessageView,
 } from "@/types/domain";
-import { type UnreadCounts } from "@/types/dataSource";
+import { type NewMessage, type UnreadCounts } from "@/types/dataSource";
 
 // Only members can see a conversation; to anyone else it doesn't exist.
 
@@ -28,6 +30,17 @@ async function markRead(
     "update conversation_members set unread = false where conversation_id = $2 and user_id = $1 returning 1",
     [viewerId, conversationId],
     db,
+  );
+  if (!rows.length) throw new DataError("not-found", NOT_FOUND.conversation);
+}
+
+async function requireMember(
+  viewerId: string,
+  conversationId: string,
+): Promise<void> {
+  const rows = await query(
+    "select 1 from conversation_members where conversation_id = $2 and user_id = $1",
+    [viewerId, conversationId],
   );
   if (!rows.length) throw new DataError("not-found", NOT_FOUND.conversation);
 }
@@ -121,21 +134,66 @@ export function startConversation(
   });
 }
 
-// The new message marks the conversation unread for every other member.
+// Messages from the other members newer than `since`, and who's typing. Your own
+// messages aren't included: this browser already has the ones it sent.
+// Timestamps are compared to the millisecond, the precision the views return.
+export async function getConversationUpdates(
+  viewerId: string,
+  conversationId: string,
+  since: string | null,
+): Promise<ConversationUpdates> {
+  await requireMember(viewerId, conversationId);
+  const messages = await selectViews<MessageView>(
+    `select message_view(msg, $1) as view from messages msg
+     where msg.conversation_id = $2 and msg.sender_id <> $1
+       and ($3::timestamptz is null or date_trunc('milliseconds', msg.created_at) > $3::timestamptz)
+     order by msg.created_at
+     limit $4`,
+    [viewerId, conversationId, since, MESSAGE_LIMIT],
+  );
+  const typing = await query<{ user_id: string }>(
+    `select user_id from conversation_members
+     where conversation_id = $2 and user_id <> $1
+       and typing_at > now() - make_interval(secs => $3)`,
+    [viewerId, conversationId, TYPING_TTL_SECONDS],
+  );
+  return { messages, typingIds: typing.map((row) => row.user_id) };
+}
+
+export async function setTyping(
+  viewerId: string,
+  conversationId: string,
+  typing: boolean,
+): Promise<null> {
+  const rows = await query(
+    `update conversation_members set typing_at = ${typing ? "now()" : "null"}
+     where conversation_id = $2 and user_id = $1 returning 1`,
+    [viewerId, conversationId],
+  );
+  if (!rows.length) throw new DataError("not-found", NOT_FOUND.conversation);
+  return null;
+}
+
+// The new message marks the conversation unread for every other member, and
+// ends the sender's typing status.
 export function sendMessage(
   viewerId: string,
   conversationId: string,
-  text: string,
+  { text, attachments }: NewMessage,
 ): Promise<MessageView> {
   return transaction(async (client) => {
     await markRead(viewerId, conversationId, client);
     const [{ id }] = await query<{ id: string }>(
-      "insert into messages (conversation_id, sender_id, text) values ($1, $2, $3) returning id",
-      [conversationId, viewerId, text],
+      "insert into messages (conversation_id, sender_id, text, attachments) values ($1, $2, $3, $4) returning id",
+      [conversationId, viewerId, text, JSON.stringify(attachments)],
       client,
     );
     await client.query(
       "update conversation_members set unread = true where conversation_id = $1 and user_id <> $2",
+      [conversationId, viewerId],
+    );
+    await client.query(
+      "update conversation_members set typing_at = null where conversation_id = $1 and user_id = $2",
       [conversationId, viewerId],
     );
     return selectView<MessageView>(

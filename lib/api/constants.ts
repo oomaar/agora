@@ -31,6 +31,7 @@ export const UPLOAD_PURPOSES: readonly UploadPurpose[] = [
   "post",
   "avatar",
   "cover",
+  "message",
 ];
 
 export const PROFILE_PHOTO_KINDS: readonly ProfilePhotoKind[] = [
@@ -85,6 +86,18 @@ export const OWNER_ERRORS = {
 export const CONVERSATION_ERRORS = {
   self: "You can't message yourself.",
 };
+
+export const MESSAGE_ERRORS = {
+  empty: "Write a message, or attach a file.",
+  tooManyAttachments: (max: number) =>
+    `A message can carry up to ${max} attachments.`,
+  attachment: '"attachments" must be a list of uploaded files.',
+  size: '"size" must be the file\'s size in bytes.',
+  since: '"since" must be a date.',
+};
+
+// Someone counts as typing for this long after their browser last said so.
+export const TYPING_TTL_SECONDS = 6;
 
 export const POLL_ERRORS = {
   noPoll: "This post doesn't have a poll.",

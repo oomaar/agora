@@ -38,5 +38,9 @@ export const API_PATHS = {
     `/api/conversations/${encode(conversationId)}/messages`,
   conversationRead: (conversationId: string) =>
     `/api/conversations/${encode(conversationId)}/read`,
+  conversationUpdates: (conversationId: string, since: string | null) =>
+    `/api/conversations/${encode(conversationId)}/updates${since ? `?since=${encode(since)}` : ""}`,
+  typing: (conversationId: string) =>
+    `/api/conversations/${encode(conversationId)}/typing`,
   unread: "/api/unread",
 };

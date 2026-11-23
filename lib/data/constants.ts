@@ -16,6 +16,8 @@ export const COMMENT_MAX_LENGTH = 280;
 
 export const MESSAGE_MAX_LENGTH = 1000;
 
+export const MESSAGE_ATTACHMENTS_MAX = 4;
+
 export const NAME_MAX_LENGTH = 50;
 
 export const BIO_MAX_LENGTH = 160;

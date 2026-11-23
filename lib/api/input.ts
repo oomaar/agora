@@ -5,22 +5,33 @@ import { normalizeHandle } from "@/services/auth/validation";
 import { readOwnedMedia } from "@/services/blob/readOwnedMedia";
 import {
   API_ERROR_MESSAGES,
+  MESSAGE_ERRORS,
   POST_AUDIENCES,
   UPLOAD_PURPOSES,
 } from "@/lib/api/constants";
-import { MAX_MEDIA_DIMENSION, MEDIA_LABELS } from "@/lib/media/constants";
+import {
+  ATTACHMENT_NAME_MAX_LENGTH,
+  MAX_MEDIA_DIMENSION,
+  MAX_UPLOAD_BYTES,
+  MEDIA_LABELS,
+  VOICE_NOTE_MAX_MS,
+  WAVEFORM_BARS,
+} from "@/lib/media/constants";
 import {
   BIO_MAX_LENGTH,
   HANDLE_PATTERN,
   NAME_MAX_LENGTH,
   POST_MAX_LENGTH,
 } from "@/lib/data/constants";
+import { requireMessageText } from "@/utils/requireMessageText";
 import { requirePollOptions } from "@/utils/requirePollOptions";
 import { requireText } from "@/utils/requireText";
 import { type JsonBody } from "@/types/api";
+import { type MessageAttachment } from "@/types/domain";
 import { type ProfilePhotoKind, type UploadRequest } from "@/types/media";
-import { type PostMedia } from "@/types/post";
+import { type PostMedia, type PostMediaKind } from "@/types/post";
 import {
+  type NewMessage,
   type NewPost,
   type ProfileUpdate,
   type SettingsUpdate,
@@ -104,7 +115,10 @@ function readPostMedia(value: unknown, viewerId: string): PostMedia | null {
     invalid('"media" must be an object with a "src".');
   }
   const media = value as JsonBody;
-  const { url, kind } = readOwnedMedia(media.src, "post", viewerId);
+  const uploaded = readOwnedMedia(media.src, "post", viewerId);
+  const url = uploaded.url;
+  // The post folder only takes photos and video.
+  const kind = uploaded.kind as PostMediaKind;
   const width = readDimension(media.width);
   const height = readDimension(media.height);
   return {
@@ -122,6 +136,88 @@ export function readNewPost(body: JsonBody, viewerId: string): NewPost {
     media: readPostMedia(body.media, viewerId),
     poll: readPoll(body.poll),
   };
+}
+
+function isObject(value: unknown): value is JsonBody {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+// Loudness bars of a voice note, each 0–1; anything else is dropped.
+function readWaveform(value: unknown): number[] | null {
+  if (
+    !Array.isArray(value) ||
+    !value.length ||
+    value.length > WAVEFORM_BARS ||
+    value.some((bar) => typeof bar !== "number" || !(bar >= 0 && bar <= 1))
+  ) {
+    return null;
+  }
+  return value.map((bar: number) => Math.round(bar * 100) / 100);
+}
+
+// The URL must be the viewer's own upload, which also gives the kind; the name,
+// size and voice-note details are the browser's and only shown.
+function readMessageAttachment(
+  value: unknown,
+  viewerId: string,
+): MessageAttachment {
+  if (!isObject(value)) invalid(MESSAGE_ERRORS.attachment);
+  const { url, kind } = readOwnedMedia(value.url, "message", viewerId);
+  const size = value.size;
+  if (
+    !Number.isInteger(size) ||
+    (size as number) < 1 ||
+    (size as number) > MAX_UPLOAD_BYTES[kind]
+  ) {
+    invalid(MESSAGE_ERRORS.size);
+  }
+  const name =
+    typeof value.name === "string"
+      ? value.name.trim().slice(0, ATTACHMENT_NAME_MAX_LENGTH)
+      : "";
+  const attachment: MessageAttachment = {
+    kind,
+    url,
+    name: name || MEDIA_LABELS[kind],
+    size: size as number,
+  };
+  if (kind === "image" || kind === "video") {
+    const width = readDimension(value.width);
+    const height = readDimension(value.height);
+    if (width && height) Object.assign(attachment, { width, height });
+  }
+  if (kind === "audio") {
+    const durationMs = value.durationMs;
+    if (
+      Number.isInteger(durationMs) &&
+      (durationMs as number) > 0 &&
+      (durationMs as number) <= VOICE_NOTE_MAX_MS
+    ) {
+      attachment.durationMs = durationMs as number;
+    }
+    const waveform = readWaveform(value.waveform);
+    if (waveform) attachment.waveform = waveform;
+  }
+  return attachment;
+}
+
+export function readNewMessage(body: JsonBody, viewerId: string): NewMessage {
+  const list = body.attachments ?? [];
+  if (!Array.isArray(list)) invalid(MESSAGE_ERRORS.attachment);
+  const text = requireMessageText(readString(body, "text"), list.length);
+  return {
+    text,
+    attachments: list.map((item) => readMessageAttachment(item, viewerId)),
+  };
+}
+
+// An ISO date from the query string, or null when it's missing.
+export function readSince(request: NextRequest): string | null {
+  const value = request.nextUrl.searchParams.get("since");
+  if (value === null) return null;
+  const time = Date.parse(value);
+  if (Number.isNaN(time)) invalid(MESSAGE_ERRORS.since);
+  return new Date(time).toISOString();
 }
 
 export function readUploadRequest(body: JsonBody): UploadRequest {

@@ -13,6 +13,12 @@ import {
   type UploadPurpose,
   type UploadState,
 } from "@/types/media";
+import { type PostMediaKind } from "@/types/post";
+
+// Posts and profile photos only take photos and video (see UPLOAD_TYPES).
+function postMediaKind(file: File): PostMediaKind {
+  return MEDIA_TYPES[file.type].kind as PostMediaKind;
+}
 
 // One file at a time: picking another, clearing or unmounting cancels the upload in
 // flight and frees its local preview. A file that fails the type or size check is
@@ -42,7 +48,7 @@ export function useMediaUpload(purpose: UploadPurpose): MediaUpload {
       ...IDLE_UPLOAD,
       status: "uploading",
       file,
-      kind: MEDIA_TYPES[file.type].kind,
+      kind: postMediaKind(file),
       previewUrl,
       // A retry keeps the size already measured.
       size: state.previewUrl === previewUrl ? state.size : null,
@@ -86,13 +92,11 @@ export function useMediaUpload(purpose: UploadPurpose): MediaUpload {
         return Promise.resolve(null);
       }
       const previewUrl = URL.createObjectURL(file);
-      void readMediaSize(previewUrl, MEDIA_TYPES[file.type].kind).then(
-        (size) => {
-          if (active.current?.previewUrl === previewUrl) {
-            setState((state) => ({ ...state, size }));
-          }
-        },
-      );
+      void readMediaSize(previewUrl, postMediaKind(file)).then((size) => {
+        if (active.current?.previewUrl === previewUrl) {
+          setState((state) => ({ ...state, size }));
+        }
+      });
       return upload(file, previewUrl);
     },
     // Keeps the file and its preview; only the request is replaced.

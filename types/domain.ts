@@ -1,3 +1,4 @@
+import { type MediaKind } from "@/types/media";
 import { type PostMedia } from "@/types/post";
 
 // Ids carry a prefix (user_, post_, comment_ …) so they are unique across
@@ -76,11 +77,7 @@ export type Follow = {
 };
 
 export type NotificationKind =
-  | "like"
-  | "reply"
-  | "follow"
-  | "mention"
-  | "milestone";
+  "like" | "reply" | "follow" | "mention" | "milestone";
 
 export type Notification = {
   id: string;
@@ -102,11 +99,29 @@ export type Conversation = {
   unread: boolean;
 };
 
+// A photo, video, document or voice note (audio) sent in a message.
+export type MessageAttachment = {
+  kind: MediaKind;
+  url: string;
+  // The file's own name, shown on documents.
+  name: string;
+  size: number;
+  // Photos and video: pixel size measured at upload.
+  width?: number;
+  height?: number;
+  // Voice notes: length and loudness bars (0–1) taken while recording, since a
+  // recorded file often doesn't report its own duration.
+  durationMs?: number;
+  waveform?: number[];
+};
+
 export type Message = {
   id: string;
   conversationId: string;
   senderId: string;
+  // Empty when the message is only attachments.
   text: string;
+  attachments: MessageAttachment[];
   createdAt: string;
 };
 
@@ -157,12 +172,33 @@ export type ConversationView = Conversation & {
   lastMessage: Message | null;
 };
 
+// The browser's own files for a message it's sending, kept so a failed send can
+// be retried without picking them again. Never comes from a data source.
+export type OutgoingAttachment = MessageAttachment & {
+  id: string;
+  file: File;
+  // The local preview; `url` stays empty until the file is uploaded.
+  previewUrl: string;
+};
+
 export type MessageView = Message & {
   fromSelf: boolean;
   status: DeliveryStatus;
+  // Only on a message this browser is sending (or failed to send).
+  outgoing?: OutgoingAttachment[];
+  // Upload progress (0–100) while its attachments upload.
+  progress?: number;
 };
 
 export type ConversationThread = {
   conversation: ConversationView;
   messages: MessageView[];
+};
+
+// What changed in an open conversation since the latest message from someone else.
+export type ConversationUpdates = {
+  // New messages from the other members, oldest first.
+  messages: MessageView[];
+  // Members typing right now (never the viewer).
+  typingIds: string[];
 };
