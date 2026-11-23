@@ -33,8 +33,9 @@ export const DEMO_OUTLINE_LINK =
 export const DEMO_SOLID_LINK =
   "inline-flex h-11.5 flex-none items-center justify-center rounded-md bg-ag-demo px-6 text-[15px] font-semibold text-ag-on-demo outline-none transition-opacity hover:opacity-90 focus-visible:shadow-ag-focus-ring";
 
+// Links inside a sentence are underlined so they don't rely on colour alone.
 export const TEXT_LINK =
-  "rounded-xs text-ag-accent-text outline-none hover:underline focus-visible:shadow-ag-focus-ring";
+  "rounded-xs text-ag-accent-text underline underline-offset-2 outline-none hover:decoration-2 focus-visible:shadow-ag-focus-ring";
 
 // The home feed in each theme, captured from the demo at 1280 × 560 (16:7).
 export const PRODUCT_SCREENSHOT = {
