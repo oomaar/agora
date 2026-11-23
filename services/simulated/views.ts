@@ -67,9 +67,17 @@ export function toNotificationView(
   };
 }
 
+function copyAttachments(message: Message): Message["attachments"] {
+  return message.attachments.map((attachment) => ({
+    ...attachment,
+    waveform: attachment.waveform && [...attachment.waveform],
+  }));
+}
+
 export function toMessageView(db: Database, message: Message): MessageView {
   return {
     ...message,
+    attachments: copyAttachments(message),
     fromSelf: message.senderId === db.selfId,
     status: "sent",
   };
@@ -88,7 +96,9 @@ export function toConversationView(
     members: conversation.memberIds
       .filter((id) => id !== db.selfId)
       .map((id) => toUserView(db, getUser(db, id))),
-    lastMessage: lastMessage ? { ...lastMessage } : null,
+    lastMessage: lastMessage
+      ? { ...lastMessage, attachments: copyAttachments(lastMessage) }
+      : null,
   };
 }
 

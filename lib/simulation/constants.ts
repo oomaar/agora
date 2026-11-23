@@ -1,5 +1,6 @@
 import { type SegmentedOption } from "@/types/toggle";
 import {
+  type ChatReplyTopic,
   type NetworkCondition,
   type NetworkProfile,
   type Scenario,
@@ -72,3 +73,42 @@ export const ACTIVITY_LIMIT = 20;
 
 export const NETWORK_ERROR_MESSAGE =
   "The simulated server didn't respond. This happens on the Offline and Flaky settings, just like a real connection drop.";
+
+// Demo replies: the other person starts typing this long after your message
+// arrives, types for a while that grows with the reply, then sends it.
+export const REPLY_DELAY_MS = 1200;
+
+export const TYPING_MS_PER_CHARACTER = 90;
+
+// Longer than a poll round trip, so an open chat always sees the typing.
+export const TYPING_MIN_MS = 3500;
+
+export const TYPING_MAX_MS = 6000;
+
+// Picked by what your latest message carried.
+export const CHAT_REPLIES: Record<ChatReplyTopic, readonly string[]> = {
+  text: [
+    "Ha, fair point",
+    "Sounds good to me!",
+    "Totally agree. Let's do it",
+    "Oh nice, tell me more",
+    "Give me five minutes and I'll get back to you",
+    "Love that idea",
+  ],
+  media: [
+    "Wow, that looks great",
+    "Okay this is amazing",
+    "Saving this one",
+    "Where was this taken?",
+  ],
+  voice: [
+    "Just listened. Yes, let's do that",
+    "Ha, love the voice note",
+    "Got it, thanks for explaining",
+  ],
+  file: [
+    "Thanks! Reading it now",
+    "Got the file, will review tonight",
+    "Perfect, that's the one I needed",
+  ],
+};

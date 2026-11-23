@@ -13,8 +13,10 @@ import {
   isFollowing,
   nextId,
 } from "@/services/simulated/database";
+import { createChatPartners } from "@/services/simulated/createChatPartners";
 import { simulateProgress } from "@/services/simulated/simulateProgress";
 import { checkUpload } from "@/utils/checkUpload";
+import { requireMessageText } from "@/utils/requireMessageText";
 import { requirePollOptions } from "@/utils/requirePollOptions";
 import { requireText } from "@/utils/requireText";
 import {
@@ -31,7 +33,6 @@ import {
   COMMENT_MAX_LENGTH,
   FEED_LIMIT,
   HANDLE_PATTERN,
-  MESSAGE_MAX_LENGTH,
   NAME_MAX_LENGTH,
   POST_MAX_LENGTH,
   SEARCH_LIMIT,
@@ -105,7 +106,8 @@ export function createSimulatedSource(
   getDb: () => Database,
   network: Network,
 ): DataSource {
-  const { request } = network;
+  const { request, poll } = network;
+  const partners = createChatPartners(getDb);
 
   return {
     getCurrentUser: () => request(() => toUserView(getDb(), getSelf(getDb()))),
@@ -259,6 +261,24 @@ export function createSimulatedSource(
             .filter((message) => message.conversationId === conversationId)
             .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
             .map((message) => toMessageView(db, message)),
+        };
+      }),
+
+    getConversationUpdates: (conversationId, since) =>
+      poll(() => {
+        const db = getDb();
+        getConversation(db, conversationId);
+        return {
+          messages: db.messages
+            .filter(
+              (message) =>
+                message.conversationId === conversationId &&
+                message.senderId !== db.selfId &&
+                (since === null || message.createdAt > since),
+            )
+            .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+            .map((message) => toMessageView(db, message)),
+          typingIds: partners.typingIds(conversationId),
         };
       }),
 
@@ -498,7 +518,7 @@ export function createSimulatedSource(
         },
       ),
 
-    sendMessage: (conversationId, text) =>
+    sendMessage: (conversationId, { text, attachments }) =>
       request(
         () => {
           const db = getDb();
@@ -507,15 +527,24 @@ export function createSimulatedSource(
             id: nextId(db, "message"),
             conversationId,
             senderId: db.selfId,
-            text: requireText(text, MESSAGE_MAX_LENGTH, "Your message"),
+            text: requireMessageText(text, attachments.length),
+            attachments: attachments.map((attachment) => ({ ...attachment })),
             createdAt: new Date().toISOString(),
           };
           db.messages.push(message);
           conversation.unread = false;
+          partners.replyTo(conversationId, message);
           return toMessageView(db, message);
         },
         { success: () => "Message delivered", failure: "Message failed" },
       ),
+
+    // Nobody else reads your typing in the demo; it only checks the conversation.
+    setTyping: (conversationId) =>
+      poll(() => {
+        getConversation(getDb(), conversationId);
+        return null;
+      }),
 
     markNotificationsRead: () =>
       request(

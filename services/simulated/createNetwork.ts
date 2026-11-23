@@ -24,14 +24,18 @@ export function createNetwork(
     return condition === "flaky" && requestCount % 2 === 1;
   }
 
+  function latency(condition: NetworkCondition): Promise<void> {
+    const profile = NETWORK_PROFILES[condition];
+    return wait(
+      profile.minLatencyMs +
+        Math.random() * (profile.maxLatencyMs - profile.minLatencyMs),
+    );
+  }
+
   return {
     async request(work, messages) {
       const condition = getCondition();
-      const profile = NETWORK_PROFILES[condition];
-      const latency =
-        profile.minLatencyMs +
-        Math.random() * (profile.maxLatencyMs - profile.minLatencyMs);
-      await wait(latency);
+      await latency(condition);
       try {
         if (shouldFail(condition))
           throw new DataError("network", NETWORK_ERROR_MESSAGE);
@@ -42,6 +46,14 @@ export function createNetwork(
         if (messages?.failure) log.add(messages.failure, "error");
         throw error;
       }
+    },
+    async poll(work) {
+      const condition = getCondition();
+      await latency(condition);
+      if (getCondition() === "offline") {
+        throw new DataError("network", NETWORK_ERROR_MESSAGE);
+      }
+      return work();
     },
     resetFailures: () => {
       requestCount = 0;

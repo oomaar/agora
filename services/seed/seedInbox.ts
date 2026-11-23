@@ -81,6 +81,7 @@ export function seedInbox(context: SeedContext): void {
         conversationId: conversation.id,
         senderId: getUserByHandle(db, message.from).id,
         text: message.text,
+        attachments: [],
         createdAt: minutesAgo(now, message.ageMinutes),
       });
     }

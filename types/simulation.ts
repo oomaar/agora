@@ -78,8 +78,27 @@ export type ActivityMessages<T> = {
 
 export type Network = {
   request: <T>(work: () => T, messages?: ActivityMessages<T>) => Promise<T>;
+  // Background checks (an open chat's updates, typing): the same latency, failing
+  // only when offline, so they don't shift Flaky's every-other-request pattern.
+  poll: <T>(work: () => T) => Promise<T>;
   resetFailures: () => void;
 };
+
+// The demo's other people, who type for a moment and then reply to your messages.
+export type ChatPartners = {
+  typingIds: (conversationId: string) => string[];
+  replyTo: (conversationId: string, message: Message) => void;
+};
+
+export type PendingReply = {
+  // The database the reply belongs to; a reset swaps it and drops the reply.
+  db: Database;
+  userId: string;
+  typing: boolean;
+  timer: ReturnType<typeof setTimeout>;
+};
+
+export type ChatReplyTopic = "text" | "media" | "voice" | "file";
 
 export type Database = {
   selfId: string;
