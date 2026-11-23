@@ -9,6 +9,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useConversation } from "@/hooks/messages/useConversation";
+import { useConversationUpdates } from "@/hooks/messages/useConversationUpdates";
 import { useMarkReadOnOpen } from "@/hooks/messages/useMarkReadOnOpen";
 import { useSendMessage } from "@/hooks/messages/useSendMessage";
 import { BUBBLE_SKELETONS, MESSAGES_PATH } from "@/lib/messages/constants";
@@ -20,6 +21,10 @@ export function ChatThread({ conversationId }: ChatThreadProps) {
   const thread = useConversation(conversationId);
   const message = useSendMessage(conversationId);
   useMarkReadOnOpen(thread.data?.conversation);
+  const typingIds = useConversationUpdates(
+    conversationId,
+    thread.data !== undefined,
+  );
 
   if (thread.status === "loading") {
     return (
@@ -85,15 +90,26 @@ export function ChatThread({ conversationId }: ChatThreadProps) {
   }
 
   const { conversation, messages } = thread.data;
+  const typing = conversation.members.filter((member) =>
+    typingIds.includes(member.id),
+  );
   return (
     <>
-      <ChatHeader conversation={conversation} messages={messages} />
+      <ChatHeader
+        conversation={conversation}
+        messages={messages}
+        typing={typing}
+      />
       <ChatMessages
         conversation={conversation}
         messages={messages}
+        typing={typing}
         onRetry={message.retry}
       />
-      <ChatComposer onSend={(text) => void message.send(text)} />
+      <ChatComposer
+        conversationId={conversationId}
+        onSend={(text, attachments) => void message.send(text, attachments)}
+      />
     </>
   );
 }

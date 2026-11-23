@@ -8,12 +8,19 @@ import { MESSAGES_PATH } from "@/lib/messages/constants";
 import { TAP_TARGET } from "@/lib/ui/tapTarget";
 import { conversationTitle } from "@/utils/conversationTitle";
 import { getActivityStatus } from "@/utils/getActivityStatus";
+import { typingLabel } from "@/utils/typingLabel";
 import { cn } from "@/utils/cn";
 import { type ChatHeaderProps } from "@/types/messages";
 
-export function ChatHeader({ conversation, messages }: ChatHeaderProps) {
+export function ChatHeader({
+  conversation,
+  messages,
+  typing,
+}: ChatHeaderProps) {
   const router = useAppRouter();
-  const status = getActivityStatus(conversation, messages);
+  const status = typing.length
+    ? { label: typingLabel(typing), active: true }
+    : getActivityStatus(conversation, messages);
   const person = conversation.name ? null : conversation.members[0];
   return (
     <header className="flex h-15.5 flex-none items-center gap-3 border-b border-ag-border-subtle px-5">

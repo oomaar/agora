@@ -2,12 +2,15 @@
 
 import { useLayoutEffect, useRef } from "react";
 
-// Keeps a scroll container at its end whenever `count` changes, e.g. a new message.
-export function useScrollToEnd<T extends HTMLElement>(count: number) {
+// Keeps a scroll container at its end whenever `trigger` changes, e.g. a new
+// message or someone starting to type.
+export function useScrollToEnd<T extends HTMLElement>(
+  trigger: string | number,
+) {
   const ref = useRef<T>(null);
   useLayoutEffect(() => {
     const element = ref.current;
     if (element) element.scrollTop = element.scrollHeight;
-  }, [count]);
+  }, [trigger]);
   return ref;
 }

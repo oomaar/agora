@@ -305,6 +305,24 @@
   --breakpoint-rail: 1100px;
 }
 
+/* Typing dots: each one lifts and brightens in turn */
+@theme {
+  --animate-typing: typing 1.2s ease-in-out infinite;
+
+  @keyframes typing {
+    0%,
+    60%,
+    100% {
+      opacity: 0.35;
+      translate: 0 0;
+    }
+    30% {
+      opacity: 1;
+      translate: 0 -3px;
+    }
+  }
+}
+
 /* Elevation: Border only for flat items, shadows only for things that float */
 @utility elev-0 {
   @apply border border-ag-border bg-ag-surface shadow-ag-none;
