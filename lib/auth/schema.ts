@@ -56,10 +56,15 @@ export const AUTH_RATE_LIMIT_TABLE = {
 } as const;
 
 // Better Auth endpoints the app doesn't use; profile changes go through PATCH /api/me instead.
+// Password and session changes have no screen, so a shared sample account can't be locked.
 export const DISABLED_AUTH_PATHS = [
   "/update-user",
   "/change-email",
   "/delete-user",
+  "/change-password",
+  "/revoke-session",
+  "/revoke-sessions",
+  "/revoke-other-sessions",
 ];
 
 // Codes thrown by the sign-up hook; the form shows them under the matching field.

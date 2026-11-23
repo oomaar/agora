@@ -1,6 +1,7 @@
 import "server-only";
 import { DataError } from "@/services/dataError";
 import { UPLOAD_ERRORS } from "@/lib/media/constants";
+import { blobHostname } from "@/utils/blobHostname";
 
 // BLOB_READ_WRITE_TOKEN looks like vercel_blob_rw_<storeId>_<secret>.
 export function readWriteToken(): string {
@@ -15,5 +16,5 @@ export function blobStoreId(token: string): string {
 
 // Where the store serves public files, e.g. https://abc123.public.blob.vercel-storage.com/
 export function blobBaseUrl(): string {
-  return `https://${blobStoreId(readWriteToken()).toLowerCase()}.public.blob.vercel-storage.com/`;
+  return `https://${blobHostname(readWriteToken())}/`;
 }

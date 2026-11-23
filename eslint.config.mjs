@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Design references, git-ignored and not part of the app.
+    "Agora wireframes/**",
   ]),
 ]);
 

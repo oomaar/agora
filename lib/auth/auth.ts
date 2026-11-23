@@ -52,6 +52,8 @@ export const auth = betterAuth({
   },
   advanced: {
     cookiePrefix: AUTH_COOKIE_PREFIX,
+    // Vercel always serves https, so cookies stay Secure even if BETTER_AUTH_URL is wrong.
+    ...(process.env.VERCEL ? { useSecureCookies: true } : {}),
     database: { generateId: ({ model }) => createId(model) },
   },
   plugins: [nextCookies()],

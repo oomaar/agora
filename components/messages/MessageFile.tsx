@@ -4,10 +4,11 @@ import { formatFileSize } from "@/utils/formatFileSize";
 import { cn } from "@/utils/cn";
 import { type MessageFileProps } from "@/types/messages";
 
-// A document: its name, type and size. Opens (or downloads) in a new tab.
+// A document: its name, type and size. Opens (or downloads) in a new tab. The type
+// comes from the stored file, not the name the sender's browser gave it.
 export function MessageFile({ attachment, fromSelf }: MessageFileProps) {
   const { name, size, url } = attachment;
-  const details = [fileExtension(name), formatFileSize(size)]
+  const details = [fileExtension(url), formatFileSize(size)]
     .filter(Boolean)
     .join(" · ");
   return (
