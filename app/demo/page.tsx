@@ -5,10 +5,13 @@ import { DemoPersonaCard } from "@/components/demo/DemoPersonaCard";
 import { ScenarioPicker } from "@/components/demo/ScenarioPicker";
 import { WELCOME_PATH } from "@/lib/auth/constants";
 import { RETURN_PATH_PARAM } from "@/lib/demo/constants";
-import { MAIN_ID } from "@/lib/site/constants";
+import { DEMO_DESCRIPTION, MAIN_ID } from "@/lib/site/constants";
 import { readReturnPath } from "@/utils/readReturnPath";
 
-export const metadata: Metadata = { title: "Demo" };
+export const metadata: Metadata = {
+  title: "Demo",
+  description: DEMO_DESCRIPTION,
+};
 
 export default async function DemoLandingPage({
   searchParams,
