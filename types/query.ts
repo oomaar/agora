@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import { type DataError } from "@/services/dataError";
 import { type DataSource } from "@/types/dataSource";
-import { type PostView } from "@/types/domain";
+import { type OutgoingAttachment, type PostView } from "@/types/domain";
 import {
   type DataPresetId,
   type ScenarioId,
@@ -104,6 +104,8 @@ export type AddCommentVariables = {
 export type SendMessageVariables = {
   tempId: string;
   text: string;
+  // Files still to upload (or uploaded by an earlier try).
+  outgoing: OutgoingAttachment[];
 };
 
 export type VotePollVariables = {

@@ -36,7 +36,9 @@ export const ICON_SHAPES: Record<IconName, ReactNode> = {
   ),
   comment: <path d="M4 5h16v11H9l-5 4z" />,
   repost: <path d="M7 7h11l-3-3M17 17H6l3 3" />,
-  heart: <path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" />,
+  heart: (
+    <path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" />
+  ),
   share: <path d="M12 4v11M7 9l5-5 5 5M5 14v6h14v-6" />,
   plus: <path d="M12 5v14M5 12h14" />,
   close: <path d="M6 6l12 12M18 6L6 18" />,
@@ -71,6 +73,56 @@ export const ICON_SHAPES: Record<IconName, ReactNode> = {
     </>
   ),
   play: <path d="M8 5.5v13l11-6.5z" fill="currentColor" />,
+  pause: (
+    <>
+      <rect
+        x="6.5"
+        y="5"
+        width="3.5"
+        height="14"
+        rx="1"
+        fill="currentColor"
+        stroke="none"
+      />
+      <rect
+        x="14"
+        y="5"
+        width="3.5"
+        height="14"
+        rx="1"
+        fill="currentColor"
+        stroke="none"
+      />
+    </>
+  ),
+  attach: (
+    <path d="M20 11.5l-7.8 7.8a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8" />
+  ),
+  mic: (
+    <>
+      <rect x="9" y="3" width="6" height="11" rx="3" />
+      <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" />
+    </>
+  ),
+  send: (
+    <>
+      <path d="M21 3L3 10.5l7.5 3 3 7.5z" />
+      <path d="M10.5 13.5L21 3" />
+    </>
+  ),
+  trash: (
+    <>
+      <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" />
+      <path d="M10 11v5.5M14 11v5.5" />
+    </>
+  ),
+  file: (
+    <>
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5M9 13h6M9 17h4" />
+    </>
+  ),
+  download: <path d="M12 4v11M7 10l5 5 5-5M5 19h14" />,
 };
 
 export const ICON_NAMES = Object.keys(ICON_SHAPES) as IconName[];

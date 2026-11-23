@@ -21,7 +21,14 @@ export type IconName =
   | "poll"
   | "check"
   | "alert"
-  | "play";
+  | "play"
+  | "pause"
+  | "attach"
+  | "mic"
+  | "send"
+  | "trash"
+  | "file"
+  | "download";
 
 export type IconProps = Omit<SVGProps<SVGSVGElement>, "name"> & {
   name: IconName;

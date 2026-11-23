@@ -1,3 +1,4 @@
+import { MessageAttachments } from "@/components/messages/MessageAttachments";
 import { firstName } from "@/utils/firstName";
 import { formatMessageTime } from "@/utils/formatMessageTime";
 import { cn } from "@/utils/cn";
@@ -9,8 +10,9 @@ export function MessageBubble({
   delivered,
   onRetry,
 }: MessageBubbleProps) {
-  const { fromSelf, status } = message;
+  const { fromSelf, status, attachments, progress } = message;
   const time = formatMessageTime(message.createdAt);
+  const hasAttachments = attachments.length > 0;
   return (
     <div
       aria-busy={status === "sending" || undefined}
@@ -24,19 +26,36 @@ export function MessageBubble({
           {firstName(sender.name)}
         </span>
       )}
-      <p
+      <div
         className={cn(
-          "max-w-[80%] whitespace-pre-line wrap-break-word rounded-2xl px-3.5 py-2.5 text-[14.5px] leading-[1.45] sm:max-w-[62%]",
+          "flex max-w-[80%] flex-col gap-1 rounded-2xl text-[14.5px] leading-[1.45] sm:max-w-[62%]",
           fromSelf
             ? "bg-ag-accent text-ag-on-accent"
             : "bg-ag-raised text-ag-text",
+          hasAttachments && "p-1",
           status === "sending" && "opacity-60",
         )}
       >
-        {message.text}
-      </p>
+        {hasAttachments && (
+          <MessageAttachments attachments={attachments} fromSelf={fromSelf} />
+        )}
+        {message.text && (
+          <p
+            className={cn(
+              "whitespace-pre-line wrap-break-word",
+              hasAttachments ? "px-2.5 pb-1.5 pt-0.5" : "px-3.5 py-2.5",
+            )}
+          >
+            {message.text}
+          </p>
+        )}
+      </div>
       {status === "sending" && (
-        <span className="text-[11.5px] text-ag-text-secondary">Sending…</span>
+        <span className="text-[11.5px] text-ag-text-secondary">
+          {progress !== undefined && progress < 100
+            ? `Sending… ${progress}%`
+            : "Sending…"}
+        </span>
       )}
       {status === "failed" && (
         <span
